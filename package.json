@@ -1,0 +1,31 @@
+{
+  "name": "gifcept-client",
+  "version": "0.1.0",
+  "repository": "git@github.com:tomaccodev/gifcept-client.git",
+  "author": {
+    "name": "Dani Lupión",
+    "email": "danilupion@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-router-dom": "^4.2.2",
+    "react-scripts-ts": "2.15.1"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "start": "react-scripts-ts start",
+    "build": "yarn build-css && react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "^10.0.8",
+    "@types/react": "^16.3.14",
+    "@types/react-dom": "^16.0.5",
+    "node-sass-chokidar": "^1.3.0",
+    "typescript": "^2.8.3"
+  }
+}
