@@ -24,7 +24,7 @@ class SubHeader extends React.Component {
           </a>
         </div>
       </div>
-    )
+    );
   }
 }
 
