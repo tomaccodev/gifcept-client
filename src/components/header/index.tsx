@@ -5,8 +5,29 @@ import SubHeader from './components/SubHeader';
 import './Header.css';
 import logo from './images/logo.png';
 
-class Header extends React.Component {
+interface IHeaderProps {
+  loggedIn: boolean;
+}
+
+export default class extends React.Component<IHeaderProps> {
   public render() {
+    const userElements = this.props.loggedIn ? (
+      <div className="header-right">
+        <a href="#" className="header-user-name">
+          Carlos
+        </a>
+        <a href="#" className="header-button header-avatar" title="Your Profile">
+          <img src="http://via.placeholder.com/150x150" alt="John Doe" />
+        </a>
+        <a href="#" className="header-button" title="Safe For Work View">
+          <i className="material-icons">&#xE86C;</i>
+        </a>
+        <a href="#" className="header-button" title="Your Notifications">
+          <i className="material-icons">&#xE7F5;</i>
+        </a>
+      </div>
+    ) : null;
+
     return (
       <div>
         <header className="header">
@@ -25,20 +46,7 @@ class Header extends React.Component {
               </div>
             </div>
 
-            <div className="header-right">
-              <a href="#" className="header-user-name">
-                Carlos
-              </a>
-              <a href="#" className="header-button header-avatar" title="Your Profile">
-                <img src="http://via.placeholder.com/150x150" alt="John Doe" />
-              </a>
-              <a href="#" className="header-button" title="Safe For Work View">
-                <i className="material-icons">&#xE86C;</i>
-              </a>
-              <a href="#" className="header-button" title="Your Notifications">
-                <i className="material-icons">&#xE7F5;</i>
-              </a>
-            </div>
+            {userElements}
             <div className="clearfix" />
             <div className="header-logo-wrapper">
               <img src={logo} alt="Gifcept" />
@@ -50,5 +58,3 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;
