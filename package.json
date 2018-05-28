@@ -8,6 +8,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/jwt-decode": "^2.2.1",
+    "jwt-decode": "^2.2.0",
+    "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -33,6 +36,11 @@
       "yarn lint",
       "git add"
     ]
+  },
+  "proxy": {
+    "/api/*": {
+      "target": "http://localhost:3002"
+    }
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
