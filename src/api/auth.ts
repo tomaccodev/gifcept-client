@@ -6,7 +6,7 @@ interface IPostTokenResponse {
   token: string;
 }
 
-export const postToken = (username: string, password: string) =>
+export const generateToken = (username: string, password: string) =>
   post('/api/auth/token', { username, password }).then((res: IPostTokenResponse) => {
     const { userId, username: tokenUsername, role } = jwtDecode(res.token);
 

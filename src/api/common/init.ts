@@ -8,6 +8,11 @@ const defaultInit: RequestInit = {
   referrer: 'no-referrer',
 };
 
+export const getInit: RequestInit = {
+  ...defaultInit,
+  method: 'GET',
+};
+
 export const postInit: RequestInit = {
   ...defaultInit,
   method: 'POST',

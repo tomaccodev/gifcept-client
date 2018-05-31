@@ -1,7 +1,7 @@
 import { action, computed, observable, runInAction } from 'mobx';
 
-import { postToken } from '../api/auth';
-import { UserRole } from '../constants/userRoles';
+import { generateToken } from '../api/auth';
+import { UserRole } from '../common/constants';
 
 export default class {
   // TODO: Handle token expiration and renovation
@@ -16,7 +16,7 @@ export default class {
   @action
   public async login(username: string, password: string) {
     try {
-      const res = await postToken(username, password);
+      const res = await generateToken(username, password);
 
       runInAction(() => {
         this.role = res.role as UserRole;
