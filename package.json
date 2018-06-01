@@ -40,6 +40,9 @@
   "proxy": {
     "/api/*": {
       "target": "http://localhost:3002"
+    },
+    "/*[.](gif|png)": {
+      "target": "http://localhost:3002"
     }
   },
   "devDependencies": {

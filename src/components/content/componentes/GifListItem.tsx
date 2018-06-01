@@ -16,27 +16,24 @@ export default ({ gif }: IGifListItemProps) => (
       </span>
       <i className="material-icons"></i>
     </div>
-    <a
-      className="block-item-gif-container"
-      style={{ backgroundImage: 'url(http://via.placeholder.com/247x247)' }}
-    />
+    <a className="block-item-gif-container" style={{ backgroundImage: `url(/${gif.id}.png)` }} />
     <div className="block-item-bottom">
       <ul className="block-item-main-actions">
         <li className="block-item-like">
           <i className="material-icons"></i>
-          <span className="block-item-like-counter">{gif.likesCount || 0}</span>
+          <span className="block-item-like-counter">{gif.likesCount}</span>
         </li>
         <li className="block-item-comment">
           <i className="material-icons"></i>
-          <span className="block-item-comment-counter">{gif.commentsCount || 0}</span>
+          <span className="block-item-comment-counter">{gif.commentsCount}</span>
         </li>
         <li className="block-item-recept">
           <i className="material-icons"></i>
-          <span className="block-item-recept-counter">{gif.receptsCount || 0}</span>
+          <span className="block-item-recept-counter">{gif.sharesCount}</span>
         </li>
         <li className="block-item-views">
           <i className="material-icons"></i>
-          <span className="block-item-views-counter">{gif.viewsCount || 0}</span>
+          <span className="block-item-views-counter">{gif.viewsCount}</span>
         </li>
       </ul>
       <a href="#" className="block-item-uploader">
@@ -45,7 +42,7 @@ export default ({ gif }: IGifListItemProps) => (
           className="block-item-uploader-avatar"
           alt="Periquito de los Palotes"
         />
-        <span className="block-item-uploader-name">Periquito de los Palotes</span>
+        <span className="block-item-uploader-name">{gif.user.username}</span>
       </a>
     </div>
   </div>

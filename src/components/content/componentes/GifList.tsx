@@ -8,5 +8,5 @@ interface IGifListProps {
 }
 
 export default ({ gifs }: IGifListProps) => (
-  <div className="blocks-container">{gifs.map(g => <GifListItem key={g._id} gif={g} />)}</div>
+  <div className="blocks-container">{gifs.map(g => <GifListItem key={g.id} gif={g} />)}</div>
 );
