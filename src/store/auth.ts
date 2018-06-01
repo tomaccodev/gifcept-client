@@ -3,6 +3,10 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { generateToken } from '../api/auth';
 import { UserRole } from '../common/constants';
 
+export interface ILoggedUser {
+  username: string;
+}
+
 export default class {
   // TODO: Handle token expiration and renovation
   @observable public token: string;
@@ -31,7 +35,7 @@ export default class {
   }
 
   @computed
-  get isLoggedIn() {
-    return !!this.token;
+  get user(): ILoggedUser | null {
+    return this.token ? { username: this.username } : null;
   }
 }

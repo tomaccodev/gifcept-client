@@ -1,7 +1,7 @@
 @import '../../styles/variables';
 @import '../../styles/_helpers.scss';
 
-.header{
+.header {
   background-color: $main-color;
   color: #fff;
   clear: both;
@@ -13,71 +13,71 @@
   width: 100%;
 }
 
-.header-wrapper{
+.header-wrapper {
   max-width: 1380px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
 }
 
-.header-logo-wrapper{
+.header-logo-wrapper {
   position: absolute;
   width: 100%;
   text-align: center;
-  z-index:0;
+  z-index: 0;
   top: 5px;
 }
 
-.header-logo-wrapper img{
+.header-logo-wrapper img {
   width: 100px;
   margin: 0 auto;
   opacity: 0.8;
-  transition: all .3s;
+  transition: all 0.3s;
   position: relative;
 }
 
-.header-logo-wrapper img:hover{
+.header-logo-wrapper img:hover {
   opacity: 1;
 }
 
-.header-left{
+.header-left {
   float: left;
   position: relative;
-  z-index:2;
+  z-index: 2;
   margin-left: 5px;
 }
 
-.header-left .header-button{
+.header-left .header-button {
   margin-right: 5px;
 }
 
-.header-right{
+.header-right {
   float: right;
   position: relative;
-  z-index:2;
+  z-index: 2;
   margin-right: 5px;
 }
 
-.header-right .header-button{
+.header-right .header-button {
   margin-left: 5px;
 }
 
-.header-button{
+.header-button {
   display: inline-block;
   border-radius: 4px;
   width: 30px;
   height: 30px;
   background-color: #4db8a0;
-  background-color:rgba(255,255,255,.3);
-  transition: all .3s;
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s;
   position: relative;
 }
 
-.header-button:hover{
-  background-color:rgba(255,255,255,.1);
+.header-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.header-button .material-icons{
+.header-button .material-icons {
   position: absolute;
   color: #fff;
   top: 3px;
@@ -88,10 +88,10 @@
   width: 120px;
 }
 
-.header-search input{
+.header-search input {
   position: absolute;
   top: 0px;
-  width:100%;
+  width: 100%;
   box-sizing: border-box;
   padding-left: 32px;
   height: 30px;
@@ -101,27 +101,33 @@
   line-height: 30px;
 }
 
-.header-search input::-webkit-input-placeholder {  color: white; }
-.header-search input:-moz-placeholder { color: white; }
-.header-search input::-moz-placeholder { color: white; }
-.header-search input:-ms-input-placeholder { color: white;}
+.header-search input::-webkit-input-placeholder {
+  color: white;
+}
+.header-search input:-moz-placeholder {
+  color: white;
+}
+.header-search input::-moz-placeholder {
+  color: white;
+}
+.header-search input:-ms-input-placeholder {
+  color: white;
+}
 
-
-.header-avatar{
+.header-avatar {
   overflow: hidden;
 }
 
-.header-avatar img{
-  width:30px;
+.header-avatar img {
+  width: 30px;
 }
 
-.header-user-name{
+.header-user-name {
   display: inline-block;
   color: #fff;
   text-decoration: none;
-  transition: all .3s;
+  transition: all 0.3s;
   position: relative;
   top: -9px;
   margin-right: 5px;
-
 }

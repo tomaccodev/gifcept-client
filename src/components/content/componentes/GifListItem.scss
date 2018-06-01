@@ -1,0 +1,109 @@
+@import '../../../styles/variables';
+
+.block-item-wrapper {
+  display: inline-block;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+
+  .block-item-top {
+    position: relative;
+    height: 36px;
+
+    .block-item-name {
+      font-size: 14px;
+      color: #666;
+      padding: 10px 35px 10px 10px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .material-icons {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      color: #666;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .material-icons:hover {
+      color: #999;
+    }
+  }
+
+  .block-item-gif-container {
+    width: 100%;
+    padding-bottom: 100%;
+    background-size: cover;
+    position: relative;
+    display: block;
+    text-decoration: none;
+  }
+
+  .block-item-main-actions {
+    list-style: none;
+    font-size: 0;
+    background-color: white;
+
+    li {
+      box-sizing: border-box;
+      width: 21%;
+      text-align: center;
+      display: inline-block;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      cursor: pointer;
+    }
+
+    li:last-child {
+      width: 37%;
+      border-left: 1px solid #ccc;
+      cursor: default;
+    }
+
+    .material-icons {
+      color: $main-color;
+      font-size: 14px;
+      position: relative;
+      top: 2px;
+    }
+
+    span {
+      font-size: 12px;
+      color: #999;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-left: 2px;
+    }
+  }
+
+  .block-item-uploader {
+    position: relative;
+    text-decoration: none;
+    display: block;
+    border-top: 1px solid #ddd;
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 30px;
+      position: absolute;
+      top: 4px;
+      left: 8px;
+    }
+
+    span {
+      font-size: 14px;
+      color: #666;
+      padding: 8px 10px 8px 40px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 
 import { getGifs, IGif } from '../api/gifs';
 
@@ -8,7 +8,10 @@ export default class {
   @action
   public async getGifs() {
     try {
-      this.gifs = await getGifs();
+      const gifs = await getGifs();
+      runInAction(() => {
+        this.gifs = gifs;
+      });
     } catch (err) {
       // tslint:disable-next-line:no-console
       console.error(err);
