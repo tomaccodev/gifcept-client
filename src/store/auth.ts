@@ -5,6 +5,7 @@ import { UserRole } from '../common/constants';
 
 export interface ILoggedUser {
   username: string;
+  id: string;
 }
 
 export default class {
@@ -18,7 +19,7 @@ export default class {
   @observable public role: UserRole;
 
   @action
-  public async login(username: string, password: string) {
+  public async login(username: string, password: string): Promise<boolean> {
     try {
       const res = await generateToken(username, password);
 
@@ -36,6 +37,6 @@ export default class {
 
   @computed
   get user(): ILoggedUser | null {
-    return this.token ? { username: this.username } : null;
+    return this.token ? { username: this.username, id: this.userId } : null;
   }
 }

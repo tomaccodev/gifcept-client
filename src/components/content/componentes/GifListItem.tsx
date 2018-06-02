@@ -8,6 +8,7 @@ import './GifListItem.css';
 
 interface IGifListItemProps {
   gif: IGif;
+  onClick: () => void;
 }
 
 @observer
@@ -18,8 +19,8 @@ export default class extends React.Component<IGifListItemProps> {
 
   @computed
   get imageUrl() {
-    const frameUrl = `/${this.props.gif.id}.png`;
-    const animationUrl = `/${this.props.gif.id}.gif`;
+    const frameUrl = this.props.gif.frameUrlPath;
+    const animationUrl = this.props.gif.animationUrlPath;
 
     if (!this.hovered) {
       return frameUrl;
@@ -34,7 +35,7 @@ export default class extends React.Component<IGifListItemProps> {
   }
 
   public render() {
-    const { gif } = this.props;
+    const { gif, onClick } = this.props;
 
     return (
       <div
@@ -51,6 +52,7 @@ export default class extends React.Component<IGifListItemProps> {
         <a
           className="block-item-gif-container"
           style={{ backgroundImage: `url(${this.imageUrl})`, backgroundColor: gif.color }}
+          onClick={onClick}
         />
         <div className="block-item-bottom">
           <ul className="block-item-main-actions">

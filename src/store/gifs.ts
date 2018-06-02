@@ -3,10 +3,10 @@ import { action, observable, runInAction } from 'mobx';
 import { getGifs, IGif } from '../api/gifs';
 
 export default class {
-  @observable public gifs: IGif[];
+  @observable public gifs: IGif[] = [];
 
   @action
-  public async getGifs() {
+  public async getGifs(): Promise<void> {
     try {
       const gifs = await getGifs();
       runInAction(() => {

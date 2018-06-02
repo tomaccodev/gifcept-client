@@ -1,7 +1,7 @@
 import { Rating } from '../common/constants';
 import { get } from './common/methods';
 
-export interface IGif {
+interface IServerGif {
   id: string;
   color: string;
   description: string;
@@ -16,4 +16,16 @@ export interface IGif {
   };
 }
 
-export const getGifs: () => Promise<IGif[]> = () => get('/api/gifs') as Promise<IGif[]>;
+export interface IGif extends IServerGif {
+  animationUrlPath: string;
+  frameUrlPath: string;
+}
+
+export const getGifs: () => Promise<IGif[]> = () =>
+  get('/api/gifs').then((gifs: IServerGif[]) =>
+    gifs.map(g => ({
+      ...g,
+      animationUrlPath: `/${g.id}.gif`,
+      frameUrlPath: `/${g.id}.png`,
+    })),
+  ) as Promise<IGif[]>;

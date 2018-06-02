@@ -9,9 +9,11 @@ import './Content.css';
 @observer
 export default class extends React.Component<IStoreComponentProps> {
   public render() {
+    const store = this.props.store;
+
     return (
       <main>
-        <GifList gifs={this.props.store.gifs.gifs || []} />
+        <GifList gifs={store.gifs.gifs} setViewedGif={store.ui.setViewedGif.bind(store.ui)} />
       </main>
     );
   }
