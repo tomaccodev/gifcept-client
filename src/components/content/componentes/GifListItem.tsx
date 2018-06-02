@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
@@ -14,9 +14,23 @@ interface IGifListItemProps {
 export default class extends React.Component<IGifListItemProps> {
   @observable private hovered: boolean = false;
 
+  @observable private animationPreloaded: boolean = false;
+
   @computed
   get imageUrl() {
-    return this.hovered ? `/${this.props.gif.id}.gif` : `/${this.props.gif.id}.png`;
+    const frameUrl = `/${this.props.gif.id}.png`;
+    const animationUrl = `/${this.props.gif.id}.gif`;
+
+    if (!this.hovered) {
+      return frameUrl;
+    }
+
+    if (!this.animationPreloaded) {
+      this.preload(animationUrl);
+      return frameUrl;
+    }
+
+    return animationUrl;
   }
 
   public render() {
@@ -69,6 +83,16 @@ export default class extends React.Component<IGifListItemProps> {
       </div>
     );
   }
+
+  private preload = (url: string) => {
+    const image = new Image();
+    image.addEventListener('load', () => {
+      runInAction(() => {
+        this.animationPreloaded = true;
+      });
+    });
+    image.src = url;
+  };
 
   @action
   private clearHovered = () => {
