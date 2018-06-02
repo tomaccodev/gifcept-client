@@ -50,7 +50,7 @@ export default class extends React.Component<IGifListItemProps> {
         </div>
         <a
           className="block-item-gif-container"
-          style={{ backgroundImage: `url(${this.imageUrl})` }}
+          style={{ backgroundImage: `url(${this.imageUrl})`, backgroundColor: gif.color }}
         />
         <div className="block-item-bottom">
           <ul className="block-item-main-actions">
