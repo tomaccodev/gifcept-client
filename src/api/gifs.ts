@@ -1,24 +1,37 @@
 import { Rating } from '../common/constants';
 import { get } from './common/methods';
 
-interface IServerGif {
+interface IApiModel {
+  id: string;
+}
+
+interface IUser extends IApiModel {
+  username: string;
+}
+
+interface IServerGif extends IApiModel {
   id: string;
   color: string;
   description: string;
   rating: Rating;
+  created: string;
   viewsCount: number;
   likesCount: number;
+  comments: IComment[];
   commentsCount: number;
   sharesCount: number;
-  user: {
-    id: string;
-    username: string;
-  };
+  user: IUser;
 }
 
 export interface IGif extends IServerGif {
   animationUrlPath: string;
   frameUrlPath: string;
+}
+
+export interface IComment extends IApiModel {
+  text: string;
+  user: IUser;
+  created: string;
 }
 
 export const getGifs: () => Promise<IGif[]> = () =>
@@ -28,4 +41,7 @@ export const getGifs: () => Promise<IGif[]> = () =>
       animationUrlPath: `/${g.id}.gif`,
       frameUrlPath: `/${g.id}.png`,
     })),
-  ) as Promise<IGif[]>;
+  );
+
+export const getGifComments: (gifId: string) => Promise<IComment[]> = gifId =>
+  get(`/api/gifs/${gifId}/comments`);

@@ -12,6 +12,7 @@
     "jwt-decode": "^2.2.0",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
+    "moment": "^2.22.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-modal": "^3.4.5",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.0.0",
+    "@types/moment": "^2.13.0",
     "@types/node": "^10.3.0",
     "@types/react": "^16.3.16",
     "@types/react-dom": "^16.0.5",
