@@ -13,12 +13,13 @@ interface IGifViewModalProps {
   loggedUser: ILoggedUser | null;
   gif?: IGif;
   onClose: () => void;
+  onLike: () => void;
 }
 
 @observer
 export default class extends React.Component<IGifViewModalProps> {
   public render() {
-    const { gif, loggedUser, isOpen, onClose } = this.props;
+    const { gif, loggedUser, isOpen, onClose, onLike } = this.props;
 
     const editButton =
       gif && loggedUser && gif.user.id === loggedUser.id ? (
@@ -35,7 +36,12 @@ export default class extends React.Component<IGifViewModalProps> {
       >
         <div className="gif-popup-topbar">
           <div className="gif-popup-topbar-left">
-            <a href="#" className="action-button gif-popup-like-button" title="Like">
+            <a
+              href="#"
+              className="action-button gif-popup-like-button"
+              title="Like"
+              onClick={onLike}
+            >
               <i className="material-icons"></i>
               <span className="action-button-text">Like</span>
               <span className="action-button-counter">({gif && gif.likesCount})</span>

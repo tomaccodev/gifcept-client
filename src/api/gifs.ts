@@ -1,5 +1,5 @@
 import { Rating } from '../common/constants';
-import { get } from './common/methods';
+import { get, responselessPost } from './common/methods';
 
 interface IApiModel {
   id: string;
@@ -45,3 +45,6 @@ export const getGifs: () => Promise<IGif[]> = () =>
 
 export const getGifComments: (gifId: string) => Promise<IComment[]> = gifId =>
   get(`/api/gifs/${gifId}/comments`);
+
+export const addLikeToGif: (gifId: string) => Promise<void> = gifId =>
+  responselessPost(`/api/gifs/${gifId}/likes`);

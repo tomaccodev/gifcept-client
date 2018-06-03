@@ -23,6 +23,7 @@ export default class extends React.Component<IStoreComponentProps> {
         <GifViewModal
           isOpen={store.ui.isViewingGif}
           gif={store.ui.viewdeGif}
+          onLike={store.gifs.addLikeToGif.bind(store.gifs, store.ui.viewdeGif)}
           onClose={store.ui.unsetViewedGif.bind(store.ui)}
           loggedUser={store.auth.user}
         />

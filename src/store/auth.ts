@@ -1,12 +1,16 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import * as jwtDecode from 'jwt-decode';
+import { action, computed, observable } from 'mobx';
 
 import { generateToken } from '../api/auth';
+import { setToken } from '../api/common/init';
 import { UserRole } from '../common/constants';
 
 export interface ILoggedUser {
   username: string;
   id: string;
 }
+
+const LOCALSTORAGE_KEY = 'token';
 
 export default class {
   // TODO: Handle token expiration and renovation
@@ -18,21 +22,40 @@ export default class {
 
   @observable public role: UserRole;
 
-  @action
+  constructor() {
+    try {
+      const token = localStorage.getItem(LOCALSTORAGE_KEY);
+
+      if (token) {
+        this.setToken(token);
+      }
+    } catch (err) {
+      // tslint:disable-next-line:no-console
+      console.error(err);
+    }
+  }
+
   public async login(username: string, password: string): Promise<boolean> {
     try {
-      const res = await generateToken(username, password);
+      const token = await generateToken(username, password);
 
-      runInAction(() => {
-        this.role = res.role as UserRole;
-        this.token = res.token;
-        this.userId = res.userId;
-        this.username = res.username;
-      });
+      localStorage.setItem(LOCALSTORAGE_KEY, token);
+      this.setToken(token);
       return true;
     } catch (err) {
       return false;
     }
+  }
+
+  @action
+  private setToken(token: string) {
+    const { userId, username, role } = jwtDecode(token);
+    setToken(token);
+
+    this.role = role as UserRole;
+    this.token = token;
+    this.userId = userId;
+    this.username = username;
   }
 
   @computed
