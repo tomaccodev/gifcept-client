@@ -10,8 +10,8 @@
   "dependencies": {
     "@types/jwt-decode": "^2.2.1",
     "jwt-decode": "^2.2.0",
-    "mobx": "^4.3.0",
-    "mobx-react": "^5.1.2",
+    "mobx": "^4.3.1",
+    "mobx-react": "^5.2.0",
     "moment": "^2.22.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",

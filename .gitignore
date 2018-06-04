@@ -11,6 +11,9 @@ yarn-error.log*
 /build
 /out-tsc
 
+# environmnet
+.env
+
 # dependencies
 /node_modules
 
