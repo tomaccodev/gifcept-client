@@ -8,9 +8,10 @@ import logo from './images/logo.png';
 
 interface IHeaderProps {
   loggedUser: ILoggedUser | null;
+  facebookLogin: () => void;
 }
 
-export default ({ loggedUser }: IHeaderProps) => {
+export default ({ loggedUser, facebookLogin }: IHeaderProps) => {
   const userElements = loggedUser ? (
     <div className="header-right">
       <a href="#" className="header-user-name">
@@ -26,7 +27,13 @@ export default ({ loggedUser }: IHeaderProps) => {
         <i className="material-icons">&#xE7F5;</i>
       </a>
     </div>
-  ) : null;
+  ) : (
+    <div className="header-right">
+      <a href="#" className="header-button" title="Facebook Login" onClick={facebookLogin}>
+        <i className="material-icons">face</i>
+      </a>
+    </div>
+  );
 
   return (
     <div>

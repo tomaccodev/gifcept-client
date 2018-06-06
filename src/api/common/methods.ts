@@ -26,16 +26,27 @@ const jsonFetch: (url: string, init: RequestInit) => Promise<IDictionary> = (url
     .then(expectValidStatus)
     .then(jsonHandler);
 
-export const get: (url: string) => Promise<any> = url => jsonFetch(url, getInitForGet());
+export const get: (url: string, init?: RequestInit) => Promise<any> = (
+  url,
+  init = getInitForGet(),
+) => jsonFetch(url, init);
 
-export const post: (url: string, data?: IDictionary) => Promise<any> = (url, data) =>
+export const post: (url: string, data?: IDictionary, init?: RequestInit) => Promise<any> = (
+  url,
+  data,
+  init = getInitForPost(),
+) =>
   jsonFetch(url, {
-    ...getInitForPost(),
+    ...init,
     body: JSON.stringify(data),
   });
 
-export const responselessPost: (url: string, data?: IDictionary) => Promise<void> = (url, data) =>
+export const responselessPost: (
+  url: string,
+  data?: IDictionary,
+  init?: RequestInit,
+) => Promise<void> = (url, data, init = getInitForPost()) =>
   responselessFetch(url, {
-    ...getInitForPost(),
+    ...init,
     body: JSON.stringify(data),
   });

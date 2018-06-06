@@ -18,7 +18,10 @@ export default class extends React.Component<IStoreComponentProps> {
 
     return (
       <div className="App">
-        <Header loggedUser={store.auth.user} />
+        <Header
+          loggedUser={store.auth.user}
+          facebookLogin={store.auth.facebookLogin.bind(store.auth)}
+        />
         <Content store={store} />
         <GifViewModal
           isOpen={store.ui.isViewingGif}

@@ -1,7 +1,7 @@
 import * as jwtDecode from 'jwt-decode';
 import { action, computed, observable } from 'mobx';
 
-import { generateToken } from '../api/auth';
+import { facebookLogin, generateToken } from '../api/auth';
 import { setToken } from '../api/common/init';
 import { UserRole } from '../common/constants';
 
@@ -39,7 +39,16 @@ export default class {
     try {
       const token = await generateToken(username, password);
 
-      localStorage.setItem(LOCALSTORAGE_KEY, token);
+      this.setToken(token);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  public async facebookLogin() {
+    try {
+      const token = await facebookLogin();
       this.setToken(token);
       return true;
     } catch (err) {
@@ -56,6 +65,7 @@ export default class {
     this.token = token;
     this.userId = userId;
     this.username = username;
+    localStorage.setItem(LOCALSTORAGE_KEY, token);
   }
 
   @computed
