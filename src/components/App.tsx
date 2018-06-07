@@ -22,7 +22,7 @@ export default class extends React.Component<IStoreComponentProps> {
           loggedUser={store.auth.user}
           facebookLogin={store.auth.facebookLogin.bind(store.auth)}
         />
-        <Content store={store} />
+        <Content store={store} onBottomReached={store.gifs.getGifs.bind(store.gifs)} />
         <GifViewModal
           isOpen={store.ui.isViewingGif}
           gif={store.ui.viewdeGif}

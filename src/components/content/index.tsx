@@ -4,10 +4,11 @@ import * as React from 'react';
 import { IStoreComponentProps } from '../App';
 import GifList from './componentes/GifList';
 
+import { scrollAware } from '../../common/hocs/scrollAware';
 import './Content.css';
 
 @observer
-export default class extends React.Component<IStoreComponentProps> {
+class Container extends React.Component<IStoreComponentProps> {
   public render() {
     const store = this.props.store;
 
@@ -18,3 +19,5 @@ export default class extends React.Component<IStoreComponentProps> {
     );
   }
 }
+
+export default scrollAware<IStoreComponentProps>(Container);

@@ -1,6 +1,11 @@
 import { Rating } from '../common/constants';
 import { get, responselessPost } from './common/methods';
 
+type KeyofBase = keyof any;
+type Diff<T extends KeyofBase, U extends KeyofBase> = ({ [P in T]: P } &
+  { [P in U]: never } & { [x: string]: never })[T];
+type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+
 interface IApiModel {
   id: string;
 }
@@ -23,9 +28,10 @@ interface IServerGif extends IApiModel {
   user: IUser;
 }
 
-export interface IGif extends IServerGif {
+export interface IGif extends Omit<IServerGif, 'created'> {
   animationUrlPath: string;
   frameUrlPath: string;
+  created: Date;
 }
 
 export interface IComment extends IApiModel {
@@ -34,17 +40,27 @@ export interface IComment extends IApiModel {
   created: string;
 }
 
-export const getGifs: () => Promise<IGif[]> = () =>
-  get('/api/gifs').then((gifs: IServerGif[]) =>
+interface IPaginationOptions {
+  before?: string;
+}
+
+export const getGifs: (paginationOptions?: IPaginationOptions) => Promise<IGif[]> = ({
+  before,
+}: IPaginationOptions = {}) =>
+  get<IServerGif[]>(`/api/gifs${before ? `?before=${before}` : ''}`).then(gifs =>
     gifs.map(g => ({
       ...g,
       animationUrlPath: `/${g.id}.gif`,
+      created: new Date(g.created),
       frameUrlPath: `/${g.id}.png`,
     })),
   );
 
-export const getGifComments: (gifId: string) => Promise<IComment[]> = gifId =>
-  get(`/api/gifs/${gifId}/comments`);
+export const getGifComments: (
+  gifId: string,
+  aginationOptions?: IPaginationOptions,
+) => Promise<IComment[]> = (gifId, { before }: IPaginationOptions = {}) =>
+  get<IComment[]>(`/api/gifs/${gifId}/comments`);
 
 export const addLikeToGif: (gifId: string) => Promise<void> = gifId =>
   responselessPost(`/api/gifs/${gifId}/likes`);

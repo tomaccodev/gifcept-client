@@ -4,12 +4,14 @@ interface IPostTokenResponse {
   token: string;
 }
 
-export const generateToken = (username: string, password: string) =>
-  post('/api/auth/token', { username, password }).then((res: IPostTokenResponse) => res.token);
+export const generateToken: (username: string, password: string) => Promise<string> = (
+  username,
+  password,
+) => post<IPostTokenResponse>('/api/auth/token', { username, password }).then(res => res.token);
 
-const generateFacebookBasedToken = (token: string) => {
-  return post('/api/auth/facebook', { access_token: token }).then(
-    (res: IPostTokenResponse) => res.token,
+const generateFacebookBasedToken: (token: string) => Promise<string> = token => {
+  return post<IPostTokenResponse>('/api/auth/facebook', { access_token: token }).then(
+    res => res.token,
   );
 };
 
