@@ -52,7 +52,7 @@ export const getGifs: (paginationOptions?: IPaginationOptions) => Promise<IGif[]
       ...g,
       animationUrlPath: `/${g.id}.gif`,
       created: new Date(g.created),
-      frameUrlPath: `/${g.id}.png`,
+      frameUrlPath: `/${g.id}.jpg`,
     })),
   );
 
