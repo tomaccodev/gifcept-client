@@ -26,6 +26,7 @@ interface IServerGif extends IApiModel {
   commentsCount: number;
   sharesCount: number;
   user: IUser;
+  tags: string[];
 }
 
 export interface IGif extends Omit<IServerGif, 'created'> {

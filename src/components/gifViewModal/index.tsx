@@ -54,12 +54,7 @@ export default class extends React.Component<IGifViewModalProps> {
           </div>
           <div className="gif-popup-topbar-right">
             {editButton}
-            <a
-              href="#"
-              onClick={onClose}
-              className="header-button gif-popup-button-close"
-              title="Close"
-            >
+            <a onClick={onClose} className="header-button gif-popup-button-close" title="Close">
               <i className="material-icons"></i>
             </a>
           </div>
@@ -79,7 +74,7 @@ export default class extends React.Component<IGifViewModalProps> {
           </div>
         </div>
         <div className="gif-popup-info-wrapper">
-          tags: bla, bla, bla
+          tags: {gif && gif.tags.join(', ')}
           <br />
           uploaded by {gif && gif.user.username}
         </div>
