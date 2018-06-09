@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import * as ReactModal from 'react-modal';
+import { format, parse } from 'url';
 
 import { IGif } from '../../api/gifs';
 import { ILoggedUser } from '../../store/auth';
@@ -66,7 +67,9 @@ export default class extends React.Component<IGifViewModalProps> {
             <a href="#" className="gif-popup-gif">
               <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
             </a>
-            <div className="gif-popup-main-share-wrapper">Share</div>
+            <div className="gif-popup-main-share-wrapper" onClick={this.copyToClipboard}>
+              Share
+            </div>
           </div>
           <div className="gif-popup-comment-wrapper">
             {gif &&
@@ -81,4 +84,13 @@ export default class extends React.Component<IGifViewModalProps> {
       </ReactModal>
     );
   }
+
+  private copyToClipboard = async () => {
+    const navigator = window.navigator as any;
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      const currentUrl = parse(window.location.href);
+      currentUrl.pathname = `/${this.props.gif && this.props.gif.id}`;
+      await navigator.clipboard.writeText(format(currentUrl));
+    }
+  };
 }
