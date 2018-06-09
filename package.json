@@ -47,6 +47,9 @@
     },
     "/*[.](gif|jpg)": {
       "target": "http://localhost:3002"
+    },
+    "/[\\w\\d]{7,12}": {
+      "target": "http://localhost:3002"
     }
   },
   "devDependencies": {
