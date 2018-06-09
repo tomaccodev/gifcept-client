@@ -23,7 +23,7 @@ export default ({ comment, loggedUser }: ICommentProps) => {
     <div className="gif-single-comment-wrapper">
       <div
         className="gif-single-comment-author-pic"
-        style={{ backgroundImage: 'url(http://via.placeholder.com/150x150)' }}
+        style={{ backgroundImage: 'url(https://via.placeholder.com/150x150)' }}
       />
       <div className="gif-single-comment-content">
         <div className="gif-single-comment-content-text">

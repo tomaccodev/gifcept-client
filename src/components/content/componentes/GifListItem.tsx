@@ -75,7 +75,7 @@ export default class extends React.Component<IGifListItemProps> {
           </ul>
           <a href="#" className="block-item-uploader">
             <img
-              src="http://via.placeholder.com/24x24"
+              src="https://via.placeholder.com/24x24"
               className="block-item-uploader-avatar"
               alt="Periquito de los Palotes"
             />

@@ -18,7 +18,7 @@ export default ({ loggedUser, facebookLogin }: IHeaderProps) => {
         {loggedUser.username}
       </a>
       <a href="#" className="header-button header-avatar" title="Your Profile">
-        <img src="http://via.placeholder.com/150x150" alt={loggedUser.username} />
+        <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
       </a>
       <a href="#" className="header-button" title="Safe For Work View">
         <i className="material-icons">&#xE86C;</i>
