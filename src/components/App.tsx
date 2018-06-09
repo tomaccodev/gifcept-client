@@ -21,6 +21,7 @@ export default class extends React.Component<IStoreComponentProps> {
         <Header
           loggedUser={store.auth.user}
           facebookLogin={store.auth.facebookLogin.bind(store.auth)}
+          onSearch={store.gifs.setSearch.bind(store.gifs)}
         />
         <Content store={store} onBottomReached={store.gifs.getGifs.bind(store.gifs)} />
         <GifViewModal

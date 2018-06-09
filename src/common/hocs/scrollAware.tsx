@@ -36,14 +36,8 @@ export const scrollAware = <ComponentProps extends object>(
           window.innerHeight + window.scrollY >=
             document.body.offsetHeight - this.props.bottomMargin!
         ) {
-          // tslint:disable-next-line:no-console
-          console.log('loading');
           this.loading = true;
-          try {
-            await this.props.onBottomReached();
-          } catch (e) {
-            /**/
-          }
+          await this.props.onBottomReached();
           this.loading = false;
         }
       };

@@ -1,3 +1,5 @@
+import { format } from 'url';
+
 import { Rating } from '../common/constants';
 import { get, responselessPost } from './common/methods';
 
@@ -41,14 +43,20 @@ export interface IComment extends IApiModel {
   created: string;
 }
 
-interface IPaginationOptions {
+export interface IGetGifsOptions {
+  search?: string;
   before?: string;
 }
 
-export const getGifs: (paginationOptions?: IPaginationOptions) => Promise<IGif[]> = ({
-  before,
-}: IPaginationOptions = {}) =>
-  get<IServerGif[]>(`/api/gifs${before ? `?before=${before}` : ''}`).then(gifs =>
+export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
+  getGifsOptions = {},
+) =>
+  get<IServerGif[]>(
+    format({
+      pathname: '/api/gifs',
+      query: getGifsOptions,
+    }),
+  ).then(gifs =>
     gifs.map(g => ({
       ...g,
       animationUrlPath: `/${g.id}.gif`,
@@ -59,8 +67,8 @@ export const getGifs: (paginationOptions?: IPaginationOptions) => Promise<IGif[]
 
 export const getGifComments: (
   gifId: string,
-  aginationOptions?: IPaginationOptions,
-) => Promise<IComment[]> = (gifId, { before }: IPaginationOptions = {}) =>
+  aginationOptions?: IGetGifsOptions,
+) => Promise<IComment[]> = (gifId, { before }: IGetGifsOptions = {}) =>
   get<IComment[]>(`/api/gifs/${gifId}/comments`);
 
 export const addLikeToGif: (gifId: string) => Promise<void> = gifId =>
