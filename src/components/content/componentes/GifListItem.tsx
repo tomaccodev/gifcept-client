@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
@@ -15,24 +15,7 @@ interface IGifListItemProps {
 export default class extends React.Component<IGifListItemProps> {
   @observable private hovered: boolean = false;
 
-  @observable private animationPreloaded: boolean = false;
-
-  @computed
-  get imageUrl() {
-    const frameUrl = this.props.gif.frameUrlPath;
-    const animationUrl = this.props.gif.animationUrlPath;
-
-    if (!this.hovered) {
-      return frameUrl;
-    }
-
-    if (!this.animationPreloaded) {
-      this.preload(animationUrl);
-      return frameUrl;
-    }
-
-    return animationUrl;
-  }
+  @observable private imageUrl: string = this.props.gif.frameUrlPath;
 
   public render() {
     const { gif, onClick } = this.props;
@@ -86,23 +69,27 @@ export default class extends React.Component<IGifListItemProps> {
     );
   }
 
-  private preload = (url: string) => {
+  private preloadAnimation = () => {
     const image = new Image();
     image.addEventListener('load', () => {
       runInAction(() => {
-        this.animationPreloaded = true;
+        if (this.hovered) {
+          this.imageUrl = image.src;
+        }
       });
     });
-    image.src = url;
+    image.src = this.props.gif.animationUrlPath;
   };
 
   @action
   private clearHovered = () => {
     this.hovered = false;
+    this.imageUrl = this.props.gif.frameUrlPath;
   };
 
   @action
   private setHovered = () => {
     this.hovered = true;
+    this.preloadAnimation();
   };
 }
