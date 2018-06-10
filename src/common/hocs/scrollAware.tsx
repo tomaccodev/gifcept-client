@@ -6,7 +6,7 @@ interface IScrollAware {
   bottomMargin?: number;
 }
 
-export const scrollAware = <ComponentProps extends object>(
+export default <ComponentProps extends object>(
   ComponentToExtend: React.ComponentType<ComponentProps>,
 ) =>
   observer(

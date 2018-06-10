@@ -1,9 +1,10 @@
-import { action, observable, runInAction } from 'mobx';
+import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
 import { IGif } from '../../../api/gifs';
 
+import imagePreloader from '../../../common/imagePreloader';
 import './GifListItem.css';
 
 interface IGifListItemProps {
@@ -69,27 +70,23 @@ export default class extends React.Component<IGifListItemProps> {
     );
   }
 
-  private preloadAnimation = () => {
-    const image = new Image();
-    image.addEventListener('load', () => {
-      runInAction(() => {
-        if (this.hovered) {
-          this.imageUrl = image.src;
-        }
-      });
-    });
-    image.src = this.props.gif.animationUrlPath;
-  };
-
-  @action
-  private clearHovered = () => {
+  private clearHovered = async () => {
     this.hovered = false;
-    this.imageUrl = this.props.gif.frameUrlPath;
+    await imagePreloader(this.props.gif.frameUrlPath);
+    if (!this.hovered) {
+      runInAction(() => {
+        this.imageUrl = this.props.gif.frameUrlPath;
+      });
+    }
   };
 
-  @action
-  private setHovered = () => {
+  private setHovered = async () => {
     this.hovered = true;
-    this.preloadAnimation();
+    await imagePreloader(this.props.gif.animationUrlPath);
+    if (this.hovered) {
+      runInAction(() => {
+        this.imageUrl = this.props.gif.animationUrlPath;
+      });
+    }
   };
 }

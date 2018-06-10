@@ -4,7 +4,7 @@ import * as React from 'react';
 import { IStoreComponentProps } from '../App';
 import GifList from './componentes/GifList';
 
-import { scrollAware } from '../../common/hocs/scrollAware';
+import scrollAware from '../../common/hocs/scrollAware';
 import './Content.css';
 
 @observer
