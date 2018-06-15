@@ -2,20 +2,36 @@ import { action, observable, runInAction } from 'mobx';
 
 import { addLikeToGif, getGifComments, getGifs, IGetGifsOptions, IGif } from '../api/gifs';
 
+export enum GifSort {
+  creation = 'created',
+  likes = 'likes',
+}
+
 export default class {
   @observable public gifs: IGif[] = [];
 
-  @observable private search: string = '';
+  @observable private search?: string;
+
+  @observable private user?: string;
+
+  @observable private sort: GifSort = GifSort.creation;
+
+  @action
+  public reset() {
+    this.gifs = [];
+    this.getGifs();
+  }
 
   public async getGifs(): Promise<void> {
     try {
-      const options: IGetGifsOptions = {};
+      const options: IGetGifsOptions = {
+        search: this.search,
+        sort: this.sort,
+        user: this.user,
+      };
 
       if (this.gifs.length) {
         options.before = this.gifs[this.gifs.length - 1].created.toISOString();
-      }
-      if (this.search) {
-        options.search = this.search;
       }
       const gifs = await getGifs(options);
       this.addGifs(gifs);
@@ -50,10 +66,38 @@ export default class {
   }
 
   @action
-  public setSearch(search: string) {
-    this.gifs = [];
+  public setSort(sort: GifSort) {
+    if (sort === this.sort) {
+      return;
+    }
+    this.sort = sort;
+    this.reset();
+  }
+
+  @action
+  public setSearch(search?: string, sort?: GifSort) {
+    if (search === this.search && sort === this.sort) {
+      return;
+    }
+
     this.search = search;
-    this.getGifs();
+    if (sort) {
+      this.sort = sort;
+    }
+    this.reset();
+  }
+
+  @action
+  public setUser(user?: string, sort?: GifSort) {
+    if (user === this.user && sort === this.sort) {
+      return;
+    }
+
+    this.user = user;
+    if (sort) {
+      this.sort = sort;
+    }
+    this.reset();
   }
 
   @action
@@ -63,7 +107,5 @@ export default class {
         this.gifs.push(gif);
       }
     }
-
-    this.gifs = this.gifs.slice().sort((g1, g2) => g2.created.getTime() - g1.created.getTime());
   }
 }

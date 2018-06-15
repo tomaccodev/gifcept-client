@@ -1,23 +1,19 @@
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 
-import { IGif } from '../../../api/gifs';
+import { IStoreComponentProps } from '../../App';
 import GifListItem from './GifListItem';
 
-interface IGifListProps {
-  gifs: IGif[];
-  setViewedGif: (gif: IGif) => void;
-}
-
+@inject('store')
 @observer
-export default class extends React.Component<IGifListProps> {
+export default class extends React.Component<IStoreComponentProps> {
   public render() {
-    const { gifs, setViewedGif } = this.props;
+    const store = this.props.store!;
 
     return (
       <div className="blocks-container">
-        {gifs.map(g => {
-          const onClick = () => setViewedGif(g);
+        {store.gifs.gifs.map(g => {
+          const onClick = () => store.ui.setViewedGif.bind(store.ui)(g);
           return <GifListItem onClick={onClick} key={g.id} gif={g} />;
         })}
       </div>

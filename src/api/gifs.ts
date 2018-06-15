@@ -44,8 +44,10 @@ export interface IComment extends IApiModel {
 }
 
 export interface IGetGifsOptions {
+  user?: string;
   search?: string;
   before?: string;
+  sort?: string;
 }
 
 export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
