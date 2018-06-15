@@ -1,6 +1,7 @@
 import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { IGif } from '../../../api/gifs';
 
@@ -57,14 +58,14 @@ export default class extends React.Component<IGifListItemProps> {
               <span className="block-item-views-counter">{gif.viewsCount}</span>
             </li>
           </ul>
-          <a href="#" className="block-item-uploader">
+          <Link className="block-item-uploader" to={`/${gif.user.id}/gifs`}>
             <img
               src="https://via.placeholder.com/24x24"
               className="block-item-uploader-avatar"
               alt="Periquito de los Palotes"
             />
             <span className="block-item-uploader-name">{gif.user.username}</span>
-          </a>
+          </Link>
         </div>
       </div>
     );

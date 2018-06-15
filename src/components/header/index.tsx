@@ -99,7 +99,7 @@ export default class extends React.Component<IHeaderProps> {
             </div>
           </div>
         </header>
-        <SubHeader />
+        <SubHeader loggedUser={loggedUser} />
       </div>
     );
   }

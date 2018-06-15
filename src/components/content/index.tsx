@@ -20,6 +20,7 @@ class Container extends React.Component<
         <Route exact={true} path={'/'} render={this.allGifs} />
         <Route exact={true} path={'/myGifs'} render={this.myGifs} />
         <Route exact={true} path={'/liked'} render={this.mostLiked} />
+        <Route path={'/:id/gifs'} render={this.userGifs} />
       </main>
     );
   }
@@ -36,6 +37,11 @@ class Container extends React.Component<
 
   private mostLiked = () => {
     this.props.store!.gifs.setUser(undefined, GifSort.likes);
+    return <GifList />;
+  };
+
+  private userGifs = (match: RouteComponentProps<any, StaticContext>) => {
+    this.props.store!.gifs.setUser(match.match.params.id, GifSort.creation);
     return <GifList />;
   };
 }
