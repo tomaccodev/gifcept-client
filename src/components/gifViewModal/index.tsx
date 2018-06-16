@@ -1,12 +1,16 @@
+import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
+import * as moment from 'moment';
 import * as React from 'react';
 import * as ReactModal from 'react-modal';
+import { Link } from 'react-router-dom';
+
 import { format, parse } from 'url';
-
 import { IGif } from '../../api/gifs';
+import imagePreloader from '../../common/imagePreloader';
 import { ILoggedUser } from '../../store/auth';
-import Comment from './Comment';
 
+import Comment from './Comment';
 import './GifViewModal.css';
 
 interface IGifViewModalProps {
@@ -19,6 +23,20 @@ interface IGifViewModalProps {
 
 @observer
 export default class extends React.Component<IGifViewModalProps> {
+  @observable private imageUrl: string;
+
+  public async componentWillReceiveProps(newProps: IGifViewModalProps) {
+    if (newProps.gif && newProps.gif !== this.props.gif) {
+      runInAction(() => {
+        this.imageUrl = newProps.gif!.frameUrlPath;
+      });
+      await imagePreloader(newProps.gif!.animationUrlPath);
+      runInAction(() => {
+        this.imageUrl = newProps.gif!.animationUrlPath;
+      });
+    }
+  }
+
   public render() {
     const { gif, loggedUser, isOpen, onClose, onLike } = this.props;
 
@@ -65,7 +83,7 @@ export default class extends React.Component<IGifViewModalProps> {
         <div className="gif-popup-main-content">
           <div className="gif-popup-main">
             <a href="#" className="gif-popup-gif">
-              <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
+              <img src={this.imageUrl} alt="gif name, gif tags" />
             </a>
             <div className="gif-popup-main-share-wrapper" onClick={this.copyToClipboard}>
               Share
@@ -79,7 +97,13 @@ export default class extends React.Component<IGifViewModalProps> {
         <div className="gif-popup-info-wrapper">
           tags: {gif && gif.tags.join(', ')}
           <br />
-          uploaded by {gif && gif.user.username}
+          uploaded by{' '}
+          <Link onClick={onClose} to={gif ? `/${gif.user.id}/gifs` : ''}>
+            {gif && gif.user.username}
+          </Link>{' '}
+          <span className="gif-single-comment-tools-time">
+            {gif && moment(gif.created).fromNow()}
+          </span>
         </div>
       </ReactModal>
     );

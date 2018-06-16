@@ -71,7 +71,7 @@ export default class {
     search = this.search,
     user = this.user,
   }: ISearchCriteria) {
-    if (this.sort !== sort && this.search !== search && this.user) {
+    if (this.sort === sort && this.search === search && this.user === user) {
       return;
     }
     this.sort = sort;
