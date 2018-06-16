@@ -4,23 +4,23 @@ import { addLikeToGif, getGifComments, getGifs, IGetGifsOptions, IGif } from '..
 
 export enum GifSort {
   creation = 'created',
-  likes = 'likes',
+  popularity = 'popularity',
+}
+
+interface ISearchCriteria {
+  search?: string;
+  user?: string | null;
+  sort?: GifSort;
 }
 
 export default class {
   @observable public gifs: IGif[] = [];
 
-  @observable private search?: string;
+  @observable private search: string = '';
 
-  @observable private user?: string;
+  @observable private user: string | null = null;
 
   @observable private sort: GifSort = GifSort.creation;
-
-  @action
-  public reset() {
-    this.gifs = [];
-    this.getGifs();
-  }
 
   public async getGifs(): Promise<void> {
     try {
@@ -66,38 +66,24 @@ export default class {
   }
 
   @action
-  public setSort(sort: GifSort) {
-    if (sort === this.sort) {
+  public setSearchCriteria({
+    sort = this.sort,
+    search = this.search,
+    user = this.user,
+  }: ISearchCriteria) {
+    if (this.sort !== sort && this.search !== search && this.user) {
       return;
     }
     this.sort = sort;
-    this.reset();
-  }
-
-  @action
-  public setSearch(search?: string, sort?: GifSort) {
-    if (search === this.search && sort === this.sort) {
-      return;
-    }
-
     this.search = search;
-    if (sort) {
-      this.sort = sort;
-    }
+    this.user = user;
     this.reset();
   }
 
   @action
-  public setUser(user?: string, sort?: GifSort) {
-    if (user === this.user && sort === this.sort) {
-      return;
-    }
-
-    this.user = user;
-    if (sort) {
-      this.sort = sort;
-    }
-    this.reset();
+  private reset() {
+    this.gifs = [];
+    this.getGifs();
   }
 
   @action

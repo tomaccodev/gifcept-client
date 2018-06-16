@@ -44,7 +44,7 @@ export interface IComment extends IApiModel {
 }
 
 export interface IGetGifsOptions {
-  user?: string;
+  user?: string | null;
   search?: string;
   before?: string;
   sort?: string;
@@ -56,7 +56,17 @@ export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
   get<IServerGif[]>(
     format({
       pathname: '/api/gifs',
-      query: getGifsOptions,
+      query: Object.keys(getGifsOptions).reduce((accumulated, key) => {
+        const current = { ...accumulated };
+        if (
+          getGifsOptions[key] !== undefined &&
+          getGifsOptions[key] !== null &&
+          getGifsOptions[key] !== ''
+        ) {
+          current[key] = getGifsOptions[key];
+        }
+        return current;
+      }, {}),
     }),
   ).then(gifs =>
     gifs.map(g => ({

@@ -24,7 +24,7 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
           <Header
             loggedUser={store.auth.user}
             facebookLogin={store.auth.facebookLogin.bind(store.auth)}
-            onSearch={store.gifs.setSearch.bind(store.gifs)}
+            onSearch={this.doSearch}
           />
           <Content store={store} onBottomReached={store.gifs.getGifs.bind(store.gifs)} />
           <GifViewModal
@@ -38,6 +38,10 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
       </Provider>
     );
   }
+
+  private doSearch = (search: string) => {
+    this.props.store!.gifs.setSearchCriteria({ search });
+  };
 }
 
 export default withRouter(App);

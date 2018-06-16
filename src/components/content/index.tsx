@@ -19,29 +19,35 @@ class Container extends React.Component<
       <main>
         <Route exact={true} path={'/'} render={this.allGifs} />
         <Route exact={true} path={'/myGifs'} render={this.myGifs} />
-        <Route exact={true} path={'/liked'} render={this.mostLiked} />
+        <Route exact={true} path={'/trendy'} render={this.trendy} />
         <Route path={'/:id/gifs'} render={this.userGifs} />
       </main>
     );
   }
 
   private allGifs = () => {
-    this.props.store!.gifs.setUser(undefined, GifSort.creation);
+    this.props.store!.gifs.setSearchCriteria({ user: null, sort: GifSort.creation });
     return <GifList />;
   };
 
   private myGifs = () => {
-    this.props.store!.gifs.setUser(this.props.store!.auth.userId, GifSort.creation);
+    this.props.store!.gifs.setSearchCriteria({
+      sort: GifSort.creation,
+      user: this.props.store!.auth.userId,
+    });
     return <GifList />;
   };
 
-  private mostLiked = () => {
-    this.props.store!.gifs.setUser(undefined, GifSort.likes);
+  private trendy = () => {
+    this.props.store!.gifs.setSearchCriteria({ user: null, sort: GifSort.popularity });
     return <GifList />;
   };
 
   private userGifs = (match: RouteComponentProps<any, StaticContext>) => {
-    this.props.store!.gifs.setUser(match.match.params.id, GifSort.creation);
+    this.props.store!.gifs.setSearchCriteria({
+      sort: GifSort.creation,
+      user: match.match.params.id,
+    });
     return <GifList />;
   };
 }
