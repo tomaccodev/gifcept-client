@@ -6,8 +6,9 @@ import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
 import { IStoreComponentProps } from '../App';
 import GifList from './componentes/GifList';
 
+import { GifOrder } from '../../common/constants';
 import scrollAware from '../../common/hocs/scrollAware';
-import { GifSort } from '../../store/gifs';
+
 import './Content.css';
 
 @observer
@@ -26,26 +27,26 @@ class Container extends React.Component<
   }
 
   private allGifs = () => {
-    this.props.store!.gifs.setSearchCriteria({ user: null, sort: GifSort.creation });
+    this.props.store!.gifs.setSearchCriteria({ user: undefined, sort: GifOrder.creation });
     return <GifList />;
   };
 
   private myGifs = () => {
     this.props.store!.gifs.setSearchCriteria({
-      sort: GifSort.creation,
+      sort: GifOrder.creation,
       user: this.props.store!.auth.userId,
     });
     return <GifList />;
   };
 
   private trendy = () => {
-    this.props.store!.gifs.setSearchCriteria({ user: null, sort: GifSort.popularity });
+    this.props.store!.gifs.setSearchCriteria({ user: undefined, sort: GifOrder.popularity });
     return <GifList />;
   };
 
   private userGifs = (match: RouteComponentProps<any, StaticContext>) => {
     this.props.store!.gifs.setSearchCriteria({
-      sort: GifSort.creation,
+      sort: GifOrder.creation,
       user: match.match.params.id,
     });
     return <GifList />;

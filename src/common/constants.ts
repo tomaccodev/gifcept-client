@@ -8,3 +8,8 @@ export enum Rating {
   nsfw = 'nsfw',
   explicit = 'explicit',
 }
+
+export enum GifOrder {
+  creation = 'created',
+  popularity = 'popularity',
+}

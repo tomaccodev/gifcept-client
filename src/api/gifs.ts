@@ -1,6 +1,6 @@
 import { format } from 'url';
 
-import { Rating } from '../common/constants';
+import { GifOrder, Rating } from '../common/constants';
 import { get, responselessPost } from './common/methods';
 
 type KeyofBase = keyof any;
@@ -44,11 +44,26 @@ export interface IComment extends IApiModel {
 }
 
 export interface IGetGifsOptions {
-  user?: string | null;
   search?: string;
   before?: string;
-  sort?: string;
+  sort?: GifOrder;
 }
+
+const normalizeGif = (gif: IServerGif) => ({
+  ...gif,
+  animationUrlPath: `/${gif.id}.gif`,
+  created: new Date(gif.created),
+  frameUrlPath: `/${gif.id}.jpg`,
+});
+
+const normalizeQuery = (options: IGetGifsOptions) =>
+  Object.keys(options).reduce((accumulated, key) => {
+    const current = { ...accumulated };
+    if (options[key] !== undefined && options[key] !== '') {
+      current[key] = options[key];
+    }
+    return current;
+  }, {});
 
 export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
   getGifsOptions = {},
@@ -56,26 +71,20 @@ export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
   get<IServerGif[]>(
     format({
       pathname: '/api/gifs',
-      query: Object.keys(getGifsOptions).reduce((accumulated, key) => {
-        const current = { ...accumulated };
-        if (
-          getGifsOptions[key] !== undefined &&
-          getGifsOptions[key] !== null &&
-          getGifsOptions[key] !== ''
-        ) {
-          current[key] = getGifsOptions[key];
-        }
-        return current;
-      }, {}),
+      query: normalizeQuery(getGifsOptions),
     }),
-  ).then(gifs =>
-    gifs.map(g => ({
-      ...g,
-      animationUrlPath: `/${g.id}.gif`,
-      created: new Date(g.created),
-      frameUrlPath: `/${g.id}.jpg`,
-    })),
-  );
+  ).then(gifs => gifs.map(normalizeGif));
+
+export const getUserGifs: (user: string, getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
+  user,
+  getGifsOptions = {},
+) =>
+  get<IServerGif[]>(
+    format({
+      pathname: `/api/users/${user}/gifs`,
+      query: normalizeQuery(getGifsOptions),
+    }),
+  ).then(gifs => gifs.map(normalizeGif));
 
 export const getGifComments: (
   gifId: string,

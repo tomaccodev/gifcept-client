@@ -1,39 +1,41 @@
 import { action, observable, runInAction } from 'mobx';
 
-import { addLikeToGif, getGifComments, getGifs, IGetGifsOptions, IGif } from '../api/gifs';
-
-export enum GifSort {
-  creation = 'created',
-  popularity = 'popularity',
-}
+import {
+  addLikeToGif,
+  getGifComments,
+  getGifs,
+  getUserGifs,
+  IGetGifsOptions,
+  IGif,
+} from '../api/gifs';
+import { GifOrder } from '../common/constants';
 
 interface ISearchCriteria {
   search?: string;
-  user?: string | null;
-  sort?: GifSort;
+  user?: string;
+  sort?: GifOrder;
 }
 
 export default class {
   @observable public gifs: IGif[] = [];
 
-  @observable private search: string = '';
+  @observable private search?: string = '';
 
-  @observable private user: string | null = null;
+  @observable private user?: string;
 
-  @observable private sort: GifSort = GifSort.creation;
+  @observable private sort: GifOrder = GifOrder.creation;
 
   public async getGifs(): Promise<void> {
     try {
       const options: IGetGifsOptions = {
         search: this.search,
         sort: this.sort,
-        user: this.user,
       };
 
       if (this.gifs.length) {
         options.before = this.gifs[this.gifs.length - 1].created.toISOString();
       }
-      const gifs = await getGifs(options);
+      const gifs = await (this.user ? getUserGifs(this.user, options) : getGifs(options));
       this.addGifs(gifs);
     } catch (err) {
       // tslint:disable-next-line:no-console
@@ -66,17 +68,23 @@ export default class {
   }
 
   @action
-  public setSearchCriteria({
-    sort = this.sort,
-    search = this.search,
-    user = this.user,
-  }: ISearchCriteria) {
-    if (this.sort === sort && this.search === search && this.user === user) {
+  public setSearchCriteria(searchCriteria: ISearchCriteria) {
+    if (
+      this.sort === searchCriteria.sort &&
+      this.search === searchCriteria.search &&
+      this.user === searchCriteria.user
+    ) {
       return;
     }
-    this.sort = sort;
-    this.search = search;
-    this.user = user;
+    if (searchCriteria.hasOwnProperty('sort')) {
+      this.sort = searchCriteria.sort || GifOrder.creation;
+    }
+    if (searchCriteria.hasOwnProperty('search')) {
+      this.search = searchCriteria.search;
+    }
+    if (searchCriteria.hasOwnProperty('user')) {
+      this.user = searchCriteria.user;
+    }
     this.reset();
   }
 
