@@ -23,5 +23,3 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement,
 );
 registerServiceWorker();
-
-store.gifs.getGifs();

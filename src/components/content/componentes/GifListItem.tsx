@@ -20,7 +20,7 @@ export default class extends React.Component<IGifListItemProps> {
   @observable private imageUrl: string = this.props.gif.frameUrlPath;
 
   public render() {
-    const { gif, onClick } = this.props;
+    const { gif } = this.props;
 
     return (
       <div
@@ -37,7 +37,7 @@ export default class extends React.Component<IGifListItemProps> {
         <a
           className="block-item-gif-container"
           style={{ backgroundImage: `url(${this.imageUrl})`, backgroundColor: gif.color }}
-          onClick={onClick}
+          onClick={this.doClick}
         />
         <div className="block-item-bottom">
           <ul className="block-item-main-actions">
@@ -89,5 +89,10 @@ export default class extends React.Component<IGifListItemProps> {
         this.imageUrl = this.props.gif.animationUrlPath;
       });
     }
+  };
+
+  private doClick = (ev: React.MouseEvent) => {
+    ev.preventDefault();
+    this.props.onClick();
   };
 }

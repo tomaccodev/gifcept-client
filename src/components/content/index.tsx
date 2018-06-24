@@ -4,12 +4,14 @@ import { StaticContext } from 'react-router';
 import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { IStoreComponentProps } from '../App';
-import GifList from './componentes/GifList';
+import AllGifs from './sections/AllGifs';
+import MyGifs from './sections/MyGifs';
+import TrendyGifs from './sections/TrendyGifs';
 
-import { GifOrder } from '../../common/constants';
 import scrollAware from '../../common/hocs/scrollAware';
 
 import './Content.css';
+import UserGifs from './sections/UserGifs';
 
 @observer
 class Container extends React.Component<
@@ -18,39 +20,13 @@ class Container extends React.Component<
   public render() {
     return (
       <main>
-        <Route exact={true} path={'/'} render={this.allGifs} />
-        <Route exact={true} path={'/myGifs'} render={this.myGifs} />
-        <Route exact={true} path={'/trendy'} render={this.trendy} />
-        <Route path={'/:id/gifs'} render={this.userGifs} />
+        <Route exact={true} path={'/'} component={AllGifs} />
+        <Route exact={true} path={'/myGifs'} component={MyGifs} />
+        <Route exact={true} path={'/trendy'} component={TrendyGifs} />
+        <Route path={'/:id/gifs'} component={UserGifs} />
       </main>
     );
   }
-
-  private allGifs = () => {
-    this.props.store!.gifs.setSearchCriteria({ user: undefined, sort: GifOrder.creation });
-    return <GifList />;
-  };
-
-  private myGifs = () => {
-    this.props.store!.gifs.setSearchCriteria({
-      sort: GifOrder.creation,
-      user: this.props.store!.auth.userId,
-    });
-    return <GifList />;
-  };
-
-  private trendy = () => {
-    this.props.store!.gifs.setSearchCriteria({ user: undefined, sort: GifOrder.popularity });
-    return <GifList />;
-  };
-
-  private userGifs = (match: RouteComponentProps<any, StaticContext>) => {
-    this.props.store!.gifs.setSearchCriteria({
-      sort: GifOrder.creation,
-      user: match.match.params.id,
-    });
-    return <GifList />;
-  };
 }
 
 export default scrollAware<IStoreComponentProps>(withRouter(Container));
