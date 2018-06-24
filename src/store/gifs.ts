@@ -23,13 +23,13 @@ export default class {
 
   @observable private user?: string;
 
-  @observable private sort: GifOrder = GifOrder.creation;
+  @observable private order: GifOrder = GifOrder.creation;
 
   public async getGifs(): Promise<void> {
     try {
       const options: IGetGifsOptions = {
+        order: this.order,
         search: this.search,
-        sort: this.sort,
       };
 
       if (this.gifs.length) {
@@ -70,14 +70,14 @@ export default class {
   @action
   public setSearchCriteria(searchCriteria: ISearchCriteria) {
     if (
-      this.sort === searchCriteria.sort &&
+      this.order === searchCriteria.sort &&
       this.search === searchCriteria.search &&
       this.user === searchCriteria.user
     ) {
       return;
     }
     if (searchCriteria.hasOwnProperty('sort')) {
-      this.sort = searchCriteria.sort || GifOrder.creation;
+      this.order = searchCriteria.sort || GifOrder.creation;
     }
     if (searchCriteria.hasOwnProperty('search')) {
       this.search = searchCriteria.search;

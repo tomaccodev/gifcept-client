@@ -46,7 +46,7 @@ export interface IComment extends IApiModel {
 export interface IGetGifsOptions {
   search?: string;
   before?: string;
-  sort?: GifOrder;
+  order?: GifOrder;
 }
 
 const normalizeGif = (gif: IServerGif) => ({
