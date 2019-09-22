@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ILoggedUser } from '../../../store/auth';
@@ -6,7 +6,7 @@ import { ILoggedUser } from '../../../store/auth';
 import './SubHeader.css';
 
 interface ISubHeaderProps {
-  loggedUser: ILoggedUser | null;
+  loggedUser?: ILoggedUser;
 }
 
 export default ({ loggedUser }: ISubHeaderProps) => {

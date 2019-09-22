@@ -1,7 +1,8 @@
 import { debounce } from 'lodash'; // TODO improve importation to decrease generated js
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import SubHeader from './components/SubHeader';
 
@@ -10,7 +11,7 @@ import './Header.css';
 import logo from './images/logo.png';
 
 interface IHeaderProps {
-  loggedUser: ILoggedUser | null;
+  loggedUser?: ILoggedUser;
   facebookLogin: () => void;
   onSearch: (search: string) => void;
 }
@@ -26,7 +27,8 @@ export default class extends React.Component<IHeaderProps> {
     this.props.onSearch(search);
   }, SEARCH_DEBOUNCE_DELAY);
 
-  @observable private searchInputPlaceholder = SEARCH_INPUT_PLACEHOLDER;
+  @observable
+  private searchInputPlaceholder = SEARCH_INPUT_PLACEHOLDER;
 
   constructor(props: IHeaderProps) {
     super(props);
@@ -44,26 +46,29 @@ export default class extends React.Component<IHeaderProps> {
   public render() {
     const { loggedUser, facebookLogin } = this.props;
 
+    const rating = (
+      <button className="header-button" title="Safe For Work View">
+        <i className="material-icons">&#xE86C;</i>
+      </button>
+    );
+
     const userElements = loggedUser ? (
       <div className="header-right">
-        <a href="#" className="header-user-name">
-          {loggedUser.username}
-        </a>
-        <a href="#" className="header-button header-avatar" title="Your Profile">
+        <span className="header-user-name">{loggedUser.username}</span>
+        <button className="header-button header-avatar" title="Your Profile">
           <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
-        </a>
-        <a href="#" className="header-button" title="Safe For Work View">
-          <i className="material-icons">&#xE86C;</i>
-        </a>
-        <a href="#" className="header-button" title="Your Notifications">
+        </button>
+        {rating}
+        <button className="header-button" title="Your Notifications">
           <i className="material-icons">&#xE7F5;</i>
-        </a>
+        </button>
       </div>
     ) : (
       <div className="header-right">
-        <a href="#" className="header-button" title="Facebook Login" onClick={facebookLogin}>
+        <button className="header-button" title="Facebook Login" onClick={facebookLogin}>
           <i className="material-icons">face</i>
-        </a>
+        </button>
+        {rating}
       </div>
     );
 
@@ -72,13 +77,12 @@ export default class extends React.Component<IHeaderProps> {
         <header className="header">
           <div className="header-wrapper">
             <div className="header-left">
-              <a
-                href="#"
+              <button
                 className="header-button header-button-add-gif hide-on-mobile"
                 title="Add new gif"
               >
                 <i className="material-icons">&#xE145;</i>
-              </a>
+              </button>
               <div className="header-button header-search" title="Search gifs">
                 <i className="material-icons">&#xE8B6;</i>
                 <input
@@ -95,7 +99,9 @@ export default class extends React.Component<IHeaderProps> {
             {userElements}
             <div className="clearfix" />
             <div className="header-logo-wrapper">
-              <img src={logo} alt="Gifcept" />
+              <Link to={'/'}>
+                <img src={logo} alt="Gifcept" />
+              </Link>
             </div>
           </div>
         </header>
@@ -104,11 +110,11 @@ export default class extends React.Component<IHeaderProps> {
     );
   }
 
-  private onSearchChange = (e: React.ChangeEvent) => {
+  private onSearchChange = (_: React.ChangeEvent) => {
     this.handleSearchChange(this.searchInput.current!.value);
   };
 
-  private handleKeyDown: EventListener = (e: KeyboardEvent) => {
+  private handleKeyDown = (e: KeyboardEvent) => {
     if (e.code && e.code === 'KeyF' && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       this.searchInput.current!.focus();

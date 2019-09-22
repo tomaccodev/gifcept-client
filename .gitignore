@@ -1,3 +1,13 @@
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode
+
 # Logs
 logs
 *.log
@@ -11,26 +21,24 @@ yarn-error.log*
 /build
 /out-tsc
 
-# environmnet
-.env
-
 # dependencies
 /node_modules
+/.pnp
+.pnp.js
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-.vscode
+# testing
+/coverage
 
 # misc
-/coverage
-npm-debug.log
-
-# System Files
 .DS_Store
 Thumbs.db
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+

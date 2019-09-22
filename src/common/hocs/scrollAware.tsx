@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 
 interface IScrollAware {
   onBottomReached: () => void;
   bottomMargin?: number;
 }
 
-export default <ComponentProps extends object>(
+export default <ComponentProps extends {}>(
   ComponentToExtend: React.ComponentType<ComponentProps>,
 ) =>
   observer(
@@ -27,7 +27,8 @@ export default <ComponentProps extends object>(
 
       public render() {
         const { onBottomReached, bottomMargin, ...props } = this.props as IScrollAware;
-        return <ComponentToExtend {...props} />;
+        const componentProps = props as ComponentProps;
+        return <ComponentToExtend {...componentProps} />;
       }
 
       protected onScroll = async () => {

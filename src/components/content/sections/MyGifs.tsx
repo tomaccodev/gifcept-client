@@ -1,5 +1,5 @@
 import { inject } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 
 import { GifOrder } from '../../../common/constants';
 import { IStoreComponentProps } from '../../App';

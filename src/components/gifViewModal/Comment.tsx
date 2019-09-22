@@ -1,5 +1,5 @@
-import * as moment from 'moment';
-import * as React from 'react';
+import React from 'react';
+import moment from 'moment';
 
 import { IComment } from '../../api/gifs';
 import { ILoggedUser } from '../../store/auth';
@@ -8,15 +8,15 @@ import './Comment.css';
 
 interface ICommentProps {
   comment: IComment;
-  loggedUser: ILoggedUser | null;
+  loggedUser?: ILoggedUser;
 }
 
 export default ({ comment, loggedUser }: ICommentProps) => {
   const editButton =
     loggedUser && comment.user.id === loggedUser.id ? (
-      <a className="gif-single-comment-tools-edit" href="#">
+      <button className="gif-single-comment-tools-edit">
         Edit
-      </a>
+      </button>
     ) : null;
 
   return (
@@ -27,20 +27,20 @@ export default ({ comment, loggedUser }: ICommentProps) => {
       />
       <div className="gif-single-comment-content">
         <div className="gif-single-comment-content-text">
-          <a href="#" className="gif-single-comment-author-name">
+          <button className="gif-single-comment-author-name">
             {comment.user.username}
-          </a>
+          </button>
           {comment.text}
         </div>
         <div className="gif-single-comment-tools">
-          <a className="gif-single-comment-tools-like" href="#">
+          <button className="gif-single-comment-tools-like">
             Like
-          </a>
+          </button>
           {editButton}
-          <a className="gif-single-comment-tools-like-counter">
+          <button className="gif-single-comment-tools-like-counter">
             <i className="material-icons"></i>
             <span className="gif-single-comment-tools-like-counter-text">3</span>
-          </a>
+          </button>
           <span className="gif-single-comment-tools-time">{moment(comment.created).fromNow()}</span>
         </div>
       </div>

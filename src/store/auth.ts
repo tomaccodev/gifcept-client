@@ -1,4 +1,4 @@
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { action, computed, observable } from 'mobx';
 
 import { facebookLogin, generateToken } from '../api/auth';
@@ -14,13 +14,17 @@ const LOCALSTORAGE_KEY = 'token';
 
 export default class {
   // TODO: Handle token expiration and renovation
-  @observable public token: string;
+  @observable
+  public token?: string;
 
-  @observable public userId: string;
+  @observable
+  public userId?: string;
 
-  @observable public username: string;
+  @observable
+  public username?: string;
 
-  @observable public role: UserRole;
+  @observable
+  public role?: UserRole;
 
   constructor() {
     try {
@@ -35,7 +39,7 @@ export default class {
     }
   }
 
-  public async login(username: string, password: string): Promise<boolean> {
+  public login = async (username: string, password: string) => {
     try {
       const token = await generateToken(username, password);
 
@@ -44,9 +48,9 @@ export default class {
     } catch (err) {
       return false;
     }
-  }
+  };
 
-  public async facebookLogin() {
+  public facebookLogin = async () => {
     try {
       const token = await facebookLogin();
       this.setToken(token);
@@ -54,7 +58,7 @@ export default class {
     } catch (err) {
       return false;
     }
-  }
+  };
 
   @action
   private setToken(token: string) {
@@ -69,7 +73,7 @@ export default class {
   }
 
   @computed
-  get user(): ILoggedUser | null {
-    return this.token ? { username: this.username, id: this.userId } : null;
+  get user() {
+    return this.token ? ({ username: this.username, id: this.userId } as ILoggedUser) : undefined;
   }
 }

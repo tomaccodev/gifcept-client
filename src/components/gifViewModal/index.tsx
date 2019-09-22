@@ -1,8 +1,8 @@
 import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
-import * as React from 'react';
-import * as ReactModal from 'react-modal';
+import moment from 'moment';
+import React from 'react';
+import ReactModal from 'react-modal';
 import { Link } from 'react-router-dom';
 
 import { format, parse } from 'url';
@@ -15,7 +15,7 @@ import './GifViewModal.css';
 
 interface IGifViewModalProps {
   isOpen: boolean;
-  loggedUser: ILoggedUser | null;
+  loggedUser?: ILoggedUser;
   gif?: IGif;
   onClose: () => void;
   onLike: () => void;
@@ -23,16 +23,16 @@ interface IGifViewModalProps {
 
 @observer
 export default class extends React.Component<IGifViewModalProps> {
-  @observable private imageUrl: string;
+  @observable private imageUrl: string = '';
 
-  public async componentWillReceiveProps(newProps: IGifViewModalProps) {
-    if (newProps.gif && newProps.gif !== this.props.gif) {
+  public async componentDidUpdate() {
+    if (this.props.gif && this.props.gif.animationUrlPath !== this.imageUrl && this.props.gif.frameUrlPath !== this.imageUrl) {
       runInAction(() => {
-        this.imageUrl = newProps.gif!.frameUrlPath;
+        this.imageUrl = this.props.gif!.frameUrlPath;
       });
-      await imagePreloader(newProps.gif!.animationUrlPath);
+      await imagePreloader(this.props.gif!.animationUrlPath);
       runInAction(() => {
-        this.imageUrl = newProps.gif!.animationUrlPath;
+        this.imageUrl = this.props.gif!.animationUrlPath;
       });
     }
   }
@@ -42,9 +42,9 @@ export default class extends React.Component<IGifViewModalProps> {
 
     const editButton =
       gif && loggedUser && gif.user.id === loggedUser.id ? (
-        <a href="#" className="header-button" title="Edit">
+        <button className="header-button" title="Edit">
           <i className="material-icons"></i>
-        </a>
+        </button>
       ) : null;
 
     return (
@@ -55,36 +55,35 @@ export default class extends React.Component<IGifViewModalProps> {
       >
         <div className="gif-popup-topbar">
           <div className="gif-popup-topbar-left">
-            <a
-              href="#"
-              className="action-button gif-popup-like-button"
-              title="Like"
-              onClick={onLike}
-            >
+            <button className="action-button gif-popup-like-button" title="Like" onClick={onLike}>
               <i className="material-icons"></i>
               <span className="action-button-text">Like</span>
               <span className="action-button-counter">({gif && gif.likesCount})</span>
-            </a>
-            <a href="#" className="action-button gif-popup-like-recept" title="Recept">
+            </button>
+            <button className="action-button gif-popup-like-recept" title="Recept">
               <i className="material-icons"></i>
               <span className="action-button-text">Recept</span>
               <span className="action-button-counter">({gif && gif.sharesCount})</span>
-            </a>
+            </button>
           </div>
           <div className="gif-popup-topbar-right">
             {editButton}
-            <a onClick={onClose} className="header-button gif-popup-button-close" title="Close">
+            <button
+              onClick={onClose}
+              className="header-button gif-popup-button-close"
+              title="Close"
+            >
               <i className="material-icons"></i>
-            </a>
+            </button>
           </div>
           <div className="clearfix" />
         </div>
         <div className="gif-popup-main-title">{gif && gif.description}</div>
         <div className="gif-popup-main-content">
           <div className="gif-popup-main">
-            <a href="#" className="gif-popup-gif">
+            <button className="gif-popup-gif">
               <img src={this.imageUrl} alt="gif name, gif tags" />
-            </a>
+            </button>
             <div className="gif-popup-main-share-wrapper" onClick={this.copyToClipboard}>
               Share
             </div>

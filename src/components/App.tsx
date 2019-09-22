@@ -1,5 +1,5 @@
 import { inject, observer, Provider } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -23,15 +23,15 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
         <div className="App">
           <Header
             loggedUser={store.auth.user}
-            facebookLogin={store.auth.facebookLogin.bind(store.auth)}
+            facebookLogin={store.auth.facebookLogin}
             onSearch={this.doSearch}
           />
-          <Content store={store} onBottomReached={store.gifs.getGifs.bind(store.gifs)} />
+          <Content store={store} onBottomReached={store.gifs.getGifs} />
           <GifViewModal
             isOpen={store.ui.isViewingGif}
             gif={store.ui.viewdeGif}
-            onLike={store.gifs.addLikeToGif.bind(store.gifs, store.ui.viewdeGif)}
-            onClose={store.ui.unsetViewedGif.bind(store.ui)}
+            onLike={this.likeViewedGif}
+            onClose={this.closeViewedGif}
             loggedUser={store.auth.user}
           />
         </div>
@@ -39,8 +39,24 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
     );
   }
 
+  private likeViewedGif = () => {
+    const store = this.props.store!;
+
+    if (store.ui.viewdeGif) {
+      store.gifs.addLikeToGif(store.ui.viewdeGif!);
+    }
+  };
+
+  private closeViewedGif = () => {
+    const store = this.props.store!;
+
+    store.ui.unsetViewedGif();
+  };
+
   private doSearch = (search: string) => {
-    this.props.store!.gifs.setSearchCriteria({ search });
+    const store = this.props.store!;
+
+    store.gifs.setSearchCriteria({ search });
   };
 }
 

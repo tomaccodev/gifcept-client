@@ -2,6 +2,7 @@ import { format } from 'url';
 
 import { GifOrder, Rating } from '../common/constants';
 import { get, responselessPost } from './common/methods';
+import {ParsedUrlQueryInput} from "querystring";
 
 type KeyofBase = keyof any;
 type Diff<T extends KeyofBase, U extends KeyofBase> = ({ [P in T]: P } &
@@ -49,6 +50,8 @@ export interface IGetGifsOptions {
   order?: GifOrder;
 }
 
+type KeyOfIGetGifsOptions = keyof IGetGifsOptions;
+
 const normalizeGif = (gif: IServerGif) => ({
   ...gif,
   animationUrlPath: `/${gif.id}.gif`,
@@ -56,14 +59,19 @@ const normalizeGif = (gif: IServerGif) => ({
   frameUrlPath: `/${gif.id}.jpg`,
 });
 
-const normalizeQuery = (options: IGetGifsOptions) =>
-  Object.keys(options).reduce((accumulated, key) => {
-    const current = { ...accumulated };
-    if (options[key] !== undefined && options[key] !== '') {
-      current[key] = options[key];
+const normalizeQuery = (options: IGetGifsOptions) => {
+  const keys = Object.keys(options) as KeyOfIGetGifsOptions[];
+
+  return keys.reduce((accumulated: IGetGifsOptions, key: KeyOfIGetGifsOptions) => {
+    const current = { ...accumulated } as IGetGifsOptions;
+    const optionValue = options[key] as IGetGifsOptions[KeyOfIGetGifsOptions];
+    if (optionValue !== undefined && optionValue !== '') {
+      // TODO: review as any
+      current[key as keyof IGetGifsOptions] = optionValue as any;
     }
     return current;
-  }, {});
+  }, {}) as ParsedUrlQueryInput;
+};
 
 export const getGifs: (getGifsOptions?: IGetGifsOptions) => Promise<IGif[]> = (
   getGifsOptions = {},

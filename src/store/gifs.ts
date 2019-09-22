@@ -17,15 +17,19 @@ interface ISearchCriteria {
 }
 
 export default class {
-  @observable public gifs: IGif[] = [];
+  @observable
+  public gifs: IGif[] = [];
 
-  @observable private search?: string = '';
+  @observable
+  private search?: string = '';
 
-  @observable private user?: string;
+  @observable
+  private user?: string;
 
-  @observable private order: GifOrder = GifOrder.creation;
+  @observable
+  private order: GifOrder = GifOrder.creation;
 
-  public async getGifs(): Promise<void> {
+  public getGifs = async () => {
     try {
       const options: IGetGifsOptions = {
         order: this.order,
@@ -41,9 +45,9 @@ export default class {
       // tslint:disable-next-line:no-console
       console.error(err);
     }
-  }
+  };
 
-  public async getGifComments(gif: IGif): Promise<void> {
+  public getGifComments = async (gif: IGif) => {
     try {
       const comments = await getGifComments(gif.id);
       runInAction(() => {
@@ -53,9 +57,9 @@ export default class {
       // tslint:disable-next-line:no-console
       console.error(err);
     }
-  }
+  };
 
-  public async addLikeToGif(gif: IGif): Promise<void> {
+  public addLikeToGif = async (gif: IGif) => {
     try {
       await addLikeToGif(gif.id);
       runInAction(() => {
@@ -65,7 +69,7 @@ export default class {
       // tslint:disable-next-line:no-console
       console.error(err);
     }
-  }
+  };
 
   @action
   public setSearchCriteria(searchCriteria: ISearchCriteria) {

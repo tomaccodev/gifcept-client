@@ -22,7 +22,10 @@ export const facebookLogin: () => Promise<string> = () =>
         if (!loginRes.authResponse) {
           return rej();
         }
-        if (loginRes.authResponse.grantedScopes.split(',').indexOf('email') === -1) {
+        if (
+          !loginRes.authResponse.grantedScopes ||
+          loginRes.authResponse.grantedScopes.split(',').indexOf('email') === -1
+        ) {
           // TODO: Show error message stating that email is mandatory
           return FB.logout(rej);
         }

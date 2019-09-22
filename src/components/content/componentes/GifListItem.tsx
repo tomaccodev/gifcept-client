@@ -1,6 +1,6 @@
-import { observable, runInAction } from 'mobx';
+import {action, observable, runInAction} from 'mobx';
 import { observer } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { IGif } from '../../../api/gifs';
@@ -34,7 +34,7 @@ export default class extends React.Component<IGifListItemProps> {
           </span>
           <i className="material-icons"></i>
         </div>
-        <a
+        <button
           className="block-item-gif-container"
           style={{ backgroundImage: `url(${this.imageUrl})`, backgroundColor: gif.color }}
           onClick={this.doClick}
@@ -71,6 +71,7 @@ export default class extends React.Component<IGifListItemProps> {
     );
   }
 
+  @action
   private clearHovered = async () => {
     this.hovered = false;
     await imagePreloader(this.props.gif.frameUrlPath);
@@ -81,6 +82,7 @@ export default class extends React.Component<IGifListItemProps> {
     }
   };
 
+  @action
   private setHovered = async () => {
     this.hovered = true;
     await imagePreloader(this.props.gif.animationUrlPath);
