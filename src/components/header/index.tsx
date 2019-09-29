@@ -72,17 +72,18 @@ export default class extends Component<IHeaderProps> {
       </div>
     );
 
+    const addNewGifButton = loggedUser ? (
+      <button className="header-button header-button-add-gif hide-on-mobile" title="Add new gif">
+        <i className="material-icons">&#xE145;</i>
+      </button>
+    ) : null;
+
     return (
       <div>
         <header className="header">
           <div className="header-wrapper">
             <div className="header-left">
-              <button
-                className="header-button header-button-add-gif hide-on-mobile"
-                title="Add new gif"
-              >
-                <i className="material-icons">&#xE145;</i>
-              </button>
+              {addNewGifButton}
               <div className="header-button header-search" title="Search gifs">
                 <i className="material-icons">&#xE8B6;</i>
                 <input

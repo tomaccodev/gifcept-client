@@ -40,6 +40,7 @@ class App extends Component<IStoreComponentProps & RouteComponentProps<any, Stat
             onClose={() => {
               store.ui.setLoginModalVisible(false);
             }}
+            onLogin={store.auth.login}
           />
         </div>
       </Provider>
