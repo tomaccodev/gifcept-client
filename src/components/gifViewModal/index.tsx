@@ -1,7 +1,7 @@
 import { observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import moment from 'moment';
-import React from 'react';
+import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import { Link } from 'react-router-dom';
 
@@ -22,11 +22,15 @@ interface IGifViewModalProps {
 }
 
 @observer
-export default class extends React.Component<IGifViewModalProps> {
+export default class extends Component<IGifViewModalProps> {
   @observable private imageUrl: string = '';
 
   public async componentDidUpdate() {
-    if (this.props.gif && this.props.gif.animationUrlPath !== this.imageUrl && this.props.gif.frameUrlPath !== this.imageUrl) {
+    if (
+      this.props.gif &&
+      this.props.gif.animationUrlPath !== this.imageUrl &&
+      this.props.gif.frameUrlPath !== this.imageUrl
+    ) {
       runInAction(() => {
         this.imageUrl = this.props.gif!.frameUrlPath;
       });
@@ -50,11 +54,11 @@ export default class extends React.Component<IGifViewModalProps> {
     return (
       <ReactModal
         isOpen={isOpen}
-        className="gif-popup-wrapper"
-        overlayClassName="popup-overlay-wrapper"
+        className="modal-wrapper"
+        overlayClassName="modal-overlay-wrapper"
       >
-        <div className="gif-popup-topbar">
-          <div className="gif-popup-topbar-left">
+        <div className="topbar">
+          <div className="topbar-left">
             <button className="action-button gif-popup-like-button" title="Like" onClick={onLike}>
               <i className="material-icons"></i>
               <span className="action-button-text">Like</span>
@@ -66,7 +70,7 @@ export default class extends React.Component<IGifViewModalProps> {
               <span className="action-button-counter">({gif && gif.sharesCount})</span>
             </button>
           </div>
-          <div className="gif-popup-topbar-right">
+          <div className="topbar-right">
             {editButton}
             <button
               onClick={onClose}
@@ -78,29 +82,29 @@ export default class extends React.Component<IGifViewModalProps> {
           </div>
           <div className="clearfix" />
         </div>
-        <div className="gif-popup-main-title">{gif && gif.description}</div>
-        <div className="gif-popup-main-content">
-          <div className="gif-popup-main">
-            <button className="gif-popup-gif">
+        <div className="main-title">{gif && gif.description}</div>
+        <div className="main-content">
+          <div className="main">
+            <button className="gif">
               <img src={this.imageUrl} alt="gif name, gif tags" />
             </button>
-            <div className="gif-popup-main-share-wrapper" onClick={this.copyToClipboard}>
+            <div className="share-wrapper" onClick={this.copyToClipboard}>
               Share
             </div>
           </div>
-          <div className="gif-popup-comment-wrapper">
+          <div className="comment-wrapper">
             {gif &&
               gif.comments.map(c => <Comment comment={c} key={c.id} loggedUser={loggedUser} />)}
           </div>
         </div>
-        <div className="gif-popup-info-wrapper">
+        <div className="info-wrapper">
           tags: {gif && gif.tags.join(', ')}
           <br />
           uploaded by{' '}
           <Link onClick={onClose} to={gif ? `/${gif.user.id}/gifs` : ''}>
             {gif && gif.user.username}
           </Link>{' '}
-          <span className="gif-single-comment-tools-time">
+          <span className="comment-tools-time">
             {gif && moment(gif.created).fromNow()}
           </span>
         </div>

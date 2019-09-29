@@ -1,7 +1,7 @@
 import { debounce } from 'lodash'; // TODO improve importation to decrease generated js
 import { action, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { Component, RefObject, createRef, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import SubHeader from './components/SubHeader';
@@ -12,7 +12,7 @@ import logo from './images/logo.png';
 
 interface IHeaderProps {
   loggedUser?: ILoggedUser;
-  facebookLogin: () => void;
+  onShowLoginModal: () => void;
   onSearch: (search: string) => void;
 }
 
@@ -20,8 +20,8 @@ const SEARCH_INPUT_PLACEHOLDER = 'Search gifs';
 const SEARCH_DEBOUNCE_DELAY = 300;
 
 @observer
-export default class extends React.Component<IHeaderProps> {
-  private searchInput: React.RefObject<HTMLInputElement>;
+export default class extends Component<IHeaderProps> {
+  private searchInput: RefObject<HTMLInputElement>;
 
   private handleSearchChange = debounce((search: string) => {
     this.props.onSearch(search);
@@ -32,7 +32,7 @@ export default class extends React.Component<IHeaderProps> {
 
   constructor(props: IHeaderProps) {
     super(props);
-    this.searchInput = React.createRef();
+    this.searchInput = createRef();
   }
 
   public componentDidMount() {
@@ -44,7 +44,7 @@ export default class extends React.Component<IHeaderProps> {
   }
 
   public render() {
-    const { loggedUser, facebookLogin } = this.props;
+    const { loggedUser, onShowLoginModal } = this.props;
 
     const rating = (
       <button className="header-button" title="Safe For Work View">
@@ -65,7 +65,7 @@ export default class extends React.Component<IHeaderProps> {
       </div>
     ) : (
       <div className="header-right">
-        <button className="header-button" title="Facebook Login" onClick={facebookLogin}>
+        <button className="header-button" title="Login" onClick={onShowLoginModal}>
           <i className="material-icons">face</i>
         </button>
         {rating}
@@ -110,7 +110,7 @@ export default class extends React.Component<IHeaderProps> {
     );
   }
 
-  private onSearchChange = (_: React.ChangeEvent) => {
+  private onSearchChange = (_: ChangeEvent) => {
     this.handleSearchChange(this.searchInput.current!.value);
   };
 

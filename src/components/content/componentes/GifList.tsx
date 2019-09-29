@@ -1,12 +1,12 @@
 import { inject, observer } from 'mobx-react';
-import React from 'react';
+import React, { Component } from 'react';
 
 import { IStoreComponentProps } from '../../App';
 import GifListItem from './GifListItem';
 
 @inject('store')
 @observer
-export default class extends React.Component<IStoreComponentProps> {
+export default class extends Component<IStoreComponentProps> {
   public render() {
     const store = this.props.store!;
 

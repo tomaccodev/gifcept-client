@@ -1,6 +1,6 @@
-import {action, observable, runInAction} from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IGif } from '../../../api/gifs';
@@ -14,7 +14,7 @@ interface IGifListItemProps {
 }
 
 @observer
-export default class extends React.Component<IGifListItemProps> {
+export default class extends Component<IGifListItemProps> {
   @observable private hovered: boolean = false;
 
   @observable private imageUrl: string = this.props.gif.frameUrlPath;
@@ -93,7 +93,7 @@ export default class extends React.Component<IGifListItemProps> {
     }
   };
 
-  private doClick = (ev: React.MouseEvent) => {
+  private doClick = (ev: MouseEvent) => {
     ev.preventDefault();
     this.props.onClick();
   };

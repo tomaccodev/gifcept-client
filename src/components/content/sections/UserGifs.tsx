@@ -1,5 +1,5 @@
 import { inject } from 'mobx-react';
-import React from 'react';
+import React, { Component } from 'react';
 
 import { StaticContext } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { IStoreComponentProps } from '../../App';
 import GifList from '../componentes/GifList';
 
 @inject('store')
-export default class extends React.Component<
+export default class extends Component<
   IStoreComponentProps & RouteComponentProps<any, StaticContext>
 > {
   public componentDidMount() {

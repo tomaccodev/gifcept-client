@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { Component } from 'react';
 import { StaticContext } from 'react-router';
 import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -14,9 +14,7 @@ import './Content.css';
 import UserGifs from './sections/UserGifs';
 
 @observer
-class Container extends React.Component<
-  IStoreComponentProps & RouteComponentProps<any, StaticContext>
-> {
+class Container extends Component<IStoreComponentProps & RouteComponentProps<any, StaticContext>> {
   public render() {
     return (
       <main>

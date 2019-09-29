@@ -1,108 +1,17 @@
 @import '../../styles/variables';
+@import '../../styles/modal';
 
-.popup-overlay-wrapper {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  background-color: rgba(0, 0, 0, 0.8);
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9999;
-  overflow-y: auto;
-  backface-visibility: hidden;
-}
-
-.gif-popup-wrapper {
-  width: 95%;
-  max-width: 800px;
-  background-color: white;
-  margin: 50px auto;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  -webkit-overflow-scrolling: touch;
-
-  .gif-popup-topbar {
-    background-color: #b0bcb7;
-    min-height: 30px;
-    padding: 10px;
-    position: relative;
-    border-radius: 4px 4px 0 0;
-    font-size: 0;
-
-    .gif-popup-topbar-left {
-      float: left;
-
-      .action-button {
-        margin-right: 5px;
-      }
-
-      .action-button {
-        display: inline-block;
-        border-radius: 4px;
-        height: 30px;
-        background-color: $main-color;
-        transition: all 0.3s;
-        position: relative;
-        text-decoration: none;
-        padding-left: 25px;
-        padding-right: 7px;
-        color: #fff;
-      }
-
-      .action-button:hover {
-        background-color: #086;
-      }
-
-      .action-button .material-icons {
-        position: absolute;
-        color: #fff;
-        top: 6px;
-        left: 6px;
-        font-size: 18px;
-      }
-
-      .action-button span {
-        padding-top: 5px;
-        font-size: 13px;
-        line-height: 30px;
-        padding-left: 5px;
-      }
-    }
-
-    .gif-popup-topbar-right {
-      float: right;
-
-      .header-button {
-        margin-left: 5px;
-      }
-    }
-  }
-
-  .gif-popup-main-title {
-    padding: 10px;
-    color: #666;
-    font-size: 16px;
-    text-align: center;
-  }
-
-  .gif-popup-main-content {
+.modal-wrapper {
+  .main-content {
     padding: 0 10px 10px;
 
-    .gif-popup-main{
-      float: left;
-      width: 500px;
-      max-width: 100%;
-      text-align: center;
-
-      .gif-popup-gif img{
+    .main{
+      .gif img{
         max-width: 100%;
       }
     }
 
-    .gif-popup-comment-wrapper{
+    .comment-wrapper{
       float: left;
       background-color: #f5f5f5;
       width: 270px;
@@ -111,7 +20,7 @@
     }
   }
 
-  .gif-popup-info-wrapper{
+  .info-wrapper{
     width: 100%;
     clear: both;
     padding: 10px;

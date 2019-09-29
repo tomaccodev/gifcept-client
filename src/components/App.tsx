@@ -1,11 +1,12 @@
 import { inject, observer, Provider } from 'mobx-react';
-import React from 'react';
+import React, { Component } from 'react';
 import { StaticContext } from 'react-router';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Store from '../store';
 import Content from './content';
 import GifViewModal from './gifViewModal';
+import LoginModal from './loginModal';
 import Header from './header';
 
 export interface IStoreComponentProps {
@@ -14,7 +15,7 @@ export interface IStoreComponentProps {
 
 @inject('store')
 @observer
-class App extends React.Component<IStoreComponentProps & RouteComponentProps<any, StaticContext>> {
+class App extends Component<IStoreComponentProps & RouteComponentProps<any, StaticContext>> {
   public render() {
     const store = this.props.store!;
 
@@ -23,7 +24,7 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
         <div className="App">
           <Header
             loggedUser={store.auth.user}
-            facebookLogin={store.auth.facebookLogin}
+            onShowLoginModal={() => store.ui.setLoginModalVisible(true)}
             onSearch={this.doSearch}
           />
           <Content store={store} onBottomReached={store.gifs.getGifs} />
@@ -33,6 +34,12 @@ class App extends React.Component<IStoreComponentProps & RouteComponentProps<any
             onLike={this.likeViewedGif}
             onClose={this.closeViewedGif}
             loggedUser={store.auth.user}
+          />
+          <LoginModal
+            isOpen={store.ui.loginModalVisible}
+            onClose={() => {
+              store.ui.setLoginModalVisible(false);
+            }}
           />
         </div>
       </Provider>

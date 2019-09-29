@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { ComponentType, Component } from 'react';
 
 interface IScrollAware {
   onBottomReached: () => void;
@@ -7,10 +7,10 @@ interface IScrollAware {
 }
 
 export default <ComponentProps extends {}>(
-  ComponentToExtend: React.ComponentType<ComponentProps>,
+  ComponentToExtend: ComponentType<ComponentProps>,
 ) =>
   observer(
-    class extends React.Component<IScrollAware & ComponentProps> {
+    class extends Component<IScrollAware & ComponentProps> {
       public static defaultProps: Partial<IScrollAware> = {
         bottomMargin: 300,
       };
