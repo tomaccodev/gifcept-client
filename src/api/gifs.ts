@@ -2,7 +2,7 @@ import { format } from 'url';
 
 import { GifOrder, Rating } from '../common/constants';
 import { get, responselessPost } from './common/methods';
-import {ParsedUrlQueryInput} from "querystring";
+import { ParsedUrlQueryInput } from 'querystring';
 
 type KeyofBase = keyof any;
 type Diff<T extends KeyofBase, U extends KeyofBase> = ({ [P in T]: P } &
@@ -18,7 +18,7 @@ interface IUser extends IApiModel {
 }
 
 interface IServerGif extends IApiModel {
-  id: string;
+  shortId: string;
   color: string;
   description: string;
   rating: Rating;
@@ -48,15 +48,16 @@ export interface IGetGifsOptions {
   search?: string;
   before?: string;
   order?: GifOrder;
+  ratings?: Rating[];
 }
 
 type KeyOfIGetGifsOptions = keyof IGetGifsOptions;
 
 const normalizeGif = (gif: IServerGif) => ({
   ...gif,
-  animationUrlPath: `/${gif.id}.gif`,
+  animationUrlPath: `/${gif.shortId}.gif`,
   created: new Date(gif.created),
-  frameUrlPath: `/${gif.id}.jpg`,
+  frameUrlPath: `/${gif.shortId}.jpg`,
 });
 
 const normalizeQuery = (options: IGetGifsOptions) => {

@@ -8,12 +8,13 @@ import {
   IGetGifsOptions,
   IGif,
 } from '../api/gifs';
-import { GifOrder } from '../common/constants';
+import { GifOrder, Rating } from '../common/constants';
 
 interface ISearchCriteria {
   search?: string;
   user?: string;
   sort?: GifOrder;
+  ratings?: Rating[];
 }
 
 export default class {
@@ -27,6 +28,9 @@ export default class {
   private user?: string;
 
   @observable
+  private ratings: Rating[] = [Rating.sfw];
+
+  @observable
   private order: GifOrder = GifOrder.creation;
 
   public getGifs = async () => {
@@ -34,10 +38,11 @@ export default class {
       const options: IGetGifsOptions = {
         order: this.order,
         search: this.search,
+        ratings: this.ratings,
       };
 
       if (this.gifs.length) {
-        options.before = this.gifs[this.gifs.length - 1].created.toISOString();
+        options.before = this.gifs[this.gifs.length - 1].id;
       }
       const gifs = await (this.user ? getUserGifs(this.user, options) : getGifs(options));
       this.addGifs(gifs);
@@ -49,7 +54,7 @@ export default class {
 
   public getGifComments = async (gif: IGif) => {
     try {
-      const comments = await getGifComments(gif.id);
+      const comments = await getGifComments(gif.shortId);
       runInAction(() => {
         gif.comments = comments;
       });
@@ -88,6 +93,9 @@ export default class {
     }
     if (searchCriteria.hasOwnProperty('user')) {
       this.user = searchCriteria.user;
+    }
+    if (searchCriteria.hasOwnProperty('ratings')) {
+      this.ratings = searchCriteria.ratings || [Rating.sfw];
     }
     this.reset();
   }
