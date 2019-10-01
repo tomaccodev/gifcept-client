@@ -19,6 +19,15 @@ export default class extends Component<IGifListItemProps> {
 
   @observable private imageUrl: string = this.props.gif.frameUrlPath;
 
+  private copyUrlToClipboard = async () => {
+    // @ts-ignore
+    const permision = await navigator.permissions.query({ name: 'clipboard-write' });
+    console.log(permision);
+
+    // @ts-ignore
+    navigator.clipboard.writeText(window.location.host + this.imageUrl);
+  };
+
   public render() {
     const { gif } = this.props;
 
@@ -32,7 +41,9 @@ export default class extends Component<IGifListItemProps> {
           <span className="block-item-name" title={gif.description}>
             {this.props.gif.description}
           </span>
-          <i className="material-icons"></i>
+          <i className="material-icons" onClick={this.copyUrlToClipboard}>
+            
+          </i>
         </div>
         <button
           className="block-item-gif-container"
