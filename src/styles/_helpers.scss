@@ -1,0 +1,13 @@
+/* HELPERS */
+
+@media only screen and (min-width: 640px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}

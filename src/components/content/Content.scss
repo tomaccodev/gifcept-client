@@ -1,0 +1,13 @@
+main {
+  position: relative;
+  z-index: 2;
+}
+
+.blocks-container {
+  font-size: 0;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1380px;
+  padding: 0 5px;
+  box-sizing: border-box;
+}

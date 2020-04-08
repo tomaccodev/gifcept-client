@@ -1,0 +1,47 @@
+@import '../../../../styles/variables';
+
+.gif-single-comment-wrapper {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+  position: relative;
+
+  .gif-single-comment-author-pic {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    left: 0;
+    background-size: cover;
+    border-radius: 4px;
+  }
+
+  .gif-single-comment-content {
+    padding-left: 42px;
+
+    .gif-single-comment-author-name {
+      padding-right: 3px;
+      color: $main-color;
+      font-weight: bold;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .gif-single-comment-tools {
+      margin-top: 5px;
+      a {
+        color: $main-color;
+        text-decoration: none;
+        padding-right: 5px;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .material-icons {
+        font-size: 12px;
+      }
+    }
+  }
+}

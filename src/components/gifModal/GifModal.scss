@@ -1,0 +1,29 @@
+@import '../../styles/variables';
+@import '../../styles/modal';
+
+.modal-wrapper {
+  .main-content {
+    padding: 0 10px 10px;
+
+    .main {
+      .gif img {
+        max-width: 100%;
+      }
+    }
+
+    .comment-wrapper {
+      float: left;
+      background-color: #f5f5f5;
+      width: 270px;
+      margin-left: 10px;
+      padding: 10px;
+    }
+  }
+
+  .info-wrapper {
+    width: 100%;
+    clear: both;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+}
