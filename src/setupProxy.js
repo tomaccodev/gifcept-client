@@ -1,10 +1,12 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
+
+
 module.exports = function (app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:3002',
+      target: 'https://dev.gifcept.com',
       changeOrigin: true,
     }),
   );
@@ -12,7 +14,7 @@ module.exports = function (app) {
   app.use(
     '/*.(jpg|gif)',
     createProxyMiddleware({
-      target: 'http://localhost:3002',
+      target: 'https://dev.gifcept.com',
       changeOrigin: true,
     }),
   );
