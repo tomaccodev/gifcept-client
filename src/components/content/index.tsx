@@ -20,9 +20,6 @@ export default ({ onSetSelectedGif }: IContent) => {
         <Route exact={true} path="/myGifs">
           <Gifs mode="myGifs" onSetSelectedGif={onSetSelectedGif} />
         </Route>
-        <Route exact={true} path="/trendy">
-          <Gifs mode="trendy" onSetSelectedGif={onSetSelectedGif} />
-        </Route>
         <Route path="/:id/gifs">
           <Gifs mode="by id" onSetSelectedGif={onSetSelectedGif} />
         </Route>

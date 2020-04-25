@@ -23,9 +23,6 @@ export default ({ loggedUser }: ISubHeaderProps) => {
           <span className="subheader-button-text">All gifs</span>
         </Link>
         {myGifsLink}
-        <Link to="/trendy" className="subheader-button">
-          <span className="subheader-button-text">Trendy</span>
-        </Link>
       </div>
     </div>
   );
