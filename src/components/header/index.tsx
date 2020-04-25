@@ -1,4 +1,4 @@
-import { observer, useLocalStore } from 'mobx-react';
+import { observer } from 'mobx-react';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,25 +15,9 @@ interface IHeaderProps {
   onSearch: (search: string) => void;
 }
 
-const SEARCH_INPUT_PLACEHOLDER = 'Search gifs';
-const SEARCH_DEBOUNCE_DELAY = 300;
-
-const headerStore = () => ({
-  searchInputPlaceholder: SEARCH_INPUT_PLACEHOLDER,
-  handleInputFocus() {
-    this.searchInputPlaceholder = '';
-  },
-  handleInputBlur() {
-    this.searchInputPlaceholder = SEARCH_INPUT_PLACEHOLDER;
-  },
-});
-
 export default observer(
   ({ loggedUser, onShowLoginModal, onSearch, onShowAddGifModal }: IHeaderProps) => {
     const searchInput = useRef<HTMLInputElement>(null);
-    const { searchInputPlaceholder, handleInputBlur, handleInputFocus } = useLocalStore(
-      headerStore,
-    );
 
     const rating = (
       <button className="header-button" title="Safe For Work View">
@@ -81,10 +65,11 @@ export default observer(
                 <i className="material-icons">&#xE8B6;</i>
                 <input
                   type="text"
-                  placeholder={searchInputPlaceholder}
-                  onFocus={handleInputFocus}
-                  onBlur={handleInputBlur}
-                  // onChange={this.onSearchChange}
+                  placeholder="Search gifs"
+                  onChange={(ev) => {
+                    console.log('changing', ev.target.value);
+                    onSearch(ev.target.value);
+                  }}
                   ref={searchInput}
                 />
               </div>

@@ -1,5 +1,6 @@
+import { debounce } from 'lodash';
 import { observer, useLocalStore } from 'mobx-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { IGif } from '../api/gifs';
 import useStores from '../hooks/useStores';
@@ -38,8 +39,10 @@ const appStore: () => IAppStore = () => ({
   },
 });
 
+const SEARCH_DEBOUNCE_DELAY = 300;
+
 export default observer(() => {
-  const { auth } = useStores();
+  const { auth, gifs } = useStores();
   const {
     loginModalVisible,
     selectedGif,
@@ -50,15 +53,18 @@ export default observer(() => {
     setAddGifModalVisible,
   } = useLocalStore(appStore);
 
+  const debouncedSetCurrentSearch = useCallback(
+    debounce(gifs.setCurrentSearch, SEARCH_DEBOUNCE_DELAY),
+    [gifs],
+  );
+
   return (
     <div className="App">
       <Header
         loggedUser={auth.user}
         onShowLoginModal={() => setLoginModalVisible(true)}
         onShowAddGifModal={() => setAddGifModalVisible(true)}
-        onSearch={() => {
-          /* TODO: Handle Search */
-        }}
+        onSearch={debouncedSetCurrentSearch}
       />
       <Content onSetSelectedGif={setSelectedGif} />
       <LoginModal
