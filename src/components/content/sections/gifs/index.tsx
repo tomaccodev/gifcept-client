@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { IGif } from '../../../../api/gifs';
 import useScrollPosition from '../../../../hooks/useScrollPosition';
@@ -11,13 +11,17 @@ interface IGifsProps {
   onSetSelectedGif: (gif: IGif) => void;
 }
 
+const preloadMargin = 300;
+
 export default observer(({ mode, onSetSelectedGif }: IGifsProps) => {
   const { gifs } = useStores();
   const scrollPosition = useScrollPosition();
 
-  if (gifs.gifs.length === 0) {
-    gifs.getGifs();
-  }
+  useEffect(() => {
+    if (gifs.gifs.length === 0 || scrollPosition.bottom < preloadMargin) {
+      gifs.getGifs();
+    }
+  }, [scrollPosition, gifs.gifs, gifs]);
 
   return (
     <div className="blocks-container">

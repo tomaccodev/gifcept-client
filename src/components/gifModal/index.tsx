@@ -18,12 +18,11 @@ interface IGifModalProps {
 }
 
 export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
-  const editButton =
-    gif && loggedUser && gif.userId === loggedUser.id ? (
-      <button className="header-button" title="Edit">
-        <i className="material-icons"></i>
-      </button>
-    ) : null;
+  const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
+    <button className="header-button" title="Edit">
+      <i className="material-icons"></i>
+    </button>
+  );
 
   return (
     <ReactModal isOpen={!!gif} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">

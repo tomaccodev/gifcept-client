@@ -11,6 +11,7 @@ import logo from './images/logo.png';
 interface IHeaderProps {
   loggedUser?: ILoggedUser;
   onShowLoginModal: () => void;
+  onShowAddGifModal: () => void;
   onSearch: (search: string) => void;
 }
 
@@ -27,71 +28,79 @@ const headerStore = () => ({
   },
 });
 
-export default observer(({ loggedUser, onShowLoginModal, onSearch }: IHeaderProps) => {
-  const searchInput = useRef<HTMLInputElement>(null);
-  const { searchInputPlaceholder, handleInputBlur, handleInputFocus } = useLocalStore(headerStore);
+export default observer(
+  ({ loggedUser, onShowLoginModal, onSearch, onShowAddGifModal }: IHeaderProps) => {
+    const searchInput = useRef<HTMLInputElement>(null);
+    const { searchInputPlaceholder, handleInputBlur, handleInputFocus } = useLocalStore(
+      headerStore,
+    );
 
-  const rating = (
-    <button className="header-button" title="Safe For Work View">
-      <i className="material-icons">&#xE86C;</i>
-    </button>
-  );
-
-  const userElements = loggedUser ? (
-    <div className="header-right">
-      <span className="header-user-name">{loggedUser.username}</span>
-      <button className="header-button header-avatar" title="Your Profile">
-        <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
+    const rating = (
+      <button className="header-button" title="Safe For Work View">
+        <i className="material-icons">&#xE86C;</i>
       </button>
-      {rating}
-      <button className="header-button" title="Your Notifications">
-        <i className="material-icons">&#xE7F5;</i>
-      </button>
-    </div>
-  ) : (
-    <div className="header-right">
-      <button className="header-button" title="Login" onClick={onShowLoginModal}>
-        <i className="material-icons">face</i>
-      </button>
-      {rating}
-    </div>
-  );
+    );
 
-  const addNewGifButton = loggedUser ? (
-    <button className="header-button header-button-add-gif hide-on-mobile" title="Add new gif">
-      <i className="material-icons">&#xE145;</i>
-    </button>
-  ) : null;
+    const rightSideButtons = loggedUser ? (
+      <>
+        <span className="header-user-name">{loggedUser.username}</span>
+        <button className="header-button header-avatar" title="Your Profile">
+          <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
+        </button>
+        {rating}
+        <button className="header-button" title="Your Notifications">
+          <i className="material-icons">&#xE7F5;</i>
+        </button>
+      </>
+    ) : (
+      <>
+        <button className="header-button" title="Login" onClick={onShowLoginModal}>
+          <i className="material-icons">face</i>
+        </button>
+        {rating}
+      </>
+    );
 
-  return (
-    <div>
-      <header className="header">
-        <div className="header-wrapper">
-          <div className="header-left">
-            {addNewGifButton}
-            <div className="header-button header-search" title="Search gifs">
-              <i className="material-icons">&#xE8B6;</i>
-              <input
-                type="text"
-                placeholder={searchInputPlaceholder}
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                // onChange={this.onSearchChange}
-                ref={searchInput}
-              />
+    const addNewGifButton = loggedUser && (
+      <button
+        className="header-button header-button-add-gif hide-on-mobile"
+        title="Add new gif"
+        onClick={onShowAddGifModal}
+      >
+        <i className="material-icons">&#xE145;</i>
+      </button>
+    );
+
+    return (
+      <div>
+        <header className="header">
+          <div className="header-wrapper">
+            <div className="header-left">
+              {addNewGifButton}
+              <div className="header-button header-search" title="Search gifs">
+                <i className="material-icons">&#xE8B6;</i>
+                <input
+                  type="text"
+                  placeholder={searchInputPlaceholder}
+                  onFocus={handleInputFocus}
+                  onBlur={handleInputBlur}
+                  // onChange={this.onSearchChange}
+                  ref={searchInput}
+                />
+              </div>
+            </div>
+
+            <div className="header-right">{rightSideButtons}</div>
+            <div className="clearfix" />
+            <div className="header-logo-wrapper">
+              <Link to={'/'}>
+                <img src={logo} alt="Gifcept" />
+              </Link>
             </div>
           </div>
-
-          {userElements}
-          <div className="clearfix" />
-          <div className="header-logo-wrapper">
-            <Link to={'/'}>
-              <img src={logo} alt="Gifcept" />
-            </Link>
-          </div>
-        </div>
-      </header>
-      <SubHeader loggedUser={loggedUser} />
-    </div>
-  );
-});
+        </header>
+        <SubHeader loggedUser={loggedUser} />
+      </div>
+    );
+  },
+);

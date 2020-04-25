@@ -4,6 +4,7 @@ import React from 'react';
 import { IGif } from '../api/gifs';
 import useStores from '../hooks/useStores';
 
+import AddGifModal from './addGifModal';
 import Content from './content';
 import GifModal from './gifModal';
 import Header from './header';
@@ -12,14 +13,17 @@ import LoginModal from './loginModal';
 interface IAppStore {
   loginModalVisible: boolean;
   selectedGif?: IGif;
+  addGifModalVisible: boolean;
   setLoginModalVisible: (visible: boolean) => void;
   setSelectedGif: (gif: IGif) => void;
   clearSelectedGif: () => void;
+  setAddGifModalVisible: (visible: boolean) => void;
 }
 
 const appStore: () => IAppStore = () => ({
   loginModalVisible: false,
   selectedGif: undefined,
+  addGifModalVisible: false,
   setLoginModalVisible(visible: boolean) {
     this.loginModalVisible = visible;
   },
@@ -29,6 +33,9 @@ const appStore: () => IAppStore = () => ({
   clearSelectedGif() {
     this.selectedGif = undefined;
   },
+  setAddGifModalVisible(visible: boolean) {
+    this.addGifModalVisible = visible;
+  },
 });
 
 export default observer(() => {
@@ -36,9 +43,11 @@ export default observer(() => {
   const {
     loginModalVisible,
     selectedGif,
+    addGifModalVisible,
     setLoginModalVisible,
     setSelectedGif,
     clearSelectedGif,
+    setAddGifModalVisible,
   } = useLocalStore(appStore);
 
   return (
@@ -46,6 +55,7 @@ export default observer(() => {
       <Header
         loggedUser={auth.user}
         onShowLoginModal={() => setLoginModalVisible(true)}
+        onShowAddGifModal={() => setAddGifModalVisible(true)}
         onSearch={() => {
           /* TODO: Handle Search */
         }}
@@ -53,12 +63,11 @@ export default observer(() => {
       <Content onSetSelectedGif={setSelectedGif} />
       <LoginModal
         isOpen={loginModalVisible}
-        onClose={() => {
-          setLoginModalVisible(false);
-        }}
+        onClose={() => setLoginModalVisible(false)}
         onLogin={auth.login}
       />
       <GifModal gif={selectedGif} onClose={clearSelectedGif} />
+      <AddGifModal open={addGifModalVisible} onClose={() => setAddGifModalVisible(false)} />
     </div>
   );
 });
