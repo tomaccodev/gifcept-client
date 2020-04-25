@@ -39,6 +39,7 @@ export interface IComment extends IApiModel {
 
 export interface IGetGifsOptions {
   before?: string;
+  matching?: string;
 }
 
 const normalizeGif = (gif: IServerGif) => ({
@@ -48,9 +49,20 @@ const normalizeGif = (gif: IServerGif) => ({
   frameUrlPath: `/${gif.shortId}.jpg`,
 });
 
-export const getGifs = (options: IGetGifsOptions = {}) =>
-  get<IServerGif[]>(
+export const getGifs = (options: IGetGifsOptions = {}) => {
+  const query: IGetGifsOptions = {};
+  if (options.before) {
+    query.before = options.before;
+  }
+  if (options.matching) {
+    query.matching = options.matching;
+  }
+  return get<IServerGif[]>(
     format({
       pathname: '/api/gifs',
+      query: {
+        ...query,
+      },
     }),
   ).then((gifs) => gifs.map(normalizeGif));
+};

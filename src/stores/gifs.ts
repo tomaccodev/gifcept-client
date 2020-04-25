@@ -4,6 +4,9 @@ import { getGifs, IGif } from '../api/gifs';
 
 export default class {
   @observable
+  public currentSearch?: string;
+
+  @observable
   public gifs: IGif[] = [];
 
   @observable
@@ -15,6 +18,7 @@ export default class {
         this.fetching = true;
         const gifs = await getGifs({
           before: this.gifs.length ? this.gifs[this.gifs.length - 1].id : undefined,
+          matching: this.currentSearch,
         });
         this.addGifs(gifs);
         this.fetching = false;
@@ -23,6 +27,14 @@ export default class {
       // tslint:disable-next-line:no-console
       console.error(err);
     }
+  };
+
+  @action
+  public setCurrentSearch = (search: string) => {
+    const trimmedSearch = search.trim();
+    this.currentSearch = trimmedSearch === '' ? undefined : trimmedSearch;
+    this.gifs = [];
+    this.getGifs();
   };
 
   @action
