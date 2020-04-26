@@ -40,6 +40,7 @@ export interface IComment extends IApiModel {
 export interface IGetGifsOptions {
   before?: string;
   matching?: string;
+  rating?: Rating;
 }
 
 const normalizeGif = (gif: IServerGif) => ({
@@ -56,6 +57,9 @@ export const getGifs = (options: IGetGifsOptions = {}) => {
   }
   if (options.matching) {
     query.matching = options.matching;
+  }
+  if (options.rating) {
+    query.rating = options.rating;
   }
   return get<IServerGif[]>(
     format({

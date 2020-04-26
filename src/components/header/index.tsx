@@ -2,27 +2,36 @@ import { observer } from 'mobx-react';
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Rating } from '../../common/constants';
 import { ILoggedUser } from '../../stores/auth';
 
+import RatingSelector from './components/ratingSelector';
 import SubHeader from './components/subHeader';
 import './Header.css';
 import logo from './images/logo.png';
 
 interface IHeaderProps {
   loggedUser?: ILoggedUser;
+  currentRating: Rating;
   onShowLoginModal: () => void;
   onShowAddGifModal: () => void;
-  onSearch: (search: string) => void;
+  onSearchChange: (search: string) => void;
+  onRatingChange: (rating: Rating) => void;
 }
 
 export default observer(
-  ({ loggedUser, onShowLoginModal, onSearch, onShowAddGifModal }: IHeaderProps) => {
+  ({
+    loggedUser,
+    currentRating,
+    onShowLoginModal,
+    onSearchChange,
+    onShowAddGifModal,
+    onRatingChange,
+  }: IHeaderProps) => {
     const searchInput = useRef<HTMLInputElement>(null);
 
-    const rating = (
-      <button className="header-button" title="Safe For Work View">
-        <i className="material-icons">&#xE86C;</i>
-      </button>
+    const ratingSelector = (
+      <RatingSelector currentRating={currentRating} onRatingChange={onRatingChange} />
     );
 
     const rightSideButtons = loggedUser ? (
@@ -31,7 +40,7 @@ export default observer(
         <button className="header-button header-avatar" title="Your Profile">
           <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
         </button>
-        {rating}
+        {ratingSelector}
         <button className="header-button" title="Your Notifications">
           <i className="material-icons">&#xE7F5;</i>
         </button>
@@ -41,7 +50,7 @@ export default observer(
         <button className="header-button" title="Login" onClick={onShowLoginModal}>
           <i className="material-icons">face</i>
         </button>
-        {rating}
+        {ratingSelector}
       </>
     );
 
@@ -67,8 +76,7 @@ export default observer(
                   type="text"
                   placeholder="Search gifs"
                   onChange={(ev) => {
-                    console.log('changing', ev.target.value);
-                    onSearch(ev.target.value);
+                    onSearchChange(ev.target.value);
                   }}
                   ref={searchInput}
                 />
