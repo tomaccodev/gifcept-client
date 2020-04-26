@@ -28,7 +28,7 @@ export default class {
 
   constructor() {
     try {
-      // TODO: Handle persistance level
+      // TODO: Handle persistence level
       const token = localStorage.getItem(LOCALSTORAGE_KEY);
 
       if (token) {
@@ -53,12 +53,12 @@ export default class {
 
   @action
   private setToken(token: string) {
-    const { userId, username, role } = jwtDecode(token);
+    const { id, username, role } = jwtDecode(token);
     setToken(token);
 
     this.role = role as UserRole;
     this.token = token;
-    this.userId = userId;
+    this.userId = id;
     this.username = username;
     localStorage.setItem(LOCALSTORAGE_KEY, token);
   }

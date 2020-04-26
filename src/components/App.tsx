@@ -64,7 +64,9 @@ export default observer(() => {
         loggedUser={auth.user}
         onShowLoginModal={() => setLoginModalVisible(true)}
         onShowAddGifModal={() => setAddGifModalVisible(true)}
-        onSearch={debouncedSetCurrentSearch}
+        onSearchChange={debouncedSetCurrentSearch}
+        currentRating={gifs.currentRating}
+        onRatingChange={gifs.setCurrentRating}
       />
       <Content onSetSelectedGif={setSelectedGif} />
       <LoginModal
