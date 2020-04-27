@@ -40,17 +40,17 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "^4.14.150",
     "@types/moment": "^2.13.0",
-    "@types/node": "^13.13.2",
+    "@types/node": "^13.13.4",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-modal": "^3.10.5",
-    "@types/react-router-dom": "^5.1.4",
+    "@types/react-router-dom": "^5.1.5",
     "husky": "^4.2.4",
     "lint-staged": "^10.1.7",
     "node-sass-chokidar": "^1.4.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "tslint": "^6.1.1"
+    "tslint": "^6.1.2"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -75,7 +75,11 @@ export default observer(() => {
         onLogin={auth.login}
       />
       <GifModal gif={selectedGif} onClose={clearSelectedGif} />
-      <AddGifModal open={addGifModalVisible} onClose={() => setAddGifModalVisible(false)} />
+      <AddGifModal
+        open={addGifModalVisible}
+        onClose={() => setAddGifModalVisible(false)}
+        onAddGifByUrl={gifs.addGifByUrl}
+      />
     </div>
   );
 });
