@@ -1,9 +1,9 @@
+import { observer } from 'mobx-react';
 import React, { useCallback, useState } from 'react';
 
 import { Rating } from '../../../../common/constants';
 
 import './RatingSelector.css';
-import { observer } from 'mobx-react';
 
 interface IRaringSelectorPropps {
   currentRating: Rating;

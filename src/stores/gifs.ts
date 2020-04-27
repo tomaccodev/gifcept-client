@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 
-import { getGifs, IGif } from '../api/gifs';
+import { addGifByUrl, getGifs, IGif } from '../api/gifs';
 import { Rating } from '../common/constants';
 
 const LOCALSTORAGE_KEY = 'gifs-filtering';
@@ -28,9 +28,12 @@ export default class {
         this.currentSearch = data.search;
         this.currentRating = data.rating;
       }
-    } catch (err) {}
+    } catch (err) {
+      // Do nothing
+    }
   }
 
+  @action
   public getGifs = async () => {
     try {
       if (!this.fetching) {
@@ -40,9 +43,20 @@ export default class {
           matching: this.currentSearch,
           rating: this.currentRating,
         });
-        this.addGifs(gifs);
+        this.addGifsToCurrentCollection(gifs);
         this.fetching = false;
       }
+    } catch (err) {
+      // tslint:disable-next-line:no-console
+      console.error(err);
+    }
+  };
+
+  @action
+  public addGifByUrl = async (url: string) => {
+    try {
+      const gif = await addGifByUrl(url);
+      this.addGifsToCurrentCollection([gif]);
     } catch (err) {
       // tslint:disable-next-line:no-console
       console.error(err);
@@ -70,7 +84,8 @@ export default class {
     }
   };
 
-  @action setCurrentRating = (rating: Rating) => {
+  @action
+  setCurrentRating = (rating: Rating) => {
     if (this.currentRating !== rating) {
       this.currentRating = rating;
       this.saveSearchToLocalstorage();
@@ -80,10 +95,11 @@ export default class {
   };
 
   @action
-  private addGifs(gifs: IGif[]) {
+  private addGifsToCurrentCollection(gifs: IGif[]) {
     for (const gif of gifs) {
       if (!this.gifs.find((g) => g.id === gif.id)) {
-        this.gifs.push(gif);
+        const position = this.gifs.findIndex((g) => gif.created > g.created);
+        this.gifs.splice(position === -1 ? this.gifs.length : position, 0, gif);
       }
     }
   }
