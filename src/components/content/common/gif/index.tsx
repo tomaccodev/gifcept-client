@@ -1,6 +1,6 @@
 import { runInAction } from 'mobx';
 import { observer, useLocalStore } from 'mobx-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IGif } from '../../../../api/gifs';
@@ -43,6 +43,10 @@ const gifStore = (gif: IGif) => ({
 
 export default observer(({ gif, onClick }: IGifProps) => {
   const store = useLocalStore(gifStore, gif);
+  const copyGifUrl = useCallback(() => copy(`${window.location.origin}${gif.animationUrlPath}`), [
+    gif,
+    gif.animationUrlPath,
+  ]);
 
   return (
     <div className="block-item-wrapper" onMouseEnter={store.playGif} onMouseLeave={store.pauseGif}>
@@ -50,10 +54,7 @@ export default observer(({ gif, onClick }: IGifProps) => {
         <span className="block-item-name" title={gif.description}>
           {gif.description}
         </span>
-        <i
-          className="material-icons"
-          onClick={() => copy(`${window.location.host}${gif.animationUrlPath}`)}
-        >
+        <i className="material-icons" onClick={copyGifUrl}>
           
         </i>
       </div>

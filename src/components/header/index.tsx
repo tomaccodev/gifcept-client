@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Rating } from '../../common/constants';
@@ -13,6 +13,7 @@ import logo from './images/logo.png';
 interface IHeaderProps {
   loggedUser?: ILoggedUser;
   currentRating: Rating;
+  search?: string;
   onShowLoginModal: () => void;
   onShowAddGifModal: () => void;
   onSearchChange: (search: string) => void;
@@ -23,15 +24,24 @@ export default observer(
   ({
     loggedUser,
     currentRating,
+    search,
     onShowLoginModal,
     onSearchChange,
     onShowAddGifModal,
     onRatingChange,
   }: IHeaderProps) => {
-    const searchInput = useRef<HTMLInputElement>(null);
+    const [searchValue, changeSearchValue] = useState(search);
 
     const ratingSelector = (
       <RatingSelector currentRating={currentRating} onRatingChange={onRatingChange} />
+    );
+
+    const updateSearchCallback = useCallback(
+      (ev: ChangeEvent<HTMLInputElement>) => {
+        onSearchChange(ev.target.value);
+        changeSearchValue(ev.target.value);
+      },
+      [changeSearchValue, onSearchChange],
     );
 
     const rightSideButtons = loggedUser ? (
@@ -74,11 +84,9 @@ export default observer(
                 <i className="material-icons">&#xE8B6;</i>
                 <input
                   type="text"
+                  value={searchValue}
                   placeholder="Search gifs"
-                  onChange={(ev) => {
-                    onSearchChange(ev.target.value);
-                  }}
-                  ref={searchInput}
+                  onChange={updateSearchCallback}
                 />
               </div>
             </div>

@@ -71,6 +71,12 @@ export const getGifs = (options: IGetGifsOptions = {}) => {
   ).then((gifs) => gifs.map(normalizeGif));
 };
 
+export const addGifByFile = (file: File) => {
+  const formData = new FormData();
+  formData.append('gif', file);
+  return post<IServerGif>('/api/gifs', formData).then(normalizeGif);
+};
+
 export const addGifByUrl = (url: string) =>
   post<IServerGif>('/api/gifs', {
     url,

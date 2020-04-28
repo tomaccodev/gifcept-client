@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useCallback } from 'react';
 import ReactModal from 'react-modal';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +18,12 @@ interface IGifModalProps {
 }
 
 export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
+  const copyGifUrl = useCallback(() => {
+    if (gif) {
+      copy(`${window.location.origin}${gif.animationUrlPath}`);
+    }
+  }, [gif]);
+
   const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
     <button className="header-button" title="Edit">
       <i className="material-icons"></i>
@@ -53,10 +59,7 @@ export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
           <button className="gif">
             <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
           </button>
-          <div
-            className="share-wrapper"
-            onClick={() => copy(`${window.location.host}${gif && gif.animationUrlPath}`)}
-          >
+          <div className="share-wrapper" onClick={copyGifUrl}>
             Share
           </div>
         </div>
