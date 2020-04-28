@@ -62,10 +62,11 @@ export default observer(() => {
     <div className="App">
       <Header
         loggedUser={auth.user}
+        currentRating={gifs.currentRating}
+        search={gifs.currentSearch}
         onShowLoginModal={() => setLoginModalVisible(true)}
         onShowAddGifModal={() => setAddGifModalVisible(true)}
         onSearchChange={debouncedSetCurrentSearch}
-        currentRating={gifs.currentRating}
         onRatingChange={gifs.setCurrentRating}
       />
       <Content onSetSelectedGif={setSelectedGif} />

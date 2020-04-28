@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 
 import { addGifByUrl, getGifs, IGif } from '../api/gifs';
 import { Rating } from '../common/constants';
@@ -33,6 +33,13 @@ export default class {
     }
   }
 
+  @computed
+  private get search() {
+    return this.currentSearch && this.currentSearch.trim() !== ''
+      ? this.currentSearch.trim()
+      : undefined;
+  }
+
   @action
   public getGifs = async () => {
     try {
@@ -40,7 +47,7 @@ export default class {
         this.fetching = true;
         const gifs = await getGifs({
           before: this.gifs.length ? this.gifs[this.gifs.length - 1].id : undefined,
-          matching: this.currentSearch,
+          matching: this.search,
           rating: this.currentRating,
         });
         this.addGifsToCurrentCollection(gifs);
@@ -75,9 +82,8 @@ export default class {
 
   @action
   public setCurrentSearch = (search: string) => {
-    const trimmedSearch = search.trim();
-    if (this.currentSearch !== trimmedSearch) {
-      this.currentSearch = trimmedSearch === '' ? undefined : trimmedSearch;
+    if (this.currentSearch !== search) {
+      this.currentSearch = search === '' ? undefined : search;
       this.saveSearchToLocalstorage();
       this.gifs = [];
       this.getGifs();
