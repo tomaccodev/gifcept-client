@@ -29,11 +29,20 @@ const jsonFetch = <T>(url: string, init: RequestInit) =>
 export const get = <T>(url: string, init: RequestInit = getInitForGet()) =>
   jsonFetch<T>(url, init) as Promise<T>;
 
-export const post = <T>(url: string, data?: IDictionary, init: RequestInit = getInitForPost()) =>
-  jsonFetch<T>(url, {
+export const post = <T>(
+  url: string,
+  data?: IDictionary | FormData,
+  init: RequestInit = getInitForPost(),
+) => {
+  if (data instanceof FormData && init.headers) {
+    const headers = init.headers as any;
+    delete headers['content-type'];
+  }
+  return jsonFetch<T>(url, {
     ...init,
-    body: JSON.stringify(data),
+    body: data instanceof FormData ? data : JSON.stringify(data),
   }) as Promise<T>;
+};
 
 export const responselessPost = (
   url: string,

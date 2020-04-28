@@ -14,5 +14,17 @@
         display: block;
       }
     }
+
+    .dropzone {
+      height: 400px;
+
+      input {
+        display: none;
+      }
+    }
+
+    .dragging {
+      background-color: #4db8a0;
+    }
   }
 }

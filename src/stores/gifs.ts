@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx';
 
-import { addGifByUrl, getGifs, IGif } from '../api/gifs';
+import { addGifByFile, addGifByUrl, getGifs, IGif } from '../api/gifs';
 import { Rating } from '../common/constants';
 
 const LOCALSTORAGE_KEY = 'gifs-filtering';
@@ -63,6 +63,16 @@ export default class {
   public addGifByUrl = async (url: string) => {
     try {
       const gif = await addGifByUrl(url);
+      this.addGifsToCurrentCollection([gif]);
+    } catch (err) {
+      // tslint:disable-next-line:no-console
+      console.error(err);
+    }
+  };
+
+  @action addGifByFile = async (file: File) => {
+    try {
+      const gif = await addGifByFile(file);
       this.addGifsToCurrentCollection([gif]);
     } catch (err) {
       // tslint:disable-next-line:no-console

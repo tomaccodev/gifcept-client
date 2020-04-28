@@ -80,6 +80,7 @@ export default observer(() => {
         open={addGifModalVisible}
         onClose={() => setAddGifModalVisible(false)}
         onAddGifByUrl={gifs.addGifByUrl}
+        onAddGifByFile={gifs.addGifByFile}
       />
     </div>
   );
