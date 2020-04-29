@@ -45,7 +45,6 @@ export default observer(({ gif, onClick }: IGifProps) => {
   const store = useLocalStore(gifStore, gif);
   const copyGifUrl = useCallback(() => copy(`${window.location.origin}${gif.animationUrlPath}`), [
     gif,
-    gif.animationUrlPath,
   ]);
 
   return (
