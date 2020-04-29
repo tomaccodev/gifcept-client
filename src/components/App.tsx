@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import { observer, useLocalStore } from 'mobx-react';
-import React, { useCallback } from 'react';
+import React, { DragEvent, useCallback, useState } from 'react';
 
 import { IGif } from '../api/gifs';
 import useStores from '../hooks/useStores';
@@ -41,6 +41,8 @@ const appStore: () => IAppStore = () => ({
 
 const SEARCH_DEBOUNCE_DELAY = 300;
 
+const mime = 'image/gif';
+
 export default observer(() => {
   const { auth, gifs } = useStores();
   const {
@@ -53,13 +55,77 @@ export default observer(() => {
     setAddGifModalVisible,
   } = useLocalStore(appStore);
 
+  const [hovering, setHovering] = useState(false);
+  const [unhilightTimeout, setUnhilightTimeout] = useState<NodeJS.Timeout | undefined>(undefined);
+
+  const highlightDropZone = useCallback(
+    (ev: DragEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (unhilightTimeout) {
+        clearTimeout(unhilightTimeout);
+        setUnhilightTimeout(undefined);
+      }
+      if (!hovering) {
+        setHovering(true);
+      }
+    },
+    [setHovering, hovering, unhilightTimeout],
+  );
+  const unhighlightDropZone = useCallback(
+    (ev: DragEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (hovering && !unhilightTimeout) {
+        setUnhilightTimeout(
+          setTimeout(() => {
+            setHovering(false);
+          }, 0),
+        );
+      }
+    },
+    [setHovering, hovering, unhilightTimeout],
+  );
+  const handleDrop = useCallback(
+    async (ev: DragEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (unhilightTimeout) {
+        clearTimeout(unhilightTimeout);
+        setUnhilightTimeout(undefined);
+      }
+      const files = Array.from(ev.dataTransfer.files).filter((f) => f.type === mime);
+      const droppedUri = ev.dataTransfer.getData('text/uri-list');
+      const promises = [...files.map(gifs.addGifByFile)];
+      if (droppedUri) {
+        promises.push(gifs.addGifByUrl(droppedUri));
+      }
+      await Promise.all(promises);
+      setHovering(false);
+    },
+    [gifs, unhilightTimeout],
+  );
+
   const debouncedSetCurrentSearch = useCallback(
     debounce(gifs.setCurrentSearch, SEARCH_DEBOUNCE_DELAY),
     [gifs],
   );
 
+  const dropOverlay = hovering ? (
+    <div className="drop-overlay">
+      <h2>Drop files here</h2>
+    </div>
+  ) : null;
+
   return (
-    <div className="App">
+    <div
+      className="App"
+      onDragEnterCapture={highlightDropZone}
+      onDragOverCapture={highlightDropZone}
+      onDragLeaveCapture={unhighlightDropZone}
+      onDrop={handleDrop}
+    >
+      {dropOverlay}
       <Header
         loggedUser={auth.user}
         currentRating={gifs.currentRating}
