@@ -1,6 +1,6 @@
-let token: string;
+let token: string | undefined;
 
-export const setToken = (newToken: string) => {
+export const setToken = (newToken?: string) => {
   token = newToken;
 };
 

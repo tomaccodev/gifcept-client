@@ -4,6 +4,7 @@ import { action, computed, observable } from 'mobx';
 import { generateToken } from '../api/auth';
 import { setToken } from '../api/common/init';
 import { UserRole } from '../common/constants';
+import Emitter, { Events } from '../events';
 
 export interface ILoggedUser {
   username: string;
@@ -28,6 +29,9 @@ export default class {
 
   constructor() {
     try {
+      Emitter.on(Events.logout, () => {
+        this.setToken();
+      });
       // TODO: Handle persistence level
       const token = localStorage.getItem(LOCALSTORAGE_KEY);
 
@@ -52,16 +56,24 @@ export default class {
   };
 
   @action
-  private setToken(token: string) {
-    const { id, username, role } = jwtDecode(token);
+  private setToken = (token?: string) => {
     setToken(token);
+    if (token) {
+      const { id, username, role } = jwtDecode(token);
 
-    this.role = role as UserRole;
-    this.token = token;
-    this.userId = id;
-    this.username = username;
-    localStorage.setItem(LOCALSTORAGE_KEY, token);
-  }
+      this.role = role as UserRole;
+      this.token = token;
+      this.userId = id;
+      this.username = username;
+      localStorage.setItem(LOCALSTORAGE_KEY, token);
+    } else {
+      this.role = undefined;
+      this.token = undefined;
+      this.userId = undefined;
+      this.username = undefined;
+      localStorage.removeItem(LOCALSTORAGE_KEY);
+    }
+  };
 
   @computed
   get user() {
