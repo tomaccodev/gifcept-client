@@ -5,6 +5,10 @@
   border: 0;
 }
 
+*:focus {
+  outline: none;
+}
+
 html,
 body,
 div,

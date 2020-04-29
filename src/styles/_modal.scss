@@ -15,7 +15,7 @@
 
 .modal-wrapper {
   width: 95%;
-  max-width: 800px;
+  max-width: 600px;
   background-color: white;
   margin: 50px auto;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -90,8 +90,6 @@
     padding: 0 10px 10px;
 
     .main {
-      float: left;
-      width: 500px;
       max-width: 100%;
       text-align: center;
     }
