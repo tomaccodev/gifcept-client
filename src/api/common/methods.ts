@@ -1,4 +1,4 @@
-import Emitter, { Events } from '../../events';
+import Emitter, { Event } from '../../events';
 
 import { getInitForGet, getInitForPost } from './init';
 
@@ -8,7 +8,7 @@ interface IDictionary {
 
 const expectValidStatus = (res: Response) => {
   if (res.status === 401) {
-    Emitter.emit(Events.logout);
+    Emitter.emit(Event.logout);
   }
   if (res.status >= 400) {
     throw new Error(`Response with bad status ${res.status}`);

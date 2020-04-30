@@ -3,7 +3,10 @@ import { observer, useLocalStore } from 'mobx-react';
 import React, { DragEvent, useCallback, useState } from 'react';
 
 import { IGif } from '../api/gifs';
+import { Event } from '../events';
+import useEventEmitter from '../hooks/useEventEmitter';
 import useStores from '../hooks/useStores';
+import { GIF_MIME } from '../utils/constants';
 
 import AddGifModal from './addGifModal';
 import Content from './content';
@@ -40,8 +43,6 @@ const appStore: () => IAppStore = () => ({
 });
 
 const SEARCH_DEBOUNCE_DELAY = 300;
-
-const mime = 'image/gif';
 
 export default observer(() => {
   const { auth, gifs } = useStores();
@@ -94,7 +95,7 @@ export default observer(() => {
         clearTimeout(unhilightTimeout);
         setUnhilightTimeout(undefined);
       }
-      const files = Array.from(ev.dataTransfer.files).filter((f) => f.type === mime);
+      const files = Array.from(ev.dataTransfer.files).filter((f) => f.type === GIF_MIME);
       const droppedUri = ev.dataTransfer.getData('text/uri-list');
       const promises = [...files.map(gifs.addGifByFile)];
       if (droppedUri) {
@@ -105,6 +106,22 @@ export default observer(() => {
     },
     [gifs, unhilightTimeout],
   );
+
+  useEventEmitter<string>(Event.pasteURL, async (url) => {
+    if (!addGifModalVisible) {
+      setHovering(true);
+      await gifs.addGifByUrl(url);
+      setHovering(false);
+    }
+  });
+
+  useEventEmitter<File[]>(Event.pasteGifFiles, async (files) => {
+    if (!addGifModalVisible) {
+      setHovering(true);
+      await Promise.all(files.map(gifs.addGifByFile));
+      setHovering(false);
+    }
+  });
 
   const debouncedSetCurrentSearch = useCallback(
     debounce(gifs.setCurrentSearch, SEARCH_DEBOUNCE_DELAY),
@@ -120,10 +137,10 @@ export default observer(() => {
   return (
     <div
       className="App"
-      onDragEnterCapture={highlightDropZone}
-      onDragOverCapture={highlightDropZone}
-      onDragLeaveCapture={unhighlightDropZone}
-      onDrop={handleDrop}
+      onDragEnterCapture={auth.user && highlightDropZone}
+      onDragOverCapture={auth.user && highlightDropZone}
+      onDragLeaveCapture={auth.user && unhighlightDropZone}
+      onDrop={auth.user && handleDrop}
     >
       {dropOverlay}
       <Header

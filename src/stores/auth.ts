@@ -4,7 +4,7 @@ import { action, computed, observable } from 'mobx';
 import { generateToken } from '../api/auth';
 import { setToken } from '../api/common/init';
 import { UserRole } from '../common/constants';
-import Emitter, { Events } from '../events';
+import Emitter, { Event } from '../events';
 
 export interface ILoggedUser {
   username: string;
@@ -29,7 +29,7 @@ export default class {
 
   constructor() {
     try {
-      Emitter.on(Events.logout, () => {
+      Emitter.on(Event.logout, () => {
         this.setToken();
       });
       // TODO: Handle persistence level

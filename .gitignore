@@ -43,4 +43,6 @@ yarn-error.log*
 
 **/*.css
 
+config.json
+
 package-lock.json

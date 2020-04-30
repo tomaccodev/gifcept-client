@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import ReactModal from 'react-modal';
 
 import './AddGifModal.css';
@@ -11,12 +11,10 @@ interface IAddGifModalProps {
 }
 
 export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalProps) => {
-  const urlInput = useRef<HTMLInputElement>(null);
-  const addGifByUrl = useCallback(async () => {
-    await onAddGifByUrl(urlInput.current!.value);
-    onClose();
-  }, [urlInput, onAddGifByUrl, onClose]);
+  const [currentUrl, setCurrentUrl] = useState<string>('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
+  const [uploadingUrl, setUploadingUrl] = useState<boolean>(false);
 
   const onFileSelected = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
@@ -25,8 +23,18 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
     [setSelectedFiles],
   );
 
+  const addGifByUrl = useCallback(async () => {
+    setCurrentUrl('');
+    setUploadingUrl(true);
+    await onAddGifByUrl(currentUrl);
+    setUploadingUrl(false);
+    onClose();
+  }, [currentUrl, onAddGifByUrl, onClose]);
+
   const addGifsByFiles = useCallback(async () => {
+    setUploadingFiles(true);
     await Promise.all(selectedFiles.map(onAddGifByFile));
+    setUploadingFiles(true);
     onClose();
   }, [onClose, selectedFiles, onAddGifByFile]);
 
@@ -44,13 +52,16 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
       <div className="main-content">
         <div className="tab">
           <h3>Add a new gif from a url</h3>
-          Gif Url: <input ref={urlInput} type="url" />
-          <button onClick={addGifByUrl}>Submit</button>
+          Gif Url:{' '}
+          <input value={currentUrl} onChange={(ev) => setCurrentUrl(ev.target.value)} type="url" />
+          <button disabled={uploadingUrl} onClick={addGifByUrl}>
+            Submit
+          </button>
         </div>
         <div>
           <h3>Choose gif files from your computer</h3>
           <input onChange={onFileSelected} type="file" accept=".gif" multiple />
-          <button disabled={selectedFiles.length === 0} onClick={addGifsByFiles}>
+          <button disabled={selectedFiles.length === 0 || uploadingFiles} onClick={addGifsByFiles}>
             Submit
           </button>
         </div>
