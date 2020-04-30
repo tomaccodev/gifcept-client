@@ -6,7 +6,7 @@ module.exports = function (app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'https://dev.gifcept.com',
+      target: 'https://gifcept.com',
       changeOrigin: true,
     }),
   );
@@ -14,7 +14,7 @@ module.exports = function (app) {
   app.use(
     '/*.(jpg|gif)',
     createProxyMiddleware({
-      target: 'https://dev.gifcept.com',
+      target: 'https://gifcept.com',
       changeOrigin: true,
     }),
   );
