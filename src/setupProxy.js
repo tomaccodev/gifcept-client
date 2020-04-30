@@ -1,12 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
-
+const config = require('./config.json');
 
 module.exports = function (app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'https://gifcept.com',
+      target: config.proxy,
       changeOrigin: true,
     }),
   );
@@ -14,7 +13,7 @@ module.exports = function (app) {
   app.use(
     '/*.(jpg|gif)',
     createProxyMiddleware({
-      target: 'https://gifcept.com',
+      target: config.proxy,
       changeOrigin: true,
     }),
   );
