@@ -108,7 +108,7 @@ export default observer(() => {
   );
 
   useEventEmitter<string>(Event.pasteURL, async (url) => {
-    if (!addGifModalVisible) {
+    if (!addGifModalVisible && auth.user) {
       setHovering(true);
       await gifs.addGifByUrl(url);
       setHovering(false);
@@ -116,7 +116,7 @@ export default observer(() => {
   });
 
   useEventEmitter<File[]>(Event.pasteGifFiles, async (files) => {
-    if (!addGifModalVisible) {
+    if (!addGifModalVisible && auth.user) {
       setHovering(true);
       await Promise.all(files.map(gifs.addGifByFile));
       setHovering(false);
@@ -158,13 +158,14 @@ export default observer(() => {
         onClose={() => setLoginModalVisible(false)}
         onLogin={auth.login}
       />
-      <GifModal gif={selectedGif} onClose={clearSelectedGif} />
+      <GifModal loggedUser={auth.user} gif={selectedGif} onClose={clearSelectedGif} />
       <AddGifModal
         open={addGifModalVisible}
         onClose={() => setAddGifModalVisible(false)}
         onAddGifByUrl={gifs.addGifByUrl}
         onAddGifByFile={gifs.addGifByFile}
       />
+      <EditGifModal gif={editingGif} onClose={() => setEditingGif(undefined)} />
     </div>
   );
 });
