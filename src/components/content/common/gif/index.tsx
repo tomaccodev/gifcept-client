@@ -62,23 +62,23 @@ export default observer(({ gif, onClick }: IGifProps) => {
         style={{ backgroundImage: `url(${store.imageUrl})`, backgroundColor: gif.color }}
         onClick={onClick}
       />
-      <div className="block-item-bottom">
+      <div>
         <ul className="block-item-main-actions">
-          <li className="block-item-like">
+          <li>
             <i className="material-icons">favorite_border</i>
-            <span className="block-item-like-counter">{gif.likesCount}</span>
+            <span>{gif.likesCount}</span>
           </li>
-          <li className="block-item-comment">
+          <li>
             <i className="material-icons">forum</i>
-            <span className="block-item-comment-counter">{gif.commentsCount}</span>
+            <span>{gif.commentsCount}</span>
           </li>
-          <li className="block-item-recept">
+          <li>
             <i className="material-icons">reply_all</i>
-            <span className="block-item-recept-counter">{gif.sharesCount}</span>
+            <span>{gif.sharesCount}</span>
           </li>
-          <li className="block-item-views">
+          <li>
             <i className="material-icons">visibility</i>
-            <span className="block-item-views-counter">{gif.viewsCount}</span>
+            <span>{gif.viewsCount}</span>
           </li>
         </ul>
         <Link className="block-item-uploader" to={`/${gif.userId}/gifs`}>
@@ -87,7 +87,7 @@ export default observer(({ gif, onClick }: IGifProps) => {
             className="block-item-uploader-avatar"
             alt="Periquito de los Palotes"
           />
-          <span className="block-item-uploader-name">{gif.userName}</span>
+          <span>{gif.userName}</span>
         </Link>
       </div>
     </div>

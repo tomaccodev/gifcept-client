@@ -66,7 +66,7 @@ export default observer(
 
     const addNewGifButton = loggedUser && (
       <button
-        className="header-button header-button-add-gif hide-on-mobile"
+        className="header-button hide-on-mobile"
         title="Add new gif"
         onClick={onShowAddGifModal}
       >

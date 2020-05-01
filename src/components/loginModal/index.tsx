@@ -35,7 +35,7 @@ export default observer(({ isOpen, onClose, onLogin }: ILoginModalProps) => {
     <ReactModal isOpen={isOpen} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
       <div className="topbar">
         <div className="topbar-right">
-          <button onClick={onClose} className="header-button gif-popup-button-close" title="Close">
+          <button onClick={onClose} className="header-button" title="Close">
             <i className="material-icons">close</i>
           </button>
         </div>

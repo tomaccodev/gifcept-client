@@ -12,7 +12,7 @@ interface ISubHeaderProps {
 export default ({ loggedUser }: ISubHeaderProps) => {
   const myGifsLink = !!loggedUser ? (
     <Link to="/myGifs" className="subheader-button">
-      <span className="subheader-button-text">Your gifs</span>
+      <span>Your gifs</span>
     </Link>
   ) : null;
 
@@ -20,7 +20,7 @@ export default ({ loggedUser }: ISubHeaderProps) => {
     <div className="subheader">
       <div className="subheader-wrapper">
         <Link to="/" className="subheader-button">
-          <span className="subheader-button-text">All gifs</span>
+          <span>All gifs</span>
         </Link>
         {myGifsLink}
       </div>
