@@ -44,7 +44,7 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
         <div className="topbar-left"></div>
         <div className="topbar-right">
           <button onClick={onClose} className="header-button gif-popup-button-close" title="Close">
-            <i className="material-icons"></i>
+            <i className="material-icons">close</i>
           </button>
         </div>
         <div className="clearfix" />

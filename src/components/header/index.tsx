@@ -52,7 +52,7 @@ export default observer(
         </button>
         {ratingSelector}
         <button className="header-button" title="Your Notifications">
-          <i className="material-icons">&#xE7F5;</i>
+          <i className="material-icons">notifications_none</i>
         </button>
       </>
     ) : (
@@ -70,7 +70,7 @@ export default observer(
         title="Add new gif"
         onClick={onShowAddGifModal}
       >
-        <i className="material-icons">&#xE145;</i>
+        <i className="material-icons">add</i>
       </button>
     );
 
@@ -81,7 +81,7 @@ export default observer(
             <div className="header-left">
               {addNewGifButton}
               <div className="header-button header-search" title="Search gifs">
-                <i className="material-icons">&#xE8B6;</i>
+                <i className="material-icons">search</i>
                 <input
                   type="text"
                   value={searchValue}

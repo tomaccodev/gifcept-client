@@ -32,7 +32,7 @@ export default ({ comment, loggedUser }: ICommentProps) => {
           <button className="gif-single-comment-tools-like">Like</button>
           {editButton}
           <button className="gif-single-comment-tools-like-counter">
-            <i className="material-icons"></i>
+            <i className="material-icons">forum</i>
             <span className="gif-single-comment-tools-like-counter-text">3</span>
           </button>
           <span className="gif-single-comment-tools-time">{moment(comment.created).fromNow()}</span>
