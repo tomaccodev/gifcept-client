@@ -1,0 +1,28 @@
+@import '../../styles/variables';
+@import '../../styles/modal';
+
+.modal-wrapper {
+  .main-content {
+    padding: 0 10px 10px;
+
+    .main {
+      width: 100%;
+      .gif {
+        display: block;
+        width: 100%;
+      }
+      .gif img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .info-wrapper {
+    width: 100%;
+    clear: both;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    font-size: 13px;
+    color: #333;
+  }
+}

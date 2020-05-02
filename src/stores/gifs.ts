@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx';
 
-import { addGifByFile, addGifByUrl, getGifs, IGif } from '../api/gifs';
+import { addGifByFile, addGifByUrl, getGifs, IGif, IGifPatch, updateGif } from '../api/gifs';
 import { Rating } from '../common/constants';
 
 const LOCALSTORAGE_KEY = 'gifs-filtering';
@@ -119,4 +119,11 @@ export default class {
       }
     }
   }
+
+  @action
+  public updateGif = async (gif: IGif, updatedInfo: IGifPatch) => {
+    const updatedGif = await updateGif(gif, updatedInfo);
+    gif.description = updatedGif.description;
+    gif.tags = updatedGif.tags;
+  };
 }

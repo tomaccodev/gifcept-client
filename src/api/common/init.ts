@@ -31,3 +31,8 @@ export const getInitForPost: () => RequestInit = () => ({
   ...getDefaultInit(),
   method: 'POST',
 });
+
+export const getInitForPatch: () => RequestInit = () => ({
+  ...getDefaultInit(),
+  method: 'PATCH',
+});

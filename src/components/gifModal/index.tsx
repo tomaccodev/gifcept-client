@@ -14,9 +14,10 @@ interface IGifModalProps {
   loggedUser?: ILoggedUser;
   gif?: IGif;
   onClose: () => void;
+  onEdit: (gif: IGif) => void;
 }
 
-export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
+export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
   const copyGifUrl = useCallback(() => {
     if (gif) {
       copy(`${window.location.origin}${gif.animationUrlPath}`);
@@ -29,6 +30,7 @@ export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
       title="Edit"
       onClick={() => {
         onClose();
+        onEdit(gif);
       }}
     >
       <i className="material-icons">edit</i>
