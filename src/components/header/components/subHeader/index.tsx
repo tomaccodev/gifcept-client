@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { ILoggedUser } from '../../../../stores/auth';
 
-import './SubHeader.scss';
+import styles from './SubHeader.module.scss';
 
 interface ISubHeaderProps {
   loggedUser?: ILoggedUser;
@@ -11,15 +11,15 @@ interface ISubHeaderProps {
 
 export default ({ loggedUser }: ISubHeaderProps) => {
   const myGifsLink = !!loggedUser ? (
-    <Link to="/myGifs" className="subheader-button">
+    <Link to="/myGifs" className={styles['subheader-button']}>
       <span>Your gifs</span>
     </Link>
   ) : null;
 
   return (
-    <div className="subheader">
-      <div className="subheader-wrapper">
-        <Link to="/" className="subheader-button">
+    <div className={styles.subheader}>
+      <div className={styles['subheader-wrapper']}>
+        <Link to="/" className={styles['subheader-button']}>
           <span>All gifs</span>
         </Link>
         {myGifsLink}

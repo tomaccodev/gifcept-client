@@ -7,7 +7,7 @@ import { ILoggedUser } from '../../stores/auth';
 
 import RatingSelector from './components/ratingSelector';
 import SubHeader from './components/subHeader';
-import './Header.scss';
+import styles from './Header.module.scss';
 import logo from './images/logo.png';
 
 interface IHeaderProps {
@@ -46,18 +46,18 @@ export default observer(
 
     const rightSideButtons = loggedUser ? (
       <>
-        <span className="header-user-name">{loggedUser.username}</span>
-        <button className="header-button header-avatar" title="Your Profile">
+        <span className={styles['header-user-name']}>{loggedUser.username}</span>
+        <button className={styles['header-avatar']} title="Your Profile">
           <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
         </button>
         {ratingSelector}
-        <button className="header-button" title="Your Notifications">
+        <button className={styles['header-button']} title="Your Notifications">
           <i className="material-icons">notifications_none</i>
         </button>
       </>
     ) : (
       <>
-        <button className="header-button" title="Login" onClick={onShowLoginModal}>
+        <button className={styles['header-button']} title="Login" onClick={onShowLoginModal}>
           <i className="material-icons">face</i>
         </button>
         {ratingSelector}
@@ -66,7 +66,7 @@ export default observer(
 
     const addNewGifButton = loggedUser && (
       <button
-        className="header-button hide-on-mobile"
+        className={`${styles['header-button']} ${styles['hide-on-mobile']}`}
         title="Add new gif"
         onClick={onShowAddGifModal}
       >
@@ -76,11 +76,11 @@ export default observer(
 
     return (
       <div>
-        <header className="header">
-          <div className="header-wrapper">
-            <div className="header-left">
+        <header className={styles.header}>
+          <div className={styles['header-wrapper']}>
+            <div className={styles['header-left']}>
               {addNewGifButton}
-              <div className="header-button header-search" title="Search gifs">
+              <div className={styles['header-search']} title="Search gifs">
                 <i className="material-icons">search</i>
                 <input
                   type="text"
@@ -91,9 +91,8 @@ export default observer(
               </div>
             </div>
 
-            <div className="header-right">{rightSideButtons}</div>
-            <div className="clearfix" />
-            <div className="header-logo-wrapper">
+            <div className={styles['header-right']}>{rightSideButtons}</div>
+            <div className={styles['header-logo-wrapper']}>
               <Link to={'/'}>
                 <img src={logo} alt="Gifcept" />
               </Link>
