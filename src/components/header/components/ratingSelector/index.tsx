@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import { Rating } from '../../../../common/constants';
 
-import './RatingSelector.css';
+import './RatingSelector.scss';
 
 interface IRaringSelectorPropps {
   currentRating: Rating;

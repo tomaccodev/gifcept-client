@@ -2,7 +2,7 @@ import { observer, useLocalStore } from 'mobx-react';
 import React from 'react';
 import ReactModal from 'react-modal';
 
-import './LoginModal.css';
+import './LoginModal.scss';
 
 interface ILoginModalProps {
   isOpen: boolean;

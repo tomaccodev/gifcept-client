@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 
 import { IGif, IGifPatch } from '../../api/gifs';
 
-import './EditGifModal.css';
+import './EditGifModal.scss';
 
 interface IEditGifModalProps {
   gif?: IGif;

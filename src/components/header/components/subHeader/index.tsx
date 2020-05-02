@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { ILoggedUser } from '../../../../stores/auth';
 
-import './SubHeader.css';
+import './SubHeader.scss';
 
 interface ISubHeaderProps {
   loggedUser?: ILoggedUser;

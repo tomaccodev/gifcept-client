@@ -8,10 +8,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn build-css && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "prettify": "prettier --write",
     "prettify-all": "yarn prettify \"{src,__tests__}/**/*.{ts,tsx}\"",
     "lint": "tslint -c tslint.json 'src/**/*.ts{,x}'",
@@ -49,10 +47,10 @@
     "@types/react-router-dom": "^5.1.5",
     "husky": "^4.2.4",
     "lint-staged": "^10.2.2",
-    "node-sass-chokidar": "^1.4.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "tslint": "^6.1.2"
+    "tslint": "^6.1.2",
+    "typescript-plugin-css-modules": "^2.3.0"
   },
   "eslintConfig": {
     "extends": "react-app"

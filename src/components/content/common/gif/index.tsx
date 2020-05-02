@@ -7,7 +7,7 @@ import { IGif } from '../../../../api/gifs';
 import { copy } from '../../../../utils/clipboard';
 import imagePreloader from '../../../../utils/imagePreloader';
 
-import './Gif.css';
+import './Gif.scss';
 
 interface IGifProps {
   gif: IGif;

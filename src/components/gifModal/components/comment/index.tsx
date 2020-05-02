@@ -4,7 +4,7 @@ import React from 'react';
 import { IComment } from '../../../../api/gifs';
 import { ILoggedUser } from '../../../../stores/auth';
 
-import './Comment.css';
+import './Comment.scss';
 
 interface ICommentProps {
   comment: IComment;

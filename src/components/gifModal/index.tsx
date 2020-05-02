@@ -8,7 +8,7 @@ import { ILoggedUser } from '../../stores/auth';
 import { copy } from '../../utils/clipboard';
 
 import Comment from './components/comment';
-import './GifModal.css';
+import './GifModal.scss';
 
 interface IGifModalProps {
   loggedUser?: ILoggedUser;

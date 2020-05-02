@@ -7,7 +7,7 @@ import { ILoggedUser } from '../../stores/auth';
 
 import RatingSelector from './components/ratingSelector';
 import SubHeader from './components/subHeader';
-import './Header.css';
+import './Header.scss';
 import logo from './images/logo.png';
 
 interface IHeaderProps {

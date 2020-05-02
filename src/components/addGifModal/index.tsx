@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import ReactModal from 'react-modal';
 
-import './AddGifModal.css';
+import './AddGifModal.scss';
 
 interface IAddGifModalProps {
   open: boolean;
