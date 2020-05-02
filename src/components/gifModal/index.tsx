@@ -8,7 +8,7 @@ import { ILoggedUser } from '../../stores/auth';
 import { copy } from '../../utils/clipboard';
 
 import Comment from './components/comment';
-import './GifModal.scss';
+import styles from './GifModal.module.scss';
 
 interface IGifModalProps {
   loggedUser?: ILoggedUser;
@@ -26,7 +26,7 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
 
   const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
     <button
-      className="header-button"
+      className={styles['header-button']}
       title="Edit"
       onClick={() => {
         onClose();
@@ -38,42 +38,43 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
   );
 
   return (
-    <ReactModal isOpen={!!gif} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
-      <div className="topbar">
-        <div className="topbar-left">
-          <button className="action-button" title="Like" disabled={!loggedUser}>
+    <ReactModal
+      isOpen={!!gif}
+      className={styles['modal-wrapper']}
+      overlayClassName={styles['modal-overlay-wrapper']}
+    >
+      <div className={styles.topbar}>
+        <div className={styles['topbar-right']}>
+          {editButton}
+          <button onClick={onClose} className={styles['header-button']} title="Close">
+            <i className="material-icons">close</i>
+          </button>
+        </div>
+        <div className={styles['topbar-left']}>
+          <button className={styles['action-button']} title="Like" disabled={!loggedUser}>
             <i className="material-icons">favorite</i>
             <span>Like ({gif && gif.likesCount})</span>
           </button>
-          <button className="action-button" title="Recept" disabled={!loggedUser}>
+          <button className={styles['action-button']} title="Recept" disabled={!loggedUser}>
             <i className="material-icons">reply_all</i>
             <span>Recept ({gif && gif.sharesCount})</span>
           </button>
         </div>
-        <div className="topbar-right">
-          {editButton}
-          <button onClick={onClose} className="header-button" title="Close">
-            <i className="material-icons">close</i>
-          </button>
-        </div>
-        <div className="clearfix" />
       </div>
-      <div className="main-title">{gif && gif.description}</div>
-      <div className="main-content">
-        <div className="main">
-          <button className="gif">
+      <div className={styles['main-title']}>{gif && gif.description}</div>
+      <div className={styles['main-content']}>
+        <div className={styles.main}>
+          <button className={styles.gif}>
             <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
           </button>
-          <div className="share-wrapper" onClick={copyGifUrl}>
-            Share
-          </div>
+          <div onClick={copyGifUrl}>Share</div>
         </div>
-        <div className="comment-wrapper">
+        <div className={styles['comment-wrapper']}>
           {gif &&
             gif.comments.map((c) => <Comment comment={c} key={c.id} loggedUser={loggedUser} />)}
         </div>
       </div>
-      <div className="info-wrapper">
+      <div className={styles['info-wrapper']}>
         tags: {gif && gif.tags.join(', ')}
         <br />
         uploaded by{' '}

@@ -4,7 +4,7 @@ import React from 'react';
 import { IComment } from '../../../../api/gifs';
 import { ILoggedUser } from '../../../../stores/auth';
 
-import './Comment.scss';
+import styles from './Comment.module.scss';
 
 interface ICommentProps {
   comment: IComment;
@@ -12,23 +12,22 @@ interface ICommentProps {
 }
 
 export default ({ comment, loggedUser }: ICommentProps) => {
-  const editButton =
-    loggedUser && comment.user.id === loggedUser.id ? (
-      <button className="gif-single-comment-tools-edit">Edit</button>
-    ) : null;
+  const editButton = loggedUser && comment.user.id === loggedUser.id ? <button>Edit</button> : null;
 
   return (
-    <div className="gif-single-comment-wrapper">
+    <div className={styles['gif-single-comment-wrapper']}>
       <div
-        className="gif-single-comment-author-pic"
+        className={styles['gif-single-comment-author-pic']}
         style={{ backgroundImage: 'url(https://via.placeholder.com/150x150)' }}
       />
-      <div className="gif-single-comment-content">
+      <div className={styles['gif-single-comment-content']}>
         <div>
-          <button className="gif-single-comment-author-name">{comment.user.username}</button>
+          <button className={styles['gif-single-comment-author-name']}>
+            {comment.user.username}
+          </button>
           {comment.text}
         </div>
-        <div className="gif-single-comment-tools">
+        <div className={styles['gif-single-comment-tools']}>
           <button>Like</button>
           {editButton}
           <button>

@@ -28,6 +28,7 @@
   .topbar {
     display: flex;
     flex-direction: row-reverse;
+    justify-content: space-between;
     background-color: #b0bcb7;
     min-height: 30px;
     padding: 10px;
