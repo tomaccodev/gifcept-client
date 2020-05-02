@@ -2,7 +2,7 @@ import { format } from 'url';
 
 import { Rating } from '../common/constants';
 
-import { get, post } from './common/methods';
+import { get, patch, post } from './common/methods';
 import { IApiModel } from './common/model';
 
 interface IUser extends IApiModel {
@@ -43,6 +43,11 @@ export interface IGetGifsOptions {
   rating?: Rating;
 }
 
+export interface IGifPatch {
+  description: string;
+  tags: string[];
+}
+
 const normalizeGif = (gif: IServerGif) => ({
   ...gif,
   animationUrlPath: `/${gif.shortId}.gif`,
@@ -81,3 +86,6 @@ export const addGifByUrl = (url: string) =>
   post<IServerGif>('/api/gifs', {
     url,
   }).then(normalizeGif);
+
+export const updateGif = (gif: IGif, updatedInfo: IGifPatch) =>
+  patch<IServerGif>(`/api/gifs/${gif.id}`, updatedInfo).then(normalizeGif);

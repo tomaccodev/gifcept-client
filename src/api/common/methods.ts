@@ -1,6 +1,6 @@
 import Emitter, { Event } from '../../events';
 
-import { getInitForGet, getInitForPost } from './init';
+import { getInitForGet, getInitForPatch, getInitForPost } from './init';
 
 interface IDictionary {
   [key: string]: any;
@@ -38,6 +38,21 @@ export const post = <T>(
   url: string,
   data?: IDictionary | FormData,
   init: RequestInit = getInitForPost(),
+) => {
+  if (data instanceof FormData && init.headers) {
+    const headers = init.headers as any;
+    delete headers['content-type'];
+  }
+  return jsonFetch<T>(url, {
+    ...init,
+    body: data instanceof FormData ? data : JSON.stringify(data),
+  }) as Promise<T>;
+};
+
+export const patch = <T>(
+  url: string,
+  data?: IDictionary | FormData,
+  init: RequestInit = getInitForPatch(),
 ) => {
   if (data instanceof FormData && init.headers) {
     const headers = init.headers as any;

@@ -14,10 +14,10 @@ interface IGifModalProps {
   loggedUser?: ILoggedUser;
   gif?: IGif;
   onClose: () => void;
-  // onLike: () => void;
+  onEdit: (gif: IGif) => void;
 }
 
-export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
+export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
   const copyGifUrl = useCallback(() => {
     if (gif) {
       copy(`${window.location.origin}${gif.animationUrlPath}`);
@@ -25,8 +25,15 @@ export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
   }, [gif]);
 
   const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
-    <button className="header-button" title="Edit">
-      <i className="material-icons"></i>
+    <button
+      className="header-button"
+      title="Edit"
+      onClick={() => {
+        onClose();
+        onEdit(gif);
+      }}
+    >
+      <i className="material-icons">edit</i>
     </button>
   );
 
@@ -34,21 +41,19 @@ export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
     <ReactModal isOpen={!!gif} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
       <div className="topbar">
         <div className="topbar-left">
-          <button className="action-button gif-popup-like-button" title="Like" /*onClick={onLike}*/>
-            <i className="material-icons"></i>
-            <span className="action-button-text">Like</span>
-            <span className="action-button-counter">({gif && gif.likesCount})</span>
+          <button className="action-button" title="Like" disabled={!loggedUser}>
+            <i className="material-icons">favorite</i>
+            <span>Like ({gif && gif.likesCount})</span>
           </button>
-          <button className="action-button gif-popup-like-recept" title="Recept">
-            <i className="material-icons"></i>
-            <span className="action-button-text">Recept</span>
-            <span className="action-button-counter">({gif && gif.sharesCount})</span>
+          <button className="action-button" title="Recept" disabled={!loggedUser}>
+            <i className="material-icons">reply_all</i>
+            <span>Recept ({gif && gif.sharesCount})</span>
           </button>
         </div>
         <div className="topbar-right">
           {editButton}
-          <button onClick={onClose} className="header-button gif-popup-button-close" title="Close">
-            <i className="material-icons"></i>
+          <button onClick={onClose} className="header-button" title="Close">
+            <i className="material-icons">close</i>
           </button>
         </div>
         <div className="clearfix" />
@@ -75,7 +80,7 @@ export default ({ loggedUser, gif, onClose }: IGifModalProps) => {
         <Link onClick={onClose} to={gif ? `/${gif.userId}/gifs` : ''}>
           {gif && gif.userName}
         </Link>{' '}
-        <span className="comment-tools-time">{gif && moment(gif.created).fromNow()}</span>
+        <span>{gif && moment(gif.created).fromNow()}</span>
       </div>
     </ReactModal>
   );

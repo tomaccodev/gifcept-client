@@ -10,6 +10,7 @@ import { GIF_MIME } from '../utils/constants';
 
 import AddGifModal from './addGifModal';
 import Content from './content';
+import EditGifModal from './editGifModal';
 import GifModal from './gifModal';
 import Header from './header';
 import LoginModal from './loginModal';
@@ -58,6 +59,7 @@ export default observer(() => {
 
   const [hovering, setHovering] = useState(false);
   const [unhilightTimeout, setUnhilightTimeout] = useState<NodeJS.Timeout | undefined>(undefined);
+  const [editingGif, setEditingGif] = useState<IGif>();
 
   const highlightDropZone = useCallback(
     (ev: DragEvent<HTMLDivElement>) => {
@@ -108,7 +110,7 @@ export default observer(() => {
   );
 
   useEventEmitter<string>(Event.pasteURL, async (url) => {
-    if (!addGifModalVisible) {
+    if (!addGifModalVisible && auth.user) {
       setHovering(true);
       await gifs.addGifByUrl(url);
       setHovering(false);
@@ -116,7 +118,7 @@ export default observer(() => {
   });
 
   useEventEmitter<File[]>(Event.pasteGifFiles, async (files) => {
-    if (!addGifModalVisible) {
+    if (!addGifModalVisible && auth.user) {
       setHovering(true);
       await Promise.all(files.map(gifs.addGifByFile));
       setHovering(false);
@@ -158,12 +160,22 @@ export default observer(() => {
         onClose={() => setLoginModalVisible(false)}
         onLogin={auth.login}
       />
-      <GifModal gif={selectedGif} onClose={clearSelectedGif} />
+      <GifModal
+        loggedUser={auth.user}
+        gif={selectedGif}
+        onClose={clearSelectedGif}
+        onEdit={setEditingGif}
+      />
       <AddGifModal
         open={addGifModalVisible}
         onClose={() => setAddGifModalVisible(false)}
         onAddGifByUrl={gifs.addGifByUrl}
         onAddGifByFile={gifs.addGifByFile}
+      />
+      <EditGifModal
+        gif={editingGif}
+        onClose={() => setEditingGif(undefined)}
+        onSave={gifs.updateGif}
       />
     </div>
   );

@@ -24,18 +24,18 @@ export default ({ comment, loggedUser }: ICommentProps) => {
         style={{ backgroundImage: 'url(https://via.placeholder.com/150x150)' }}
       />
       <div className="gif-single-comment-content">
-        <div className="gif-single-comment-content-text">
+        <div>
           <button className="gif-single-comment-author-name">{comment.user.username}</button>
           {comment.text}
         </div>
         <div className="gif-single-comment-tools">
-          <button className="gif-single-comment-tools-like">Like</button>
+          <button>Like</button>
           {editButton}
-          <button className="gif-single-comment-tools-like-counter">
-            <i className="material-icons"></i>
-            <span className="gif-single-comment-tools-like-counter-text">3</span>
+          <button>
+            <i className="material-icons">forum</i>
+            <span>3</span>
           </button>
-          <span className="gif-single-comment-tools-time">{moment(comment.created).fromNow()}</span>
+          <span>{moment(comment.created).fromNow()}</span>
         </div>
       </div>
     </div>
