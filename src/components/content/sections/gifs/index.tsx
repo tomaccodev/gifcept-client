@@ -5,6 +5,7 @@ import { IGif } from '../../../../api/gifs';
 import useScrollPosition from '../../../../hooks/useScrollPosition';
 import useStores from '../../../../hooks/useStores';
 import Gif from '../../common/gif';
+import styles from '../../Content.module.scss';
 
 interface IGifsProps {
   mode: string;
@@ -24,7 +25,7 @@ export default observer(({ mode, onSetSelectedGif }: IGifsProps) => {
   }, [scrollPosition, gifs.gifs, gifs]);
 
   return (
-    <div className="blocks-container">
+    <div className={styles['blocks-container']}>
       {gifs.gifs.map((g) => (
         <Gif key={g.id} gif={g} onClick={() => onSetSelectedGif(g)} />
       ))}

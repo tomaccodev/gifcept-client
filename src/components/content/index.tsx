@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { IGif } from '../../api/gifs';
 
-import './Content.scss';
+import './Content.module.scss';
 import Gifs from './sections/gifs';
 
 interface IContent {
