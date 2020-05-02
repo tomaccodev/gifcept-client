@@ -41,8 +41,13 @@ export default observer(
         onSearchChange(ev.target.value);
         changeSearchValue(ev.target.value);
       },
-      [changeSearchValue, onSearchChange],
+      [onSearchChange],
     );
+
+    const clearSearchCallback = useCallback(() => {
+      onSearchChange('');
+      changeSearchValue('');
+    }, [onSearchChange]);
 
     const rightSideButtons = loggedUser ? (
       <>
@@ -81,7 +86,9 @@ export default observer(
             <div className={styles['header-left']}>
               {addNewGifButton}
               <div className={styles['header-search']} title="Search gifs">
-                <i className="material-icons">search</i>
+                <button onClick={clearSearchCallback}>
+                  <i className="material-icons">{searchValue ? 'clear' : 'search'}</i>
+                </button>
                 <input
                   type="text"
                   value={searchValue}
