@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import ReactModal from 'react-modal';
 
-import './AddGifModal.css';
+import styles from './AddGifModal.module.scss';
 
 interface IAddGifModalProps {
   open: boolean;
@@ -39,18 +39,20 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
   }, [onClose, selectedFiles, onAddGifByFile]);
 
   return (
-    <ReactModal isOpen={open} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
-      <div className="topbar">
-        <div className="topbar-left"></div>
-        <div className="topbar-right">
-          <button onClick={onClose} className="header-button" title="Close">
+    <ReactModal
+      isOpen={open}
+      className={styles['modal-wrapper']}
+      overlayClassName={styles['modal-overlay-wrapper']}
+    >
+      <div className={styles.topbar}>
+        <div className={styles['topbar-right']}>
+          <button onClick={onClose} className={styles['header-button']} title="Close">
             <i className="material-icons">close</i>
           </button>
         </div>
-        <div className="clearfix" />
       </div>
-      <div className="main-content">
-        <div className="tab">
+      <div className={styles['main-content']}>
+        <div className={styles.tab}>
           <h3>Add a new gif from a url</h3>
           Gif Url:{' '}
           <input value={currentUrl} onChange={(ev) => setCurrentUrl(ev.target.value)} type="url" />

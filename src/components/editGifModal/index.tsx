@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 
 import { IGif, IGifPatch } from '../../api/gifs';
 
-import './EditGifModal.css';
+import styles from './EditGifModal.module.scss';
 
 interface IEditGifModalProps {
   gif?: IGif;
@@ -32,30 +32,33 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
   }, [description, gif, onClose, onSave, tags]);
 
   return (
-    <ReactModal isOpen={!!gif} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
-      <div className="topbar">
-        <div className="topbar-right">
-          <button onClick={save} disabled={saving} className="header-button" title="Save">
+    <ReactModal
+      isOpen={!!gif}
+      className={styles['modal-wrapper']}
+      overlayClassName={styles['modal-overlay-wrapper']}
+    >
+      <div className={styles.topbar}>
+        <div className={styles['topbar-right']}>
+          <button onClick={save} disabled={saving} className={styles['header-button']} title="Save">
             <i className="material-icons">save</i>
           </button>
-          <button onClick={onClose} className="header-button" title="Close">
+          <button onClick={onClose} className={styles['header-button']} title="Close">
             <i className="material-icons">close</i>
           </button>
         </div>
-        <div className="clearfix" />
       </div>
-      <div className="main-title">
+      <div className={styles['main-title']}>
         Description:{' '}
         <input type="text" value={description} onChange={(ev) => setDescription(ev.target.value)} />
       </div>
-      <div className="main-content">
-        <div className="main">
-          <button className="gif">
-            <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
+      <div className={styles['main-content']}>
+        <div className={styles.main}>
+          <button className={styles.gif}>
+            <img src={gif && gif.animationUrlPath} alt={gif?.description} />
           </button>
         </div>
       </div>
-      <div className="info-wrapper">
+      <div className={styles['info-wrapper']}>
         tags: <input type="text" value={tags} onChange={(ev) => setTags(ev.target.value)} />
       </div>
     </ReactModal>
