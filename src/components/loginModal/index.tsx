@@ -2,7 +2,7 @@ import { observer, useLocalStore } from 'mobx-react';
 import React from 'react';
 import ReactModal from 'react-modal';
 
-import './LoginModal.scss';
+import styles from './LoginModal.module.scss';
 
 interface ILoginModalProps {
   isOpen: boolean;
@@ -32,16 +32,19 @@ export default observer(({ isOpen, onClose, onLogin }: ILoginModalProps) => {
   };
 
   return (
-    <ReactModal isOpen={isOpen} className="modal-wrapper" overlayClassName="modal-overlay-wrapper">
-      <div className="topbar">
-        <div className="topbar-right">
-          <button onClick={onClose} className="header-button" title="Close">
+    <ReactModal
+      isOpen={isOpen}
+      className={styles['modal-wrapper']}
+      overlayClassName={styles['modal-overlay-wrapper']}
+    >
+      <div className={styles.topbar}>
+        <div className={styles['topbar-right']}>
+          <button onClick={onClose} className={styles['header-button']} title="Close">
             <i className="material-icons">close</i>
           </button>
         </div>
-        <div className="clearfix" />
       </div>
-      <div className="main-content">
+      <div className={styles['main-content']}>
         <div>
           <div>
             Username:

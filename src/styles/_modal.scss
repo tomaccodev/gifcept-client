@@ -1,3 +1,6 @@
+@import './variables';
+@import './common';
+
 .modal-overlay-wrapper {
   position: fixed;
   width: 100%;
@@ -23,6 +26,8 @@
   -webkit-overflow-scrolling: touch;
 
   .topbar {
+    display: flex;
+    flex-direction: row-reverse;
     background-color: #b0bcb7;
     min-height: 30px;
     padding: 10px;
@@ -31,7 +36,7 @@
     font-size: 0;
 
     .topbar-left {
-      float: left;
+      display: flex;
 
       .action-button {
         margin-right: 5px;
@@ -59,7 +64,7 @@
         }
       }
 
-      .action-button .material-icons {
+      .action-button i {
         position: absolute;
         color: #fff;
         top: 6px;
@@ -76,10 +81,13 @@
     }
 
     .topbar-right {
-      float: right;
+      display: flex;
 
       .header-button {
+        @extend .header-button;
         margin-left: 5px;
+        width: 30px;
+        height: 30px;
       }
     }
   }

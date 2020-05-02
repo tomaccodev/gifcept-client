@@ -1,7 +1,5 @@
 @import 'styles/variables';
 @import 'styles/reset';
-@import 'styles/helpers';
-@import 'styles/layout';
 
 * {
   box-sizing: border-box;
@@ -23,8 +21,4 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.clearfix {
-  clear: both;
 }

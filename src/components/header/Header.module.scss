@@ -1,5 +1,6 @@
 @import '../../styles/variables';
 @import '../../styles/helpers.scss';
+@import '../../styles/common.scss';
 
 .header {
   background-color: $main-color;
@@ -37,28 +38,6 @@
     &:hover {
       opacity: 1;
     }
-  }
-}
-
-.header-button {
-  display: inline-block;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-  background-color: #4db8a0;
-  background-color: rgba(255, 255, 255, 0.3);
-  transition: all 0.3s;
-  position: relative;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  i {
-    position: absolute;
-    color: #fff;
-    top: 3px;
-    left: 3px;
   }
 }
 
