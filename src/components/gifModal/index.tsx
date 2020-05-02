@@ -65,7 +65,7 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
       <div className={styles['main-content']}>
         <div className={styles.main}>
           <button className={styles.gif}>
-            <img src={gif && gif.animationUrlPath} alt="gif name, gif tags" />
+            <img src={gif && gif.animationUrlPath} alt={gif?.description} />
           </button>
           <div onClick={copyGifUrl}>Share</div>
         </div>
