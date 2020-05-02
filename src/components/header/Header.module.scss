@@ -1,0 +1,114 @@
+@import '../../styles/variables';
+@import '../../styles/helpers.scss';
+@import '../../styles/common.scss';
+
+.header {
+  background-color: $main-color;
+  color: #fff;
+  clear: both;
+  height: 40px;
+  padding: 5px 0;
+  z-index: 99;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.header-wrapper {
+  max-width: 1380px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header-logo-wrapper {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  z-index: 0;
+  top: 5px;
+
+  img {
+    width: 100px;
+    margin: 0 auto;
+    opacity: 0.8;
+    transition: all 0.3s;
+    position: relative;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.header-left {
+  display: flex;
+  position: relative;
+  z-index: 2;
+  margin-left: 5px;
+
+  button {
+    margin-right: 5px;
+  }
+
+  .header-search {
+    @extend .header-button;
+    margin-right: 5px;
+    width: 120px;
+
+    i {
+      position: absolute;
+      color: #fff;
+      top: 3px;
+      left: 3px;
+    }
+
+    input {
+      position: absolute;
+      top: 0px;
+      width: 100%;
+      box-sizing: border-box;
+      height: 30px;
+      background: transparent;
+      border: none;
+      color: white;
+      line-height: 30px;
+      padding-left: 32px;
+
+      &::placeholder {
+        color: white;
+      }
+    }
+  }
+}
+
+.header-right {
+  display: flex;
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  z-index: 2;
+
+  .header-button {
+    margin-left: 5px;
+  }
+}
+
+.header-avatar {
+  @extend .header-button;
+  overflow: hidden;
+
+  img {
+    width: 30px;
+  }
+}
+
+.header-user-name {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s;
+  position: relative;
+  top: 6px;
+  margin-right: 5px;
+}

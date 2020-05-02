@@ -1,0 +1,15 @@
+@use "sass:color";
+@import '../styles/variables';
+
+.drop-overlay {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: color.adjust($main-color, $alpha: -0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

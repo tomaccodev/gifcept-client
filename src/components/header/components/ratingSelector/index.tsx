@@ -2,8 +2,9 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useState } from 'react';
 
 import { Rating } from '../../../../common/constants';
+import headerStyles from '../../Header.module.scss';
 
-import './RatingSelector.css';
+import styles from './RatingSelector.module.scss';
 
 interface IRaringSelectorPropps {
   currentRating: Rating;
@@ -28,14 +29,18 @@ export default observer(({ currentRating, onRatingChange }: IRaringSelectorPropp
   const hideMenu = useCallback(() => setMenuVisible(false), []);
   const toggleMenu = useCallback(() => setMenuVisible(!menuVisible), [menuVisible]);
 
-  const dropdownMenuClases = ['dropdown-content'];
+  const dropdownMenuClases = [styles['dropdown-content']];
   if (menuVisible) {
-    dropdownMenuClases.push('dropdown-content-showing');
+    dropdownMenuClases.push(styles['dropdown-content-showing']);
   }
 
   return (
-    <div className="dropdown" onMouseLeave={hideMenu}>
-      <button className="header-button" title={textDictionary[currentRating]} onClick={toggleMenu}>
+    <div className={styles.dropdown} onMouseLeave={hideMenu}>
+      <button
+        className={headerStyles['header-button']}
+        title={textDictionary[currentRating]}
+        onClick={toggleMenu}
+      >
         <i className="material-icons">{iconDictionary[currentRating]}</i>
       </button>
       <ul className={dropdownMenuClases.join(' ')}>

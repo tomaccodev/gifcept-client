@@ -9,6 +9,7 @@ import useStores from '../hooks/useStores';
 import { GIF_MIME } from '../utils/constants';
 
 import AddGifModal from './addGifModal';
+import styles from './App.module.scss';
 import Content from './content';
 import EditGifModal from './editGifModal';
 import GifModal from './gifModal';
@@ -131,7 +132,7 @@ export default observer(() => {
   );
 
   const dropOverlay = hovering ? (
-    <div className="drop-overlay">
+    <div className={styles['drop-overlay']}>
       <h2>Drop files here</h2>
     </div>
   ) : null;
