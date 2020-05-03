@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import { IGif, IGifPatch } from '../../api/gifs';
 import { Rating } from '../../common/constants';
 import HeaderButton from '../common/headerButton';
+import TagsInput from '../common/tagsInput';
 
 import styles from './EditGifModal.module.scss';
 
@@ -16,13 +17,13 @@ interface IEditGifModalProps {
 export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
   const [description, setDescription] = useState<string>('');
   const [rating, setRating] = useState<Rating>(Rating.sfw);
-  const [tags, setTags] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
 
   useEffect(() => {
     setDescription(gif?.description || '');
     setRating(gif?.rating || Rating.sfw);
-    setTags(gif?.tags.join(', ') || '');
+    setTags(gif ? [...gif.tags] : []);
   }, [gif]);
 
   const save = useCallback(async () => {
@@ -32,7 +33,7 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
         await onSave(gif, {
           description,
           rating,
-          tags: tags.split(',').map((t) => t.trim()),
+          tags,
         });
         onClose();
       } catch (e) {
@@ -71,7 +72,7 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
         </div>
       </div>
       <div className={styles['info-wrapper']}>
-        tags: <input type="text" value={tags} onChange={(ev) => setTags(ev.target.value)} />
+        tags: <TagsInput tags={tags} onChange={setTags} />
       </div>
     </ReactModal>
   );
