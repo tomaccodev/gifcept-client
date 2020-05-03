@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import ReactModal from 'react-modal';
 
 import { IGif, IGifPatch } from '../../api/gifs';
+import HeaderButton from '../common/headerButton';
 
 import styles from './EditGifModal.module.scss';
 
@@ -39,12 +40,8 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
     >
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>
-          <button onClick={save} disabled={saving} className={styles['header-button']} title="Save">
-            <i className="material-icons">save</i>
-          </button>
-          <button onClick={onClose} className={styles['header-button']} title="Close">
-            <i className="material-icons">close</i>
-          </button>
+          <HeaderButton onClick={save} disabled={saving} icon="save" title="Save" />
+          <HeaderButton onClick={onClose} disabled={saving} icon="close" title="Close" />
         </div>
       </div>
       <div className={styles['main-title']}>

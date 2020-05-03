@@ -1,18 +1,1 @@
-@import '../../styles/variables';
 @import '../../styles/modal';
-
-.modal-wrapper {
-  .main-content {
-    padding: 0 10px 10px;
-    display: flex;
-    flex-direction: row;
-
-    .tab {
-      width: 50%;
-
-      button {
-        display: block;
-      }
-    }
-  }
-}
