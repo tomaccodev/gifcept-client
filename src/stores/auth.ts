@@ -44,9 +44,9 @@ export default class {
     }
   }
 
-  public login = async (email: string, password: string) => {
+  public login = async (usernameOrEmail: string, password: string) => {
     try {
-      const token = await generateToken(email, password);
+      const token = await generateToken(usernameOrEmail, password);
 
       this.setToken(token);
       return true;

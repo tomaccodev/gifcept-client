@@ -3,10 +3,10 @@ import { observer, useLocalStore } from 'mobx-react';
 import React, { DragEvent, useCallback, useState } from 'react';
 
 import { IGif } from '../api/gifs';
+import { GIF_MIME } from '../common/constants';
 import { Event } from '../events';
 import useEventEmitter from '../hooks/useEventEmitter';
 import useStores from '../hooks/useStores';
-import { GIF_MIME } from '../utils/constants';
 
 import AddGifModal from './addGifModal';
 import styles from './App.module.scss';

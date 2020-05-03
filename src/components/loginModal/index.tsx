@@ -9,7 +9,7 @@ import styles from './LoginModal.module.scss';
 interface ILoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (username: string, password: string) => Promise<boolean>;
+  onLogin: (usernameOrEmail: string, password: string) => Promise<boolean>;
 }
 
 export default ({ isOpen, onClose, onLogin }: ILoginModalProps) => {

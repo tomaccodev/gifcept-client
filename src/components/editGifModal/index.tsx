@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
 import { IGif, IGifPatch } from '../../api/gifs';
+import { Rating } from '../../common/constants';
 import HeaderButton from '../common/headerButton';
 
 import styles from './EditGifModal.module.scss';
@@ -13,9 +14,16 @@ interface IEditGifModalProps {
 }
 
 export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
-  const [description, setDescription] = useState<string>(gif?.description || '');
-  const [tags, setTags] = useState<string>(gif?.tags.join(', ') || '');
+  const [description, setDescription] = useState<string>('');
+  const [rating, setRating] = useState<Rating>(Rating.sfw);
+  const [tags, setTags] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
+
+  useEffect(() => {
+    setDescription(gif?.description || '');
+    setRating(gif?.rating || Rating.sfw);
+    setTags(gif?.tags.join(', ') || '');
+  }, [gif]);
 
   const save = useCallback(async () => {
     if (gif) {
@@ -23,6 +31,7 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
         setSaving(false);
         await onSave(gif, {
           description,
+          rating,
           tags: tags.split(',').map((t) => t.trim()),
         });
         onClose();
@@ -30,7 +39,7 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
         setSaving(false);
       }
     }
-  }, [description, gif, onClose, onSave, tags]);
+  }, [description, rating, tags, gif, onClose, onSave]);
 
   return (
     <ReactModal
@@ -47,6 +56,12 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
       <div className={styles['main-title']}>
         Description:{' '}
         <input type="text" value={description} onChange={(ev) => setDescription(ev.target.value)} />
+        Rating{' '}
+        <select value={rating} onChange={(ev) => setRating(ev.target.value as Rating)}>
+          {Object.values(Rating).map((r) => (
+            <option key={r}>{r}</option>
+          ))}
+        </select>
       </div>
       <div className={styles['main-content']}>
         <div className={styles.main}>

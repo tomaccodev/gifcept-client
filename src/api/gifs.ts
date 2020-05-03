@@ -45,6 +45,7 @@ export interface IGetGifsOptions {
 
 export interface IGifPatch {
   description: string;
+  rating: Rating;
   tags: string[];
 }
 

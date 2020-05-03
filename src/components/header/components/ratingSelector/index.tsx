@@ -15,12 +15,16 @@ const iconDictionary = {
   [Rating.sfw]: 'check_circle',
   [Rating.nsfw]: 'warning',
   [Rating.explicit]: 'error',
+  [Rating.violent]: 'new_releases',
+  [Rating.bizarre]: 'priority_high',
 };
 
 const textDictionary = {
   [Rating.sfw]: 'SFW',
   [Rating.nsfw]: 'NSFW',
   [Rating.explicit]: 'Explicit',
+  [Rating.violent]: 'Violent',
+  [Rating.bizarre]: 'Bizarre',
 };
 
 export default observer(({ currentRating, onRatingChange }: IRaringSelectorPropps) => {
