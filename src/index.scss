@@ -12,25 +12,10 @@ body {
 
 button {
   cursor: pointer;
-}   
+}
 
-.input-default {
+input {
   border: 1px solid #aaa;
   padding: 5px;
   border-radius: 2px;
-
-} 
-
-.button-default {
-  background-color: $main-color;
-  display: inline-block;
-  border-radius: 2px;
-  padding: 5px;
-  color: white;
-  
-  &:disabled {
-    background-color: #aaa;
-    color: white;
-    cursor: default;
-  }
 }

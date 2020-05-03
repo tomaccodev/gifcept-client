@@ -1,5 +1,4 @@
 @import './variables';
-@import './common';
 
 .modal-overlay-wrapper {
   position: fixed;
@@ -25,6 +24,20 @@
   border-radius: 4px;
   -webkit-overflow-scrolling: touch;
 
+  button {
+    background-color: $main-color;
+    display: inline-block;
+    border-radius: 2px;
+    padding: 5px;
+    color: white;
+
+    &:disabled {
+      background-color: #aaa;
+      color: white;
+      cursor: default;
+    }
+  }
+
   .topbar {
     display: flex;
     flex-direction: row-reverse;
@@ -42,13 +55,6 @@
 
     .topbar-right {
       display: flex;
-
-      .header-button {
-        @extend .header-button;
-        margin-left: 5px;
-        width: 30px;
-        height: 30px;
-      }
     }
   }
 

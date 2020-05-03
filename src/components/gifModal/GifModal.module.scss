@@ -10,6 +10,9 @@
       .gif {
         display: block;
         width: 100%;
+        padding: 0;
+        border-radius: 0;
+        background-color: white;
       }
       .gif img {
         max-width: 100%;

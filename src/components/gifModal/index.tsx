@@ -7,6 +7,7 @@ import { IGif } from '../../api/gifs';
 import { ILoggedUser } from '../../stores/auth';
 import { copy } from '../../utils/clipboard';
 import ActionButtom from '../common/actionButton';
+import HeaderButton from '../common/headerButton';
 
 import Comment from './components/comment';
 import styles from './GifModal.module.scss';
@@ -26,16 +27,14 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
   }, [gif]);
 
   const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
-    <button
-      className={styles['header-button']}
-      title="Edit"
+    <HeaderButton
       onClick={() => {
         onClose();
         onEdit(gif);
       }}
-    >
-      <i className="material-icons">edit</i>
-    </button>
+      icon="edit"
+      title="Edit"
+    />
   );
 
   return (
@@ -47,9 +46,7 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>
           {editButton}
-          <button onClick={onClose} className={styles['header-button']} title="Close">
-            <i className="material-icons">close</i>
-          </button>
+          <HeaderButton onClick={onClose} icon="close" title="Close" />
         </div>
         <div className={styles['topbar-left']}>
           <ActionButtom
