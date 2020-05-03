@@ -1,8 +1,8 @@
-import { observer, useLocalStore } from 'mobx-react';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 
 import ActionButton from '../common/actionButton';
+import HeaderButton from '../common/headerButton';
 
 import styles from './LoginModal.module.scss';
 
@@ -12,26 +12,27 @@ interface ILoginModalProps {
   onLogin: (username: string, password: string) => Promise<boolean>;
 }
 
-const loginModalStore = () => ({
-  email: '',
-  password: '',
-  setEmail(email: string) {
-    this.email = email;
-  },
-  setPassword(password: string) {
-    this.password = password;
-  },
-});
-
-export default observer(({ isOpen, onClose, onLogin }: ILoginModalProps) => {
-  const { email, password, setPassword, setEmail } = useLocalStore(loginModalStore);
+export default ({ isOpen, onClose, onLogin }: ILoginModalProps) => {
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
 
   const doLogin = async () => {
-    const result = await onLogin(email, password);
+    setLoggingIn(true);
+    const result = await onLogin(usernameOrEmail, password);
+    setLoggingIn(false);
     if (result) {
       onClose();
+    } else {
+      setLoginFailed(true);
     }
   };
+
+  const loginfFailedWarning = loginFailed && (
+    <div className={styles.error}>Login Failed, please retry with correct credentials</div>
+  );
 
   return (
     <ReactModal
@@ -41,36 +42,55 @@ export default observer(({ isOpen, onClose, onLogin }: ILoginModalProps) => {
     >
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>
-          <button onClick={onClose} className={styles['header-button']} title="Close">
-            <i className="material-icons">close</i>
-          </button>
+          <HeaderButton icon="close" title="Close" onClick={onClose} />
         </div>
       </div>
       <div className={styles['main-content']}>
         <div className={styles.tab}>
           <h2>Login</h2>
+          {loginfFailedWarning}
           <div>
-            <div>
-              Username:
-              <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div>
-              Password:
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div>
-              <ActionButton text="Login" icon="lock_open" onClick={doLogin} />
-            </div>
+            <input
+              type="text"
+              placeholder="Username or Email"
+              value={usernameOrEmail}
+              onChange={(e) => {
+                setUsernameOrEmail(e.target.value);
+                setLoginFailed(false);
+              }}
+            />
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setLoginFailed(false);
+              }}
+            />
+          </div>
+          <div>
+            <ActionButton text="Login" icon="lock_open" onClick={doLogin} disabled={loggingIn} />
           </div>
         </div>
         <div className={styles.tab}>
           <h2>Register</h2>
+          <div>
+            <input type="text" placeholder="Email" />
+            <input type="text" placeholder="Username" />
+            <input type="password" placeholder="Password" />
+            <input type="password" placeholder="Confirm password" />
+          </div>
+          <div>
+            <ActionButton
+              text="Register"
+              icon="assignment_turned_in"
+              onClick={doLogin}
+              disabled={loggingIn}
+            />
+          </div>
         </div>
       </div>
     </ReactModal>
   );
-});
+};
