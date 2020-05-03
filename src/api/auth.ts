@@ -4,5 +4,7 @@ interface IPostTokenResponse {
   token: string;
 }
 
-export const generateToken = (email: string, password: string) =>
-  post<IPostTokenResponse>('/api/auth/token', { email, password }).then((res) => res.token);
+export const generateToken = (usernameOrEmail: string, password: string) =>
+  post<IPostTokenResponse>('/api/auth/token', { usernameOrEmail, password }).then(
+    (res) => res.token,
+  );
