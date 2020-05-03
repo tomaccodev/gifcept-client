@@ -2,6 +2,8 @@ import { observer, useLocalStore } from 'mobx-react';
 import React from 'react';
 import ReactModal from 'react-modal';
 
+import ActionButton from '../common/actionButton';
+
 import styles from './LoginModal.module.scss';
 
 interface ILoginModalProps {
@@ -45,18 +47,28 @@ export default observer(({ isOpen, onClose, onLogin }: ILoginModalProps) => {
         </div>
       </div>
       <div className={styles['main-content']}>
-        <div>
+        <div className={styles.tab}>
+          <h2>Login</h2>
           <div>
-            Username:
-            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <div>
+              Username:
+              <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div>
+              Password:
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <ActionButton text="Login" icon="lock_open" onClick={doLogin} />
+            </div>
           </div>
-          <div>
-            Password:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <div>
-            <button onClick={doLogin}>Login</button>
-          </div>
+        </div>
+        <div className={styles.tab}>
+          <h2>Register</h2>
         </div>
       </div>
     </ReactModal>

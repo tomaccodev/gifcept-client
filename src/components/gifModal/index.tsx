@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { IGif } from '../../api/gifs';
 import { ILoggedUser } from '../../stores/auth';
 import { copy } from '../../utils/clipboard';
+import ActionButtom from '../common/actionButton';
 
 import Comment from './components/comment';
 import styles from './GifModal.module.scss';
@@ -51,14 +52,16 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
           </button>
         </div>
         <div className={styles['topbar-left']}>
-          <button className={styles['action-button']} title="Like" disabled={!loggedUser}>
-            <i className="material-icons">favorite</i>
-            <span>Like ({gif && gif.likesCount})</span>
-          </button>
-          <button className={styles['action-button']} title="Recept" disabled={!loggedUser}>
-            <i className="material-icons">reply_all</i>
-            <span>Recept ({gif && gif.sharesCount})</span>
-          </button>
+          <ActionButtom
+            text={`Like (${gif && gif.likesCount})`}
+            icon="favorite"
+            disabled={!loggedUser}
+          />
+          <ActionButtom
+            text={`Recept (${gif && gif.sharesCount})`}
+            icon="reply_all"
+            disabled={!loggedUser}
+          />
         </div>
       </div>
       <div className={styles['main-title']}>{gif && gif.description}</div>
