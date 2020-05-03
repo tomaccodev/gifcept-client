@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import { BrowserRouter } from 'react-router-dom';
 
+import { GIF_MIME, URL_REGEX } from './common/constants';
 import App from './components/App';
 import Emitter, { Event } from './events';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
-import { GIF_MIME, URL_REGEX } from './utils/constants';
 
 Modal.setAppElement('#root');
 

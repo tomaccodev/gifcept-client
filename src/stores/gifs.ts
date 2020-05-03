@@ -123,7 +123,6 @@ export default class {
   @action
   public updateGif = async (gif: IGif, updatedInfo: IGifPatch) => {
     const updatedGif = await updateGif(gif, updatedInfo);
-    gif.description = updatedGif.description;
-    gif.tags = updatedGif.tags;
+    Object.assign(gif, updatedGif);
   };
 }
