@@ -1,5 +1,4 @@
 @import './variables';
-@import './common';
 
 .modal-overlay-wrapper {
   position: fixed;
@@ -25,6 +24,20 @@
   border-radius: 4px;
   -webkit-overflow-scrolling: touch;
 
+  button {
+    background-color: $main-color;
+    display: inline-block;
+    border-radius: 2px;
+    padding: 5px;
+    color: white;
+
+    &:disabled {
+      background-color: #aaa;
+      color: white;
+      cursor: default;
+    }
+  }
+
   .topbar {
     display: flex;
     flex-direction: row-reverse;
@@ -38,58 +51,10 @@
 
     .topbar-left {
       display: flex;
-
-      .action-button {
-        margin-right: 5px;
-      }
-
-      .action-button {
-        display: inline-block;
-        border-radius: 4px;
-        height: 30px;
-        background-color: $main-color;
-        transition: all 0.3s;
-        position: relative;
-        text-decoration: none;
-        padding-left: 25px;
-        padding-right: 7px;
-        color: #fff;
-
-        &:hover {
-          background-color: #086;
-        }
-
-        &:disabled,
-        &:disabled:hover {
-          background-color: #666666;
-        }
-      }
-
-      .action-button i {
-        position: absolute;
-        color: #fff;
-        top: 6px;
-        left: 6px;
-        font-size: 18px;
-      }
-
-      .action-button span {
-        padding-top: 5px;
-        font-size: 13px;
-        line-height: 30px;
-        padding-left: 5px;
-      }
     }
 
     .topbar-right {
       display: flex;
-
-      .header-button {
-        @extend .header-button;
-        margin-left: 5px;
-        width: 30px;
-        height: 30px;
-      }
     }
   }
 
@@ -102,10 +67,30 @@
 
   .main-content {
     padding: 0 10px 10px;
+    display: flex;
+    flex-direction: row;
 
     .main {
       max-width: 100%;
       text-align: center;
+    }
+
+    .tab {
+      flex: 1 1 0px;
+      border-left: 1px solid $main-color;
+      padding: 10px;
+
+      &:first-child {
+        border-left: 0;
+      }
+
+      button {
+        display: inline-block;
+      }
+
+      h2 {
+        text-align: center;
+      }
     }
   }
 }

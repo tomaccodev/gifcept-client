@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useState } from 'react';
 
 import { Rating } from '../../../../common/constants';
-import headerStyles from '../../Header.module.scss';
+import HeaderButton from '../../../common/headerButton';
 
 import styles from './RatingSelector.module.scss';
 
@@ -36,13 +36,11 @@ export default observer(({ currentRating, onRatingChange }: IRaringSelectorPropp
 
   return (
     <div className={styles.dropdown} onMouseLeave={hideMenu}>
-      <button
-        className={headerStyles['header-button']}
+      <HeaderButton
+        icon={iconDictionary[currentRating]}
         title={textDictionary[currentRating]}
         onClick={toggleMenu}
-      >
-        <i className="material-icons">{iconDictionary[currentRating]}</i>
-      </button>
+      />
       <ul className={dropdownMenuClases.join(' ')}>
         {Object.values(Rating)
           .filter((r) => r !== currentRating)

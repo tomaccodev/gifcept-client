@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Rating } from '../../common/constants';
 import { ILoggedUser } from '../../stores/auth';
+import HeaderButton from '../common/headerButton';
 
 import RatingSelector from './components/ratingSelector';
 import SubHeader from './components/subHeader';
@@ -41,37 +42,34 @@ export default observer(
         onSearchChange(ev.target.value);
         changeSearchValue(ev.target.value);
       },
-      [changeSearchValue, onSearchChange],
+      [onSearchChange],
     );
+
+    const clearSearchCallback = useCallback(() => {
+      onSearchChange('');
+      changeSearchValue('');
+    }, [onSearchChange]);
 
     const rightSideButtons = loggedUser ? (
       <>
         <span className={styles['header-user-name']}>{loggedUser.username}</span>
-        <button className={styles['header-avatar']} title="Your Profile">
-          <img src="https://via.placeholder.com/150x150" alt={loggedUser.username} />
-        </button>
+        <HeaderButton
+          title="Your Profile"
+          imgUrl="https://via.placeholder.com/150x150"
+          imgAlt={loggedUser.username}
+        />
         {ratingSelector}
-        <button className={styles['header-button']} title="Your Notifications">
-          <i className="material-icons">notifications_none</i>
-        </button>
+        <HeaderButton icon="notifications_none" title="Your Notifications" />
       </>
     ) : (
       <>
-        <button className={styles['header-button']} title="Login" onClick={onShowLoginModal}>
-          <i className="material-icons">face</i>
-        </button>
+        <HeaderButton icon="face" title="Login" onClick={onShowLoginModal} />
         {ratingSelector}
       </>
     );
 
     const addNewGifButton = loggedUser && (
-      <button
-        className={`${styles['header-button']} ${styles['hide-on-mobile']}`}
-        title="Add new gif"
-        onClick={onShowAddGifModal}
-      >
-        <i className="material-icons">add</i>
-      </button>
+      <HeaderButton icon="add" title="Add new gif" onClick={onShowAddGifModal} />
     );
 
     return (
@@ -81,7 +79,9 @@ export default observer(
             <div className={styles['header-left']}>
               {addNewGifButton}
               <div className={styles['header-search']} title="Search gifs">
-                <i className="material-icons">search</i>
+                <button onClick={clearSearchCallback}>
+                  <i className="material-icons">{searchValue ? 'clear' : 'search'}</i>
+                </button>
                 <input
                   type="text"
                   value={searchValue}

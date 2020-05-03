@@ -1,6 +1,5 @@
 @import '../../styles/variables';
 @import '../../styles/helpers.scss';
-@import '../../styles/common.scss';
 
 .header {
   background-color: $main-color;
@@ -52,15 +51,27 @@
   }
 
   .header-search {
-    @extend .header-button;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s;
     margin-right: 5px;
     width: 120px;
 
-    i {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    button {
       position: absolute;
-      color: #fff;
-      top: 3px;
-      left: 3px;
+      background-color: transparent;
+      z-index: 10;
+
+      i {
+        position: relative;
+        color: #fff;
+        top: 3px;
+        left: 3px;
+      }
     }
 
     input {
@@ -91,15 +102,6 @@
 
   .header-button {
     margin-left: 5px;
-  }
-}
-
-.header-avatar {
-  @extend .header-button;
-  overflow: hidden;
-
-  img {
-    width: 30px;
   }
 }
 
