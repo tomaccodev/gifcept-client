@@ -1,0 +1,14 @@
+@import '../../../styles/variables';
+
+.tags-input {
+  span {
+    background-color: $main-color;
+    border-radius: 6px;
+    margin-right: 5px;
+    padding: 5px;
+
+    i {
+      cursor: pointer;
+    }
+  }
+}
