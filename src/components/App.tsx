@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import { observer, useLocalStore } from 'mobx-react';
-import React, { DragEvent, useCallback, useState } from 'react';
+import React, { DragEvent, useCallback, useEffect, useState } from 'react';
 
 import { IGif } from '../api/gifs';
 import { GIF_MIME } from '../common/constants';
@@ -47,7 +47,7 @@ const appStore: () => IAppStore = () => ({
 const SEARCH_DEBOUNCE_DELAY = 300;
 
 export default observer(() => {
-  const { auth, gifs } = useStores();
+  const { auth, gifs, tags } = useStores();
   const {
     loginModalVisible,
     selectedGif,
@@ -61,6 +61,12 @@ export default observer(() => {
   const [hovering, setHovering] = useState(false);
   const [unhilightTimeout, setUnhilightTimeout] = useState<NodeJS.Timeout | undefined>(undefined);
   const [editingGif, setEditingGif] = useState<IGif>();
+
+  useEffect(() => {
+    if (auth.user) {
+      tags.getTags();
+    }
+  }, [auth, auth.user, tags]);
 
   const highlightDropZone = useCallback(
     (ev: DragEvent<HTMLDivElement>) => {
@@ -177,6 +183,7 @@ export default observer(() => {
         gif={editingGif}
         onClose={() => setEditingGif(undefined)}
         onSave={gifs.updateGif}
+        availableTags={tags.tags}
       />
     </div>
   );
