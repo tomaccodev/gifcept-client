@@ -1,6 +1,33 @@
 @import '../../../styles/variables';
 
 .tags-input {
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    list-style-type: none;
+    padding: 12px 16px;
+    z-index: 1;
+    color: #009977;
+    overflow: auto;
+    max-height: 200px;
+
+    li {
+      cursor: pointer;
+    }
+
+    .disabled-option {
+      color: grey;
+      cursor: default;
+    }
+  }
+
+  .dropdown-content-showing {
+    display: block;
+  }
+
   span {
     background-color: $main-color;
     border-radius: 6px;

@@ -10,11 +10,12 @@ import styles from './EditGifModal.module.scss';
 
 interface IEditGifModalProps {
   gif?: IGif;
+  availableTags?: string[];
   onSave: (gif: IGif, updatedInfo: IGifPatch) => void;
   onClose: () => void;
 }
 
-export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
+export default ({ gif, availableTags, onClose, onSave }: IEditGifModalProps) => {
   const [description, setDescription] = useState<string>('');
   const [rating, setRating] = useState<Rating>(Rating.sfw);
   const [tags, setTags] = useState<string[]>([]);
@@ -72,7 +73,7 @@ export default ({ gif, onClose, onSave }: IEditGifModalProps) => {
         </div>
       </div>
       <div className={styles['info-wrapper']}>
-        tags: <TagsInput tags={tags} onChange={setTags} />
+        tags: <TagsInput tags={tags} onChange={setTags} suggestions={availableTags} />
       </div>
     </ReactModal>
   );
