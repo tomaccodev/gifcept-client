@@ -1,3 +1,4 @@
+@use "sass:color";
 @import '../../../styles/variables';
 
 .tags-input {
@@ -16,11 +17,15 @@
 
     li {
       cursor: pointer;
-    }
 
-    .disabled-option {
-      color: grey;
-      cursor: default;
+      &.selected-suggestion {
+        background-color: color.adjust($main-color, $alpha: -0.8);
+      }
+
+      &.disabled-option {
+        color: grey;
+        cursor: default;
+      }
     }
   }
 
