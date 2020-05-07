@@ -36,3 +36,8 @@ export const getInitForPatch: () => RequestInit = () => ({
   ...getDefaultInit(),
   method: 'PATCH',
 });
+
+export const getInitForDelete: () => RequestInit = () => ({
+  ...getDefaultInit(),
+  method: 'DELETE',
+});

@@ -17,9 +17,10 @@ interface IGifModalProps {
   gif?: IGif;
   onClose: () => void;
   onEdit: (gif: IGif) => void;
+  onDelete: (gif: IGif) => void;
 }
 
-export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
+export default ({ loggedUser, gif, onClose, onEdit, onDelete }: IGifModalProps) => {
   const copyGifUrl = useCallback(() => {
     if (gif) {
       copy(`${window.location.origin}${gif.animationUrlPath}`);
@@ -27,14 +28,26 @@ export default ({ loggedUser, gif, onClose, onEdit }: IGifModalProps) => {
   }, [gif]);
 
   const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
-    <HeaderButton
-      onClick={() => {
-        onClose();
-        onEdit(gif);
-      }}
-      icon="edit"
-      title="Edit"
-    />
+    <>
+      <HeaderButton
+        onClick={() => {
+          if (window.confirm('Are you sure you want to delete this gif?')) {
+            onClose();
+            onDelete(gif);
+          }
+        }}
+        icon="delete"
+        title="Delete"
+      />
+      <HeaderButton
+        onClick={() => {
+          onClose();
+          onEdit(gif);
+        }}
+        icon="edit"
+        title="Edit"
+      />
+    </>
   );
 
   return (

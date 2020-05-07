@@ -1,5 +1,15 @@
 import { escapeRegExp } from 'lodash';
-import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import { mod } from '../../../utils/math';
 
 import styles from './TagsInput.module.scss';
 
@@ -25,6 +35,12 @@ export default ({
   const [currentTags, setCurrentTags] = useState(tags || []);
   const [currentInput, setCurrentInput] = useState('');
   const [matchingSuggestions, setMatchingSuggestions] = useState<string[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<number | undefined>(undefined);
+
+  const normalizedCurrentTags = currentTags.map((t) => (caseInsensitive ? t.toLowerCase() : t));
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const ulRef = useRef<HTMLUListElement>(null);
 
   const doSetCurrentTags = useCallback(
     (newTags: string[]) => {
@@ -40,45 +56,111 @@ export default ({
     (newTag) => {
       doSetCurrentTags([...currentTags, newTag]);
       setCurrentInput('');
-      setMatchingSuggestions([]);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     },
     [currentTags, doSetCurrentTags],
   );
 
-  const onInputChange = useCallback(
-    (ev: ChangeEvent<HTMLInputElement>) => {
-      const value = ev.target.value;
-      setCurrentInput(value);
-      if (value.length >= minLength) {
-        setMatchingSuggestions([...suggestions.filter((s) => s.includes(value))]);
-      } else {
-        setMatchingSuggestions([]);
-      }
-    },
-    [suggestions, minLength],
-  );
+  const onInputChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
+    setCurrentInput(ev.target.value);
+  }, []);
 
   const onInputKeyDown = useCallback(
     (ev: KeyboardEvent<HTMLInputElement>) => {
-      if (ev.key === delimiter) {
-        ev.preventDefault();
-        if (
-          !uniqueTags ||
-          !currentTags
-            .map((t) => (caseInsensitive ? t.toLowerCase() : t))
-            .includes(caseInsensitive ? currentInput.toLowerCase() : currentInput)
-        ) {
-          doSetCurrentTags([...currentTags, currentInput]);
-        }
-        setCurrentInput('');
+      switch (ev.key) {
+        case delimiter:
+          ev.preventDefault();
+          if (
+            !uniqueTags ||
+            !currentTags
+              .map((t) => (caseInsensitive ? t.toLowerCase() : t))
+              .includes(caseInsensitive ? currentInput.toLowerCase() : currentInput)
+          ) {
+            doSetCurrentTags([...currentTags, currentInput]);
+          }
+          setCurrentInput('');
+          break;
+        case 'ArrowUp':
+          ev.preventDefault();
+          setSelectedSuggestion(
+            mod(
+              (selectedSuggestion !== undefined ? selectedSuggestion : 0) - 1,
+              matchingSuggestions?.length,
+            ),
+          );
+          break;
+        case 'ArrowDown':
+          ev.preventDefault();
+          setSelectedSuggestion(
+            mod(
+              (selectedSuggestion !== undefined
+                ? selectedSuggestion
+                : matchingSuggestions?.length - 1) + 1,
+              matchingSuggestions?.length,
+            ),
+          );
+          break;
+        case 'Enter':
+          ev.preventDefault();
+          if (
+            selectedSuggestion !== undefined &&
+            !normalizedCurrentTags.includes(matchingSuggestions[selectedSuggestion].toLowerCase())
+          ) {
+            addTag(matchingSuggestions[selectedSuggestion]);
+          }
+          break;
       }
     },
-    [caseInsensitive, currentInput, currentTags, delimiter, uniqueTags, doSetCurrentTags],
+    [
+      caseInsensitive,
+      currentInput,
+      currentTags,
+      delimiter,
+      uniqueTags,
+      doSetCurrentTags,
+      selectedSuggestion,
+      matchingSuggestions,
+      addTag,
+      normalizedCurrentTags,
+    ],
   );
 
   useEffect(() => {
     setCurrentTags(tags || []);
   }, [tags]);
+
+  useEffect(() => {
+    const updateSuggestionsTimeout = setTimeout(() => {
+      if (currentInput.length >= minLength) {
+        setMatchingSuggestions([...suggestions.filter((s) => s.includes(currentInput))]);
+      } else {
+        setMatchingSuggestions([]);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(updateSuggestionsTimeout);
+    };
+  }, [currentInput, minLength, suggestions]);
+
+  useEffect(() => {
+    setSelectedSuggestion(undefined);
+  }, [matchingSuggestions]);
+
+  useLayoutEffect(() => {
+    if (ulRef.current) {
+      if (selectedSuggestion !== undefined) {
+        const selectedChild = ulRef.current.children[selectedSuggestion];
+        if (selectedChild) {
+          selectedChild.scrollIntoView();
+        }
+      } else {
+        ulRef.current.scrollTo(0, 0);
+      }
+    }
+  }, [selectedSuggestion, matchingSuggestions]);
 
   const dropdownMenuClases = [styles['dropdown-content']];
   if (matchingSuggestions.length > 0) {
@@ -89,7 +171,6 @@ export default ({
     `(${escapeRegExp(currentInput)})`,
     caseInsensitive ? 'gi' : 'g',
   );
-  const normalizedCurrentTags = currentTags.map((t) => (caseInsensitive ? t.toLowerCase() : t));
 
   return (
     <div className={styles['tags-input']}>
@@ -107,15 +188,27 @@ export default ({
           </i>
         </span>
       ))}
-      <input value={currentInput} onChange={onInputChange} onKeyDown={onInputKeyDown} />
-      <ul className={dropdownMenuClases.join(' ')}>
-        {matchingSuggestions.map((s) => {
+      <input
+        value={currentInput}
+        onChange={onInputChange}
+        onKeyDown={onInputKeyDown}
+        ref={inputRef}
+      />
+      <ul className={dropdownMenuClases.join(' ')} ref={ulRef}>
+        {matchingSuggestions.map((s, i) => {
           const disabled = uniqueTags && normalizedCurrentTags.includes(s);
+          const entryStyles: string[] = [];
+          if (disabled) {
+            entryStyles.push(styles['disabled-option']);
+          }
+          if (selectedSuggestion !== undefined && selectedSuggestion === i) {
+            entryStyles.push(styles['selected-suggestion']);
+          }
 
           return (
             <li
               key={s}
-              className={disabled ? styles['disabled-option'] : ''}
+              className={entryStyles.join(' ')}
               onClick={() => {
                 if (!disabled) {
                   addTag(s);

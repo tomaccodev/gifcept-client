@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 import { observer, useLocalStore } from 'mobx-react';
 import React, { DragEvent, useCallback, useEffect, useState } from 'react';
 
-import { IGif } from '../api/gifs';
+import { IGif, IGifPatch } from '../api/gifs';
 import { GIF_MIME } from '../common/constants';
 import { Event } from '../events';
 import useEventEmitter from '../hooks/useEventEmitter';
@@ -96,6 +96,7 @@ export default observer(() => {
     },
     [setHovering, hovering, unhilightTimeout],
   );
+
   const handleDrop = useCallback(
     async (ev: DragEvent<HTMLDivElement>) => {
       ev.preventDefault();
@@ -114,6 +115,14 @@ export default observer(() => {
       setHovering(false);
     },
     [gifs, unhilightTimeout],
+  );
+
+  const handleGifUpdate = useCallback(
+    async (gif: IGif, updatedInfo: IGifPatch) => {
+      gifs.updateGif(gif, updatedInfo);
+      tags.addMissingTags(updatedInfo.tags);
+    },
+    [gifs, tags],
   );
 
   useEventEmitter<string>(Event.pasteURL, async (url) => {
@@ -172,6 +181,7 @@ export default observer(() => {
         gif={selectedGif}
         onClose={clearSelectedGif}
         onEdit={setEditingGif}
+        onDelete={gifs.deleteGif}
       />
       <AddGifModal
         open={addGifModalVisible}
@@ -182,7 +192,7 @@ export default observer(() => {
       <EditGifModal
         gif={editingGif}
         onClose={() => setEditingGif(undefined)}
-        onSave={gifs.updateGif}
+        onSave={handleGifUpdate}
         availableTags={tags.tags}
       />
     </div>

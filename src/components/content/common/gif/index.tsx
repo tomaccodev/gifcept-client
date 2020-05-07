@@ -57,8 +57,8 @@ export default observer(({ gif, onClick }: IGifProps) => {
         <span className={styles['block-item-name']} title={gif.description}>
           {gif.description}
         </span>
-        <i className="material-icons" onClick={copyGifUrl}>
-          expand_more
+        <i className="material-icons" onClick={copyGifUrl} title="Copy to clipboard">
+          assignment
         </i>
       </div>
       <button

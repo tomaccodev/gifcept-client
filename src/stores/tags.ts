@@ -21,4 +21,19 @@ export default class {
       console.error(err);
     }
   };
+
+  @action
+  public addMissingTags = (newTags: string[]) => {
+    const caseInsensitiveTags = this.tags.map((t) => t.toLowerCase());
+    let modified = false;
+    for (const newTag of newTags) {
+      if (!caseInsensitiveTags.includes(newTag.toLowerCase())) {
+        this.tags.push(newTag);
+        modified = true;
+      }
+    }
+    if (modified) {
+      this.tags = this.tags.sort();
+    }
+  };
 }

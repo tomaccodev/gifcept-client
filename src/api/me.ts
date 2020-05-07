@@ -1,3 +1,3 @@
-import { get } from './common/methods';
+import { getRequest } from './common/methods';
 
-export const getTags = () => get<string[]>('/api/me/tags');
+export const getTags = () => getRequest<string[]>('/api/me/tags');
