@@ -18,13 +18,13 @@
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  display: flex;
 }
 
 .header-logo-wrapper {
   position: absolute;
   width: 100%;
   text-align: center;
-  z-index: 0;
   top: 5px;
 
   img {
@@ -35,7 +35,7 @@
     position: relative;
 
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
     }
   }
 }

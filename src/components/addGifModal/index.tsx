@@ -37,7 +37,7 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
   const addGifsByFiles = useCallback(async () => {
     setUploadingFiles(true);
     await Promise.all(selectedFiles.map(onAddGifByFile));
-    setUploadingFiles(true);
+    setUploadingFiles(false);
     onClose();
   }, [onClose, selectedFiles, onAddGifByFile]);
 
