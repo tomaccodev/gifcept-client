@@ -1,5 +1,5 @@
 import { escapeRegExp } from 'lodash';
-import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './TagsInput.module.scss';
 
@@ -26,6 +26,8 @@ export default ({
   const [currentInput, setCurrentInput] = useState('');
   const [matchingSuggestions, setMatchingSuggestions] = useState<string[]>([]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const doSetCurrentTags = useCallback(
     (newTags: string[]) => {
       setCurrentTags([...newTags]);
@@ -40,23 +42,16 @@ export default ({
     (newTag) => {
       doSetCurrentTags([...currentTags, newTag]);
       setCurrentInput('');
-      setMatchingSuggestions([]);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     },
     [currentTags, doSetCurrentTags],
   );
 
-  const onInputChange = useCallback(
-    (ev: ChangeEvent<HTMLInputElement>) => {
-      const value = ev.target.value;
-      setCurrentInput(value);
-      if (value.length >= minLength) {
-        setMatchingSuggestions([...suggestions.filter((s) => s.includes(value))]);
-      } else {
-        setMatchingSuggestions([]);
-      }
-    },
-    [suggestions, minLength],
-  );
+  const onInputChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
+    setCurrentInput(ev.target.value);
+  }, []);
 
   const onInputKeyDown = useCallback(
     (ev: KeyboardEvent<HTMLInputElement>) => {
@@ -79,6 +74,20 @@ export default ({
   useEffect(() => {
     setCurrentTags(tags || []);
   }, [tags]);
+
+  useEffect(() => {
+    const updateSuggestionsTimeout = setTimeout(() => {
+      if (currentInput.length >= minLength) {
+        setMatchingSuggestions([...suggestions.filter((s) => s.includes(currentInput))]);
+      } else {
+        setMatchingSuggestions([]);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(updateSuggestionsTimeout);
+    };
+  }, [currentInput, minLength, suggestions]);
 
   const dropdownMenuClases = [styles['dropdown-content']];
   if (matchingSuggestions.length > 0) {
@@ -107,7 +116,12 @@ export default ({
           </i>
         </span>
       ))}
-      <input value={currentInput} onChange={onInputChange} onKeyDown={onInputKeyDown} />
+      <input
+        value={currentInput}
+        onChange={onInputChange}
+        onKeyDown={onInputKeyDown}
+        ref={inputRef}
+      />
       <ul className={dropdownMenuClases.join(' ')}>
         {matchingSuggestions.map((s) => {
           const disabled = uniqueTags && normalizedCurrentTags.includes(s);
