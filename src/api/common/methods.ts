@@ -1,6 +1,6 @@
 import Emitter, { Event } from '../../events';
 
-import { getInitForGet, getInitForPatch, getInitForPost } from './init';
+import { getInitForDelete, getInitForGet, getInitForPatch, getInitForPost } from './init';
 
 interface IDictionary {
   [key: string]: any;
@@ -31,10 +31,10 @@ const jsonFetch = <T>(url: string, init: RequestInit) =>
     .then(expectValidStatus)
     .then((res) => jsonHandler<T>(res)) as Promise<T>;
 
-export const get = <T>(url: string, init: RequestInit = getInitForGet()) =>
+export const getRequest = <T>(url: string, init: RequestInit = getInitForGet()) =>
   jsonFetch<T>(url, init) as Promise<T>;
 
-export const post = <T>(
+export const postRequest = <T>(
   url: string,
   data?: IDictionary | FormData,
   init: RequestInit = getInitForPost(),
@@ -49,7 +49,17 @@ export const post = <T>(
   }) as Promise<T>;
 };
 
-export const patch = <T>(
+export const responselessPostRequest = (
+  url: string,
+  data?: IDictionary,
+  init: RequestInit = getInitForPost(),
+) =>
+  responselessFetch(url, {
+    ...init,
+    body: JSON.stringify(data),
+  });
+
+export const patchRequest = <T>(
   url: string,
   data?: IDictionary | FormData,
   init: RequestInit = getInitForPatch(),
@@ -64,12 +74,8 @@ export const patch = <T>(
   }) as Promise<T>;
 };
 
-export const responselessPost = (
-  url: string,
-  data?: IDictionary,
-  init: RequestInit = getInitForPost(),
-) =>
-  responselessFetch(url, {
-    ...init,
-    body: JSON.stringify(data),
-  });
+export const deleteRequest = <T>(url: string, init: RequestInit = getInitForDelete()) =>
+  jsonFetch<T>(url, init);
+
+export const responselessDeleteRequest = <T>(url: string, init: RequestInit = getInitForDelete()) =>
+  responselessFetch(url, init);

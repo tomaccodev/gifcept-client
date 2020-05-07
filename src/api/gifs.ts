@@ -2,7 +2,7 @@ import { format } from 'url';
 
 import { Rating } from '../common/constants';
 
-import { get, patch, post } from './common/methods';
+import { getRequest, patchRequest, postRequest, responselessDeleteRequest } from './common/methods';
 import { IApiModel } from './common/model';
 
 interface IUser extends IApiModel {
@@ -67,7 +67,7 @@ export const getGifs = (options: IGetGifsOptions = {}) => {
   if (options.rating) {
     query.rating = options.rating;
   }
-  return get<IServerGif[]>(
+  return getRequest<IServerGif[]>(
     format({
       pathname: '/api/gifs',
       query: {
@@ -80,13 +80,15 @@ export const getGifs = (options: IGetGifsOptions = {}) => {
 export const addGifByFile = (file: File) => {
   const formData = new FormData();
   formData.append('gif', file);
-  return post<IServerGif>('/api/gifs', formData).then(normalizeGif);
+  return postRequest<IServerGif>('/api/gifs', formData).then(normalizeGif);
 };
 
 export const addGifByUrl = (url: string) =>
-  post<IServerGif>('/api/gifs', {
+  postRequest<IServerGif>('/api/gifs', {
     url,
   }).then(normalizeGif);
 
 export const updateGif = (gif: IGif, updatedInfo: IGifPatch) =>
-  patch<IServerGif>(`/api/gifs/${gif.id}`, updatedInfo).then(normalizeGif);
+  patchRequest<IServerGif>(`/api/gifs/${gif.id}`, updatedInfo).then(normalizeGif);
+
+export const deleteGif = (gif: IGif) => responselessDeleteRequest(`/api/gifs/${gif.id}`);

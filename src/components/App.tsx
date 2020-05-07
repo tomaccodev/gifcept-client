@@ -172,6 +172,7 @@ export default observer(() => {
         gif={selectedGif}
         onClose={clearSelectedGif}
         onEdit={setEditingGif}
+        onDelete={gifs.deleteGif}
       />
       <AddGifModal
         open={addGifModalVisible}
