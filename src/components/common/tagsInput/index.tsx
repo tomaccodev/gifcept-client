@@ -122,6 +122,8 @@ export default ({
       doSetCurrentTags,
       selectedSuggestion,
       matchingSuggestions,
+      addTag,
+      normalizedCurrentTags,
     ],
   );
 
@@ -148,10 +150,17 @@ export default ({
   }, [matchingSuggestions]);
 
   useLayoutEffect(() => {
-    if (selectedSuggestion !== undefined && ulRef.current) {
-      ulRef.current.children[selectedSuggestion].scrollIntoView();
+    if (ulRef.current) {
+      if (selectedSuggestion !== undefined) {
+        const selectedChild = ulRef.current.children[selectedSuggestion];
+        if (selectedChild) {
+          selectedChild.scrollIntoView();
+        }
+      } else {
+        ulRef.current.scrollTo(0, 0);
+      }
     }
-  }, [selectedSuggestion]);
+  }, [selectedSuggestion, matchingSuggestions]);
 
   const dropdownMenuClases = [styles['dropdown-content']];
   if (matchingSuggestions.length > 0) {
