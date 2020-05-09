@@ -27,7 +27,7 @@ export default ({ loggedUser, gif, onClose, onEdit, onDelete }: IGifModalProps) 
     }
   }, [gif]);
 
-  const editButton = gif && loggedUser && gif.userId === loggedUser.id && (
+  const editButton = gif && loggedUser && gif.user.id === loggedUser.id && (
     <>
       <HeaderButton
         onClick={() => {
@@ -91,8 +91,8 @@ export default ({ loggedUser, gif, onClose, onEdit, onDelete }: IGifModalProps) 
         tags: {gif && gif.tags.join(', ')}
         <br />
         uploaded by{' '}
-        <Link onClick={onClose} to={gif ? `/${gif.userId}/gifs` : ''}>
-          {gif && gif.userName}
+        <Link onClick={onClose} to={gif ? `/${gif.user.id}/gifs` : ''}>
+          {gif && gif.user.username}
         </Link>{' '}
         <span>{gif && moment(gif.created).fromNow()}</span>
       </div>

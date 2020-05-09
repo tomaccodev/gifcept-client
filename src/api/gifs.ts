@@ -20,8 +20,7 @@ interface IServerGif extends IApiModel {
   comments: IComment[];
   commentsCount: number;
   sharesCount: number;
-  userName: string;
-  userId: string;
+  user: IUser;
   tags: string[];
 }
 
