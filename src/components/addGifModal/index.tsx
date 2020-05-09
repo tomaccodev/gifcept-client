@@ -46,6 +46,7 @@ export default ({ open, onClose, onAddGifByUrl, onAddGifByFile }: IAddGifModalPr
       isOpen={open}
       className={styles['modal-wrapper']}
       overlayClassName={styles['modal-overlay-wrapper']}
+      onRequestClose={onClose}
     >
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>

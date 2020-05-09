@@ -48,6 +48,7 @@ export default ({ gif, availableTags, onClose, onSave }: IEditGifModalProps) => 
       isOpen={!!gif}
       className={styles['modal-wrapper']}
       overlayClassName={styles['modal-overlay-wrapper']}
+      onRequestClose={onClose}
     >
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>

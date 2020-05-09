@@ -58,7 +58,7 @@ export default observer(({ gif, onClick }: IGifProps) => {
           {gif.description}
         </span>
         <i className="material-icons" onClick={copyGifUrl} title="Copy to clipboard">
-          assignment
+          link
         </i>
       </div>
       <button
