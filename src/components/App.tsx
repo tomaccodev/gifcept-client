@@ -179,6 +179,8 @@ export default observer(() => {
       <GifModal
         loggedUser={auth.user}
         gif={selectedGif}
+        onLike={gifs.likeGif}
+        onUnlike={gifs.unlikeGif}
         onClose={clearSelectedGif}
         onEdit={setEditingGif}
         onDelete={gifs.deleteGif}

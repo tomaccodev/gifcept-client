@@ -5,7 +5,7 @@ import GifsStore from '../stores/gifs';
 import TagsStore from '../stores/tags';
 
 const auth = new AuthStore();
-const gifs = new GifsStore();
+const gifs = new GifsStore(auth);
 const tags = new TagsStore();
 
 export const storesContext = createContext({

@@ -58,7 +58,7 @@ export default observer(({ gif, onClick }: IGifProps) => {
           {gif.description}
         </span>
         <i className="material-icons" onClick={copyGifUrl} title="Copy to clipboard">
-          assignment
+          link
         </i>
       </div>
       <button
@@ -85,13 +85,13 @@ export default observer(({ gif, onClick }: IGifProps) => {
             <span>{gif.viewsCount}</span>
           </li>
         </ul>
-        <Link className={styles['block-item-uploader']} to={`/${gif.userId}/gifs`}>
+        <Link className={styles['block-item-uploader']} to={`/${gif.user.id}/gifs`}>
           <img
             src="https://via.placeholder.com/24x24"
             className="block-item-uploader-avatar"
-            alt={gif.userName}
+            alt={gif.user.username}
           />
-          <span>{gif.userName}</span>
+          <span>{gif.user.username}</span>
         </Link>
       </div>
     </div>

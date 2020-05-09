@@ -39,6 +39,7 @@ export default ({ isOpen, onClose, onLogin }: ILoginModalProps) => {
       isOpen={isOpen}
       className={styles['modal-wrapper']}
       overlayClassName={styles['modal-overlay-wrapper']}
+      onRequestClose={onClose}
     >
       <div className={styles.topbar}>
         <div className={styles['topbar-right']}>

@@ -3,38 +3,50 @@ import { format } from 'url';
 import { Rating } from '../common/constants';
 
 import { getRequest, patchRequest, postRequest, responselessDeleteRequest } from './common/methods';
-import { IApiModel } from './common/model';
+import { IApiModel, IApiModelWithCreation } from './common/model';
 
 interface IUser extends IApiModel {
   username: string;
 }
 
-interface IServerGif extends IApiModel {
+interface IServerLike extends IApiModel, IApiModelWithCreation {
+  user: IUser;
+}
+
+export interface ILike extends Omit<IServerLike, 'created'> {
+  created: Date;
+}
+
+export interface IServerComment extends IApiModel, IApiModelWithCreation {
+  text: string;
+  user: IUser;
+}
+
+export interface IComment extends Omit<IServerComment, 'created'> {
+  created: Date;
+}
+
+interface IServerGif extends IApiModel, IApiModelWithCreation {
   shortId: string;
   color: string;
   description: string;
   rating: Rating;
-  created: string;
   viewsCount: number;
+  likes: IServerLike[];
   likesCount: number;
-  comments: IComment[];
+  comments: IServerComment[];
   commentsCount: number;
   sharesCount: number;
-  userName: string;
-  userId: string;
+  user: IUser;
   tags: string[];
 }
 
-export interface IGif extends Omit<IServerGif, 'created'> {
+export interface IGif extends Omit<Omit<Omit<IServerGif, 'created'>, 'likes'>, 'comments'> {
   animationUrlPath: string;
   frameUrlPath: string;
   created: Date;
-}
-
-export interface IComment extends IApiModel {
-  text: string;
-  user: IUser;
-  created: string;
+  likes: ILike[];
+  comments: IComment[];
 }
 
 export interface IGetGifsOptions {
@@ -49,11 +61,17 @@ export interface IGifPatch {
   tags: string[];
 }
 
+const normalizeApiModelWithCreation = <T extends IApiModelWithCreation>(model: T) => ({
+  ...model,
+  created: new Date(model.created),
+});
+
 const normalizeGif = (gif: IServerGif) => ({
-  ...gif,
+  ...normalizeApiModelWithCreation(gif),
   animationUrlPath: `/${gif.shortId}.gif`,
-  created: new Date(gif.created),
   frameUrlPath: `/${gif.shortId}.jpg`,
+  likes: gif.likes.map(normalizeApiModelWithCreation),
+  comments: gif.comments.map(normalizeApiModelWithCreation),
 });
 
 export const getGifs = (options: IGetGifsOptions = {}) => {
@@ -92,3 +110,8 @@ export const updateGif = (gif: IGif, updatedInfo: IGifPatch) =>
   patchRequest<IServerGif>(`/api/gifs/${gif.id}`, updatedInfo).then(normalizeGif);
 
 export const deleteGif = (gif: IGif) => responselessDeleteRequest(`/api/gifs/${gif.id}`);
+
+export const addLike = (gif: IGif) =>
+  postRequest<IServerLike>(`/api/gifs/${gif.id}/likes`).then(normalizeApiModelWithCreation);
+
+export const removeLike = (gif: IGif) => responselessDeleteRequest(`/api/gifs/${gif.id}/likes`);
