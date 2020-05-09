@@ -3,13 +3,17 @@ import { action, computed, observable } from 'mobx';
 import {
   addGifByFile,
   addGifByUrl,
+  addLike,
   deleteGif,
   getGifs,
   IGif,
   IGifPatch,
+  removeLike,
   updateGif,
 } from '../api/gifs';
 import { Rating } from '../common/constants';
+
+import AuthStore from './auth';
 
 const LOCALSTORAGE_KEY = 'gifs-filtering';
 
@@ -26,7 +30,7 @@ export default class {
   @observable
   public fetching = false;
 
-  constructor() {
+  constructor(private authStore: AuthStore) {
     this.currentSearch = undefined;
     this.currentRating = Rating.sfw;
     try {
@@ -69,22 +73,26 @@ export default class {
 
   @action
   public addGifByUrl = async (url: string) => {
-    try {
-      const gif = await addGifByUrl(url);
-      this.addGifsToCurrentCollection([gif]);
-    } catch (err) {
-      // tslint:disable-next-line:no-console
-      console.error(err);
+    if (this.authStore.user) {
+      try {
+        const gif = await addGifByUrl(url);
+        this.addGifsToCurrentCollection([gif]);
+      } catch (err) {
+        // tslint:disable-next-line:no-console
+        console.error(err);
+      }
     }
   };
 
   @action addGifByFile = async (file: File) => {
-    try {
-      const gif = await addGifByFile(file);
-      this.addGifsToCurrentCollection([gif]);
-    } catch (err) {
-      // tslint:disable-next-line:no-console
-      console.error(err);
+    if (this.authStore.user) {
+      try {
+        const gif = await addGifByFile(file);
+        this.addGifsToCurrentCollection([gif]);
+      } catch (err) {
+        // tslint:disable-next-line:no-console
+        console.error(err);
+      }
     }
   };
 
@@ -128,16 +136,45 @@ export default class {
     }
   }
 
+  private getById = (id: string) => this.gifs.find((g) => g.id === id);
+
   @action
   public updateGif = async (gif: IGif, updatedInfo: IGifPatch) => {
-    const updatedGif = await updateGif(gif, updatedInfo);
-    Object.assign(gif, updatedGif);
+    if (this.authStore.user) {
+      const updatedGif = await updateGif(gif, updatedInfo);
+      Object.assign(gif, updatedGif);
+    }
   };
 
   @action
   public deleteGif = async (gif: IGif) => {
-    const position = this.gifs.findIndex((g) => gif.id === g.id);
-    deleteGif(gif);
-    this.gifs.splice(position === -1 ? this.gifs.length : position, 1);
+    if (this.authStore.user) {
+      const position = this.gifs.findIndex((g) => gif.id === g.id);
+      deleteGif(gif);
+      this.gifs.splice(position === -1 ? this.gifs.length : position, 1);
+    }
+  };
+
+  @action
+  public likeGif = async (gif: IGif) => {
+    if (this.authStore.user) {
+      const localGif = this.getById(gif.id);
+      if (localGif !== undefined) {
+        localGif.likes.push(await addLike(localGif));
+        localGif.likesCount++;
+      }
+    }
+  };
+
+  @action
+  public unlikeGif = async (gif: IGif) => {
+    if (this.authStore.user) {
+      const localGif = this.getById(gif.id);
+      if (localGif !== undefined) {
+        await removeLike(localGif);
+        localGif.likes = localGif.likes.filter((l) => l.user.id !== this.authStore.user!.id);
+        localGif.likesCount--;
+      }
+    }
   };
 }
