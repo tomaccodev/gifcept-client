@@ -70,13 +70,20 @@ export default ({
   const onInputKeyDown = useCallback(
     (ev: KeyboardEvent<HTMLInputElement>) => {
       switch (ev.key) {
+        case 'Backspace':
+          if (currentInput === '') {
+            ev.preventDefault();
+            doSetCurrentTags([...currentTags.slice(0, -1)]);
+          }
+          break;
         case delimiter:
           ev.preventDefault();
           if (
-            !uniqueTags ||
-            !currentTags
-              .map((t) => (caseInsensitive ? t.toLowerCase() : t))
-              .includes(caseInsensitive ? currentInput.toLowerCase() : currentInput)
+            currentInput.trim() !== '' &&
+            (!uniqueTags ||
+              !currentTags
+                .map((t) => (caseInsensitive ? t.toLowerCase() : t))
+                .includes(caseInsensitive ? currentInput.toLowerCase() : currentInput))
           ) {
             doSetCurrentTags([...currentTags, currentInput]);
           }
@@ -134,7 +141,13 @@ export default ({
   useEffect(() => {
     const updateSuggestionsTimeout = setTimeout(() => {
       if (currentInput.length >= minLength) {
-        setMatchingSuggestions([...suggestions.filter((s) => s.includes(currentInput))]);
+        setMatchingSuggestions([
+          ...suggestions.filter((s) =>
+            (caseInsensitive ? s.toLowerCase() : s).includes(
+              caseInsensitive ? currentInput.toLowerCase() : currentInput,
+            ),
+          ),
+        ]);
       } else {
         setMatchingSuggestions([]);
       }
