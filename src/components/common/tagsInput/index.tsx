@@ -156,7 +156,7 @@ export default ({
     return () => {
       clearTimeout(updateSuggestionsTimeout);
     };
-  }, [currentInput, minLength, suggestions]);
+  }, [currentInput, minLength, suggestions, caseInsensitive]);
 
   useEffect(() => {
     setSelectedSuggestion(undefined);

@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { IGif } from '../../api/gifs';
 
 import './Content.module.scss';
-import Gifs from './sections/gifs';
+import Gifs, { GifMode } from './sections/gifs';
 
 interface IContent {
   onSetSelectedGif: (gif: IGif) => void;
@@ -15,13 +15,13 @@ export default ({ onSetSelectedGif }: IContent) => {
     <main>
       <Switch>
         <Route exact={true} path="/">
-          <Gifs mode="all" onSetSelectedGif={onSetSelectedGif} />
+          <Gifs mode={GifMode.all} onSetSelectedGif={onSetSelectedGif} />
         </Route>
         <Route exact={true} path="/myGifs">
-          <Gifs mode="myGifs" onSetSelectedGif={onSetSelectedGif} />
+          <Gifs mode={GifMode.byUser} onSetSelectedGif={onSetSelectedGif} />
         </Route>
-        <Route path="/:id/gifs">
-          <Gifs mode="by id" onSetSelectedGif={onSetSelectedGif} />
+        <Route path="/users/:userId/gifs">
+          <Gifs mode={GifMode.byUser} onSetSelectedGif={onSetSelectedGif} />
         </Route>
       </Switch>
     </main>
