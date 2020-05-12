@@ -24,24 +24,24 @@ export default observer(({ mode, onSetSelectedGif }: IGifsProps) => {
   const { gifs } = useStores();
   const scrollPosition = useScrollPosition();
 
-  const { userId } = useParams();
+  const { username } = useParams();
+
+  useEffect(() => {
+    switch (mode) {
+      case GifMode.byUser:
+        gifs.setCurrentUsername(username);
+        break;
+      case GifMode.all:
+        gifs.setCurrentUsername(undefined);
+        break;
+    }
+  }, [mode, gifs, username]);
 
   useEffect(() => {
     if (gifs.gifs.length === 0 || scrollPosition.bottom < preloadMargin) {
       gifs.getGifs();
     }
   }, [scrollPosition, gifs.gifs, gifs]);
-
-  useEffect(() => {
-    switch (mode) {
-      case GifMode.byUser:
-        gifs.setCurrentUserId(userId);
-        break;
-      case GifMode.all:
-        gifs.setCurrentUserId(undefined);
-        break;
-    }
-  }, [mode, gifs, userId]);
 
   return (
     <div className={styles['blocks-container']}>

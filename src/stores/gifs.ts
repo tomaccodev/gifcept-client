@@ -27,7 +27,7 @@ export default class {
   public currentRating = Rating.sfw;
 
   @observable
-  public currentUserId?: string;
+  public currentUsername?: string;
 
   @observable
   public gifs: IGif[] = [];
@@ -64,9 +64,9 @@ export default class {
           before: this.gifs.length ? this.gifs[this.gifs.length - 1].id : undefined,
           matching: this.search,
           rating: this.currentRating,
-          userId: this.currentUserId,
+          username: this.currentUsername,
         };
-        const gifs = await (options.userId
+        const gifs = await (options.username
           ? getUserGifs(options as IGetUserGifsOptions)
           : getGifs(options));
         this.addGifsToCurrentCollection(gifs);
@@ -137,9 +137,9 @@ export default class {
   };
 
   @action
-  setCurrentUserId = (userId?: string) => {
-    if (this.currentUserId !== userId) {
-      this.currentUserId = userId;
+  setCurrentUsername = (username?: string) => {
+    if (this.currentUsername !== username) {
+      this.currentUsername = username;
       this.reloadGifs();
     }
   };

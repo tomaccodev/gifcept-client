@@ -11,7 +11,7 @@ interface ISubHeaderProps {
 
 export default ({ loggedUser }: ISubHeaderProps) => {
   const myGifsLink = !!loggedUser ? (
-    <Link to={`/users/${loggedUser.id}/gifs`} className={styles['subheader-button']}>
+    <Link to={`/users/${loggedUser.username}/gifs`} className={styles['subheader-button']}>
       <span>Your gifs</span>
     </Link>
   ) : null;

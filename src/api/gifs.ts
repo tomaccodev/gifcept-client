@@ -56,7 +56,7 @@ export interface IGetGifsOptions {
 }
 
 export interface IGetUserGifsOptions extends IGetGifsOptions {
-  userId: string;
+  username: string;
 }
 
 export interface IGifPatch {
@@ -112,7 +112,7 @@ export const getUserGifs = (options: IGetUserGifsOptions) => {
   }
   return getRequest<IServerGif[]>(
     format({
-      pathname: `/api/users/${options.userId}/gifs`,
+      pathname: `/api/users/${options.username}/gifs`,
       query: {
         ...query,
       },

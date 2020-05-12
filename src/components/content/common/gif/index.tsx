@@ -85,7 +85,7 @@ export default observer(({ gif, onClick }: IGifProps) => {
             <span>{gif.viewsCount}</span>
           </li>
         </ul>
-        <Link className={styles['block-item-uploader']} to={`/users/${gif.user.id}/gifs`}>
+        <Link className={styles['block-item-uploader']} to={`/users/${gif.user.username}/gifs`}>
           <img
             src="https://via.placeholder.com/24x24"
             className="block-item-uploader-avatar"
