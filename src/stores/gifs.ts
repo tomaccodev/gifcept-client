@@ -6,6 +6,8 @@ import {
   addLike,
   deleteGif,
   getGifs,
+  getUserGifs,
+  IGetUserGifsOptions,
   IGif,
   IGifPatch,
   removeLike,
@@ -25,14 +27,15 @@ export default class {
   public currentRating = Rating.sfw;
 
   @observable
+  public currentUserId?: string;
+
+  @observable
   public gifs: IGif[] = [];
 
   @observable
   public fetching = false;
 
   constructor(private authStore: AuthStore) {
-    this.currentSearch = undefined;
-    this.currentRating = Rating.sfw;
     try {
       const rawData = localStorage.getItem(LOCALSTORAGE_KEY);
       if (rawData) {
@@ -57,11 +60,15 @@ export default class {
     try {
       if (!this.fetching) {
         this.fetching = true;
-        const gifs = await getGifs({
+        const options = {
           before: this.gifs.length ? this.gifs[this.gifs.length - 1].id : undefined,
           matching: this.search,
           rating: this.currentRating,
-        });
+          userId: this.currentUserId,
+        };
+        const gifs = await (options.userId
+          ? getUserGifs(options as IGetUserGifsOptions)
+          : getGifs(options));
         this.addGifsToCurrentCollection(gifs);
         this.fetching = false;
       }
@@ -106,13 +113,17 @@ export default class {
     );
   };
 
+  private reloadGifs = () => {
+    this.gifs = [];
+    this.getGifs();
+  };
+
   @action
   public setCurrentSearch = (search: string) => {
     if (this.currentSearch !== search) {
       this.currentSearch = search === '' ? undefined : search;
       this.saveSearchToLocalstorage();
-      this.gifs = [];
-      this.getGifs();
+      this.reloadGifs();
     }
   };
 
@@ -121,8 +132,15 @@ export default class {
     if (this.currentRating !== rating) {
       this.currentRating = rating;
       this.saveSearchToLocalstorage();
-      this.gifs = [];
-      this.getGifs();
+      this.reloadGifs();
+    }
+  };
+
+  @action
+  setCurrentUserId = (userId?: string) => {
+    if (this.currentUserId !== userId) {
+      this.currentUserId = userId;
+      this.reloadGifs();
     }
   };
 
