@@ -59,6 +59,10 @@ export interface IGetUserGifsOptions extends IGetGifsOptions {
   username: string;
 }
 
+export interface IGetTagGifsOptions extends IGetGifsOptions {
+  tag: string;
+}
+
 export interface IGifPatch {
   description: string;
   rating: Rating;
@@ -113,6 +117,27 @@ export const getUserGifs = (options: IGetUserGifsOptions) => {
   return getRequest<IServerGif[]>(
     format({
       pathname: `/api/users/${options.username}/gifs`,
+      query: {
+        ...query,
+      },
+    }),
+  ).then((gifs) => gifs.map(normalizeGif));
+};
+
+export const getTagGifs = (options: IGetTagGifsOptions) => {
+  const query: IGetGifsOptions = {};
+  if (options.before) {
+    query.before = options.before;
+  }
+  if (options.matching) {
+    query.matching = options.matching;
+  }
+  if (options.rating) {
+    query.rating = options.rating;
+  }
+  return getRequest<IServerGif[]>(
+    format({
+      pathname: `/api/tags/${options.tag}/gifs`,
       query: {
         ...query,
       },

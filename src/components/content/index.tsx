@@ -23,6 +23,9 @@ export default ({ onSetSelectedGif }: IContent) => {
         <Route path="/users/:username/gifs">
           <Gifs mode={GifMode.byUser} onSetSelectedGif={onSetSelectedGif} />
         </Route>
+        <Route path="/tags/:tag/gifs">
+          <Gifs mode={GifMode.byTag} onSetSelectedGif={onSetSelectedGif} />
+        </Route>
       </Switch>
     </main>
   );

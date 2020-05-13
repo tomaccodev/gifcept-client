@@ -97,10 +97,22 @@ export default observer(
           </div>
         </div>
         <div className={styles['info-wrapper']}>
-          tags: {gif && gif.tags.join(', ')}
+          tags:{' '}
+          {gif &&
+            gif.tags.map((t) => (
+              <Link
+                key={t}
+                className={styles.tag}
+                onClick={onClose}
+                to={gif ? `/tags/${t}/gifs` : ''}
+              >
+                <i>#</i>
+                {t}
+              </Link>
+            ))}
           <br />
           uploaded by{' '}
-          <Link onClick={onClose} to={gif ? `/${gif.user.id}/gifs` : ''}>
+          <Link onClick={onClose} to={gif ? `/users/${gif.user.username}/gifs` : ''}>
             {gif && gif.user.username}
           </Link>{' '}
           <span>{gif && moment(gif.created).fromNow()}</span>

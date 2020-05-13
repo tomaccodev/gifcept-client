@@ -1,0 +1,34 @@
+.header-container {
+  height: 80px;
+  margin: 20px auto;
+  font-size: 40px;
+
+  .header-content {
+    height: 80px;
+    width: 556px;
+    background-color: white;
+    padding: 0;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    border: 1px solid #aaaaaa;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      background-color: #eeeeee;
+      height: 100%;
+    }
+
+    .text {
+      display: flex;
+      flex-grow: 1;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      padding-left: 20px;
+    }
+  }
+}

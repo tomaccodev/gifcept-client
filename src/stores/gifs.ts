@@ -6,7 +6,9 @@ import {
   addLike,
   deleteGif,
   getGifs,
+  getTagGifs,
   getUserGifs,
+  IGetTagGifsOptions,
   IGetUserGifsOptions,
   IGif,
   IGifPatch,
@@ -28,6 +30,9 @@ export default class {
 
   @observable
   public currentUsername?: string;
+
+  @observable
+  public currentTag?: string;
 
   @observable
   public gifs: IGif[] = [];
@@ -65,10 +70,17 @@ export default class {
           matching: this.search,
           rating: this.currentRating,
           username: this.currentUsername,
+          tag: this.currentTag,
         };
-        const gifs = await (options.username
-          ? getUserGifs(options as IGetUserGifsOptions)
-          : getGifs(options));
+        let gifsPromise;
+        if (options.username) {
+          gifsPromise = getUserGifs(options as IGetUserGifsOptions);
+        } else if (options.tag) {
+          gifsPromise = getTagGifs(options as IGetTagGifsOptions);
+        } else {
+          gifsPromise = getGifs(options);
+        }
+        const gifs = await gifsPromise;
         this.addGifsToCurrentCollection(gifs);
         this.fetching = false;
       }
@@ -140,6 +152,14 @@ export default class {
   setCurrentUsername = (username?: string) => {
     if (this.currentUsername !== username) {
       this.currentUsername = username;
+      this.reloadGifs();
+    }
+  };
+
+  @action
+  setCurrentTag = (tag?: string) => {
+    if (this.currentTag !== tag) {
+      this.currentTag = tag;
       this.reloadGifs();
     }
   };
