@@ -10,8 +10,8 @@ import { copy } from '../../utils/clipboard';
 import ActionButtom from '../common/actionButton';
 import HeaderButton from '../common/headerButton';
 
-import Comment from './components/comment';
 import styles from './GifModal.module.scss';
+import Comment from './components/comment';
 
 interface IGifModalProps {
   loggedUser?: ILoggedUser;

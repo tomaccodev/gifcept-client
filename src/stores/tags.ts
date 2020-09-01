@@ -10,7 +10,7 @@ export default class {
   public fetching = false;
 
   @action
-  public getTags = async () => {
+  public getTags = async (): Promise<void> => {
     try {
       if (!this.fetching) {
         this.fetching = true;
@@ -23,7 +23,7 @@ export default class {
   };
 
   @action
-  public addMissingTags = (newTags: string[]) => {
+  public addMissingTags = (newTags: string[]): void => {
     const caseInsensitiveTags = this.tags.map((t) => t.toLowerCase());
     let modified = false;
     for (const newTag of newTags) {

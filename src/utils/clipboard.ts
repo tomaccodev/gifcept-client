@@ -1,4 +1,4 @@
-export const copy = async (data: string) => {
+export const copy = async (data: string): Promise<void> => {
   try {
     await navigator.clipboard.writeText(data);
   } catch (err) {

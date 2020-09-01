@@ -5,9 +5,9 @@ import { Rating } from '../../common/constants';
 import { ILoggedUser } from '../../stores/auth';
 import HeaderButton from '../common/headerButton';
 
+import styles from './Header.module.scss';
 import RatingSelector from './components/ratingSelector';
 import SubHeader from './components/subHeader';
-import styles from './Header.module.scss';
 import logo from './images/logo.png';
 
 interface IHeaderProps {

@@ -1,4 +1,4 @@
-export default (url: string) =>
+export default (url: string): Promise<void> =>
   new Promise((res) => {
     const image = new Image();
     image.addEventListener('load', () => {

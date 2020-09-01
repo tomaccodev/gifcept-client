@@ -8,8 +8,8 @@ import { Event } from '../events';
 import useEventEmitter from '../hooks/useEventEmitter';
 import useStores from '../hooks/useStores';
 
-import AddGifModal from './addGifModal';
 import styles from './App.module.scss';
+import AddGifModal from './addGifModal';
 import Content from './content';
 import EditGifModal from './editGifModal';
 import GifModal from './gifModal';

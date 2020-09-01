@@ -9,14 +9,15 @@ export default <T>(event: Event, handler: (payload: T) => void) => {
     savedHandler.current = handler;
   }, [handler]);
 
-  useEffect(() => {
-    const eventListener = (payload: T) => savedHandler.current && savedHandler.current(payload);
+  useEffect((): (() => void) => {
+    const eventListener = (payload: T): void =>
+      savedHandler.current && savedHandler.current(payload);
 
     // Add event listener
     EventEmitter.on(event, eventListener);
 
     // Remove event listener on cleanup
-    return () => {
+    return (): void => {
       EventEmitter.off(event, eventListener);
     };
   }, [event]);

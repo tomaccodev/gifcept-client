@@ -77,5 +77,5 @@ export const patchRequest = <T>(
 export const deleteRequest = <T>(url: string, init: RequestInit = getInitForDelete()) =>
   jsonFetch<T>(url, init);
 
-export const responselessDeleteRequest = <T>(url: string, init: RequestInit = getInitForDelete()) =>
+export const responselessDeleteRequest = (url: string, init: RequestInit = getInitForDelete()) =>
   responselessFetch(url, init);

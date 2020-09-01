@@ -1,6 +1,10 @@
 import { action, computed, observable } from 'mobx';
 
 import {
+  IGetTagGifsOptions,
+  IGetUserGifsOptions,
+  IGif,
+  IGifPatch,
   addGifByFile,
   addGifByUrl,
   addLike,
@@ -8,10 +12,6 @@ import {
   getGifs,
   getTagGifs,
   getUserGifs,
-  IGetTagGifsOptions,
-  IGetUserGifsOptions,
-  IGif,
-  IGifPatch,
   removeLike,
   updateGif,
 } from '../api/gifs';
@@ -54,14 +54,14 @@ export default class {
   }
 
   @computed
-  private get search() {
+  private get search(): undefined | string {
     return this.currentSearch && this.currentSearch.trim() !== ''
       ? this.currentSearch.trim()
       : undefined;
   }
 
   @action
-  public getGifs = async () => {
+  public getGifs = async (): Promise<void> => {
     try {
       if (!this.fetching) {
         this.fetching = true;
@@ -91,7 +91,7 @@ export default class {
   };
 
   @action
-  public addGifByUrl = async (url: string) => {
+  public addGifByUrl = async (url: string): Promise<void> => {
     if (this.authStore.user) {
       try {
         const gif = await addGifByUrl(url);
@@ -103,7 +103,7 @@ export default class {
     }
   };
 
-  @action addGifByFile = async (file: File) => {
+  @action addGifByFile = async (file: File): Promise<void> => {
     if (this.authStore.user) {
       try {
         const gif = await addGifByFile(file);
@@ -115,7 +115,7 @@ export default class {
     }
   };
 
-  private saveSearchToLocalstorage = () => {
+  private saveSearchToLocalstorage = (): void => {
     localStorage.setItem(
       LOCALSTORAGE_KEY,
       JSON.stringify({
@@ -125,13 +125,13 @@ export default class {
     );
   };
 
-  private reloadGifs = () => {
+  private reloadGifs = (): void => {
     this.gifs = [];
     this.getGifs();
   };
 
   @action
-  public setCurrentSearch = (search: string) => {
+  public setCurrentSearch = (search: string): void => {
     if (this.currentSearch !== search) {
       this.currentSearch = search === '' ? undefined : search;
       this.saveSearchToLocalstorage();
@@ -140,7 +140,7 @@ export default class {
   };
 
   @action
-  setCurrentRating = (rating: Rating) => {
+  setCurrentRating = (rating: Rating): void => {
     if (this.currentRating !== rating) {
       this.currentRating = rating;
       this.saveSearchToLocalstorage();
@@ -149,7 +149,7 @@ export default class {
   };
 
   @action
-  setCurrentUsername = (username?: string) => {
+  setCurrentUsername = (username?: string): void => {
     if (this.currentUsername !== username) {
       this.currentUsername = username;
       this.reloadGifs();
@@ -157,7 +157,7 @@ export default class {
   };
 
   @action
-  setCurrentTag = (tag?: string) => {
+  setCurrentTag = (tag?: string): void => {
     if (this.currentTag !== tag) {
       this.currentTag = tag;
       this.reloadGifs();
@@ -165,7 +165,7 @@ export default class {
   };
 
   @action
-  private addGifsToCurrentCollection(gifs: IGif[]) {
+  private addGifsToCurrentCollection(gifs: IGif[]): void {
     for (const gif of gifs) {
       if (!this.gifs.find((g) => g.id === gif.id)) {
         const position = this.gifs.findIndex((g) => gif.created > g.created);
@@ -174,10 +174,10 @@ export default class {
     }
   }
 
-  private getById = (id: string) => this.gifs.find((g) => g.id === id);
+  private getById = (id: string): undefined | IGif => this.gifs.find((g) => g.id === id);
 
   @action
-  public updateGif = async (gif: IGif, updatedInfo: IGifPatch) => {
+  public updateGif = async (gif: IGif, updatedInfo: IGifPatch): Promise<void> => {
     if (this.authStore.user) {
       const updatedGif = await updateGif(gif, updatedInfo);
       Object.assign(gif, updatedGif);
@@ -185,7 +185,7 @@ export default class {
   };
 
   @action
-  public deleteGif = async (gif: IGif) => {
+  public deleteGif = async (gif: IGif): Promise<void> => {
     if (this.authStore.user) {
       const position = this.gifs.findIndex((g) => gif.id === g.id);
       deleteGif(gif);
@@ -194,7 +194,7 @@ export default class {
   };
 
   @action
-  public likeGif = async (gif: IGif) => {
+  public likeGif = async (gif: IGif): Promise<void> => {
     if (this.authStore.user) {
       const localGif = this.getById(gif.id);
       if (localGif !== undefined) {
@@ -205,12 +205,12 @@ export default class {
   };
 
   @action
-  public unlikeGif = async (gif: IGif) => {
+  public unlikeGif = async (gif: IGif): Promise<void> => {
     if (this.authStore.user) {
       const localGif = this.getById(gif.id);
       if (localGif !== undefined) {
         await removeLike(localGif);
-        localGif.likes = localGif.likes.filter((l) => l.user.id !== this.authStore.user!.id);
+        localGif.likes = localGif.likes.filter((l) => l.user.id !== this.authStore.user.id);
         localGif.likesCount--;
       }
     }

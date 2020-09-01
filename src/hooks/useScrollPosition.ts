@@ -1,7 +1,14 @@
 import { throttle } from 'lodash';
 import { useCallback, useLayoutEffect, useState } from 'react';
 
-const getScrollPosition = () => ({
+interface ScrollPosition {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
+const getScrollPosition = (): ScrollPosition => ({
   top: window.scrollY,
   right:
     document.documentElement.scrollWidth - document.documentElement.clientWidth - window.scrollX,
@@ -10,7 +17,7 @@ const getScrollPosition = () => ({
   left: window.scrollX,
 });
 
-export default (delay = 500) => {
+export default (delay = 500): ScrollPosition => {
   const [scrollPosition, setScrollPosition] = useState(getScrollPosition());
   const handleScroll = useCallback(
     throttle(() => {
@@ -22,7 +29,7 @@ export default (delay = 500) => {
   useLayoutEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return (): void => window.removeEventListener('scroll', handleScroll);
   });
 
   return scrollPosition;

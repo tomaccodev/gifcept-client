@@ -6,7 +6,7 @@ import { setToken } from '../api/common/init';
 import { UserRole } from '../common/constants';
 import Emitter, { Event } from '../events';
 
-export interface ILoggedUser {
+export interface LoggedUser {
   username: string;
   id: string;
 }
@@ -44,7 +44,7 @@ export default class {
     }
   }
 
-  public login = async (usernameOrEmail: string, password: string) => {
+  public login = async (usernameOrEmail: string, password: string): Promise<boolean> => {
     try {
       const token = await generateToken(usernameOrEmail, password);
 
@@ -56,7 +56,7 @@ export default class {
   };
 
   @action
-  private setToken = (token?: string) => {
+  private setToken = (token?: string): void => {
     setToken(token);
     if (token) {
       const { id, username, role } = jwtDecode(token);
@@ -76,7 +76,7 @@ export default class {
   };
 
   @computed
-  get user() {
-    return this.token ? ({ username: this.username, id: this.userId } as ILoggedUser) : undefined;
+  get user(): undefined | LoggedUser {
+    return this.token ? ({ username: this.username, id: this.userId } as LoggedUser) : undefined;
   }
 }

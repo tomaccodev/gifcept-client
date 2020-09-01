@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom';
 import { IGif } from '../../../../api/gifs';
 import useScrollPosition from '../../../../hooks/useScrollPosition';
 import useStores from '../../../../hooks/useStores';
-import Gif from '../../common/gif';
 import styles from '../../Content.module.scss';
+import Gif from '../../common/gif';
 
 import Header, { HeaderType } from './components/header';
 
